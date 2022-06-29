@@ -1,6 +1,24 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
+import {createPinia} from 'pinia';
+
+import defineRouter from './router';
+import {defineAxiosInstanceInterceptors} from "./axios";
+import {useAuthStore} from './store/auth';
+
 import App from './App.vue'
 
 const app = createApp(App)
+app.use(createPinia())
 
 app.mount('#app')
+
+Promise.resolve().then(() => {
+    const authStore = useAuthStore();
+    return authStore.initAuth();
+}).then(() => {
+    const router = defineRouter();
+    defineAxiosInstanceInterceptors(router);
+    // app.use(i18n);
+    app.use(router);
+    app.mount('#app');
+});

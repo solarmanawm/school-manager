@@ -7,7 +7,7 @@ import RequestBuilder from "./RequestBuilder";
 /**
  * Decode Access Token Request Interface
  */
-interface DecodeAccessTokenRequestInterface {
+export interface DecodeAccessTokenRequestInterface {
     details: {
         firstName: string;
         lastName: string;
