@@ -9,7 +9,7 @@
                     <p>control</p>
                 </app-control>
                 <app-control class="w-full">
-                    <p>control</p>
+                    <app-button class="w-full">Sign In</app-button>
                 </app-control>
             </app-form>
         </app-card>
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import AppButton from '../Button.vue'
 import AppCard from '../Card.vue'
 import AppForm from '../shared/Form.vue'
 import AppControl from '../shared/Control.vue'
