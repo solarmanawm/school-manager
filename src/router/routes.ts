@@ -11,6 +11,7 @@ const routes: any[] = [
         component: Home,
         meta: {
             requiresAuth: false,
+            title: 'Home',
         },
     },
     {
@@ -19,6 +20,7 @@ const routes: any[] = [
         component: Login,
         meta: {
             requiresAuth: false,
+            title: 'Sign In',
         },
     },
     {
@@ -27,6 +29,7 @@ const routes: any[] = [
         component: Register,
         meta: {
             requiresAuth: false,
+            title: 'Sign Up',
         },
     },
 ]

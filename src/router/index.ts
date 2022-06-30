@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, Router} from 'vue-router'
 // @ts-ignore
 import {nextTick} from "vue";
 import {useAuthStore} from '../store/auth';
+import {useUIStore} from "../store/ui";
 import routes from './routes'
 import routeNames from "./names";
 
@@ -22,12 +23,14 @@ export default () => {
     });
 
     router.beforeEach((to, from) => {
-        const authStore = useAuthStore();
-        const {requiresAuth} = to.meta || {requiresAuth: false};
+        const authStore = useAuthStore()
+        const uiStore = useUIStore()
+        const {requiresAuth, title} = to.meta || {requiresAuth: false, title: ''}
+        uiStore.title = title
         if (!authStore.isAuthenticated && requiresAuth) {
             return {
                 name: routeNames.login,
-            };
+            }
         }
         if (authStore.isAuthenticated && [
             routeNames.login,
@@ -35,9 +38,9 @@ export default () => {
         ].includes(to.name!.toString())) {
             return {
                 name: routeNames.home,
-            };
+            }
         }
-    });
+    })
 
     return router;
 };

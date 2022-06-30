@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('auth', {
                     this.name = `${firstName} ${lastName}`;
                     this.uid = uid;
                     this.updateAuthState(true, accessToken, refreshToken)
-                } catch (error: any) {
+                } catch (error) {
                     console.log(error)
                     this.updateAuthState();
                 }
