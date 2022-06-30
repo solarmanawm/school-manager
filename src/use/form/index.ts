@@ -2,6 +2,9 @@ import useVuelidate from "@vuelidate/core"
 // @ts-ignore
 import {ref, Ref} from 'vue'
 
+type SubmitCallback = (resolve: Function, reject: Function) => void
+type ErrorCallback = (error?: Error) => void
+
 type Fields<T> = {
     [key in keyof T]: Ref;
 }
@@ -26,9 +29,13 @@ export function useForm<T>(args: UseFormArgs<T>) {
         return a
     }, {} as Fields<T>)
     const validator = useVuelidate(validation, fields)
-    let callback: () => Promise<void> = () => Promise.resolve()
-    const onSubmit = (cb: () => Promise<void>) => {
+    let callback: SubmitCallback = () => {}
+    let errorCallback: ErrorCallback = () => {}
+    const onSubmit = (cb: SubmitCallback) => {
         callback = cb
+    }
+    const onError = (cb: ErrorCallback) => {
+        errorCallback = cb
     }
 
     const values = () => {
@@ -56,8 +63,8 @@ export function useForm<T>(args: UseFormArgs<T>) {
                 return;
             }
 
-            return callback()
-        })
+            return new Promise(callback)
+        }).catch(errorCallback)
     }
 
     return {
@@ -69,5 +76,6 @@ export function useForm<T>(args: UseFormArgs<T>) {
             submit,
         },
         onSubmit,
+        onError,
     }
 }

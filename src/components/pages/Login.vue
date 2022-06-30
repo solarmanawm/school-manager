@@ -45,7 +45,9 @@
 <script setup lang="ts">
 import {email, required} from "@vuelidate/validators";
 
+// @ts-ignore
 import AppButton from '../Button.vue'
+// @ts-ignore
 import AppControl from '../Control.vue'
 import AppCard from '../Card.vue'
 import AppForm from '../shared/Form.vue'
@@ -58,7 +60,7 @@ interface LoginFormInterface {
     password: string;
 }
 
-const {form: login} = useForm<LoginFormInterface>({
+const {form: login, onSubmit, onError} = useForm<LoginFormInterface>({
     username: {
         value: '',
         validation: {
@@ -73,5 +75,14 @@ const {form: login} = useForm<LoginFormInterface>({
         },
     },
 })
+
+onSubmit((resolve) => {
+    resolve()
+})
+
+onError((error) => {
+    console.error(error)
+})
+
 const name = 'Login'
 </script>
