@@ -51,7 +51,13 @@ export function useForm<T>(args: UseFormArgs<T>) {
             isSubmitted.value = true
         }
 
-        return callback()
+        return Promise.resolve().then(() => validator.value.$validate()).then((isValid) => {
+            if (!isValid) {
+                return;
+            }
+
+            return callback()
+        })
     }
 
     return {

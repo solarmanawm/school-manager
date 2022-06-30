@@ -6,22 +6,32 @@
                 class="text-sm mb-2"
         >{{ label }} <span v-if="required" class="text-red-500 font-bold">*</span></label>
         <slot></slot>
+        <ul v-if="errors.length">
+            <li v-for="error in errors" class="text-red-500 mt-2 text-sm">{{ error.$message }}</li>
+        </ul>
     </div>
 </template>
 
 <script setup lang="ts">
 // @ts-ignore
-import {defineProps, withDefaults} from 'vue'
+import {defineProps, watch, withDefaults} from 'vue'
+import {ErrorObject} from "@vuelidate/core";
 
 interface Props {
     label?: string;
     target?: string;
     required?: boolean;
+    errors?: ErrorObject[];
 }
 
-const {label, target, required} = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
     required: false,
+    errors: [],
 })
-console.log({required})
+
+watch(() => props.errors, () => {
+
+})
+
 const name = 'FormControl'
 </script>
