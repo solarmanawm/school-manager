@@ -43,7 +43,7 @@ const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.TE
 const value = ref(props.modelValue)
 const isInput = computed(() => type.value === Type.TEXT || type.value === Type.EMAIL || type.value === Type.PASSWORD)
 const classList = computed(() => ({
-    'border border-gray-200 h-10 rounded px-3 hover:border-gray-300 focus:border-blue-500': isInput,
+    'border border-gray-200 h-10 rounded px-3 hover:border-gray-300 focus:bg-gray-100 focus:border-blue-500': isInput,
 }))
 const name = 'Control'
 
