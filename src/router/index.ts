@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory, Router} from 'vue-router'
+// @ts-ignore
 import {nextTick} from "vue";
 import {useAuthStore} from '../store/auth';
 import routes from './routes'
@@ -33,7 +34,7 @@ export default () => {
             routeNames.register,
         ].includes(to.name!.toString())) {
             return {
-                name: routeNames.dashboard,
+                name: routeNames.home,
             };
         }
     });
