@@ -1,13 +1,9 @@
 <template>
+    <div class="w-full flex-1 flex items-center justify-center">
 
+    </div>
 </template>
 
-<script>
-export default {
-    name: "Register"
-}
+<script setup lang="ts">
+const name = 'Register'
 </script>
-
-<style scoped>
-
-</style>

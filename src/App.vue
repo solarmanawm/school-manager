@@ -2,7 +2,7 @@
     <div class="w-full flex flex-col items-start justify-between min-h-screen">
         <app-header/>
         <app-content>
-            <p>Content</p>
+            <router-view/>
         </app-content>
         <app-footer/>
     </div>

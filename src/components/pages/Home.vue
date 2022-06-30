@@ -2,12 +2,6 @@
     <p>Home</p>
 </template>
 
-<script>
-export default {
-    name: "Home"
-}
+<script setup lang="ts">
+const name = 'Home'
 </script>
-
-<style scoped>
-
-</style>
