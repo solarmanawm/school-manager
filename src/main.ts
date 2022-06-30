@@ -1,3 +1,5 @@
+import './index.css'
+
 import {createApp} from 'vue'
 import {createPinia} from 'pinia';
 
@@ -7,10 +9,9 @@ import {useAuthStore} from './store/auth';
 
 import App from './App.vue'
 
+
 const app = createApp(App)
 app.use(createPinia())
-
-app.mount('#app')
 
 Promise.resolve().then(() => {
     const authStore = useAuthStore();
