@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-const name = 'Control'
+const name = 'FormControl'
 </script>
