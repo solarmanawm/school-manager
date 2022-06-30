@@ -3,10 +3,10 @@
         <app-card class="sm:max-w-sm">
             <app-form>
                 <app-form-control class="w-full">
-                    <p>control</p>
+                    <app-control class="w-full"/>
                 </app-form-control>
                 <app-form-control class="w-full">
-                    <p>control</p>
+                    <app-control class="w-full"/>
                 </app-form-control>
                 <app-form-control class="w-full">
                     <app-button class="w-full">Sign In</app-button>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import AppButton from '../Button.vue'
+import AppControl from '../Control.vue'
 import AppCard from '../Card.vue'
 import AppForm from '../shared/Form.vue'
 import AppFormControl from '../shared/FormControl.vue'
