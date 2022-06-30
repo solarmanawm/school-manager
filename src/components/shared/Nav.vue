@@ -1,11 +1,23 @@
 <template>
-    <ul v-if="authStore.isAuthenticated">
-        <li v-for="route of authRoutes">
+    <ul
+            v-if="authStore.isAuthenticated"
+            class="flex"
+    >
+        <li
+                v-for="route of authRoutes"
+                class="first:ml-0 ml-3"
+        >
             <router-link :to="route.path">{{ route.name }}</router-link>
         </li>
     </ul>
-    <ul v-else>
-        <li v-for="route of nonAuthRoutes">
+    <ul
+            v-else
+            class="flex"
+    >
+        <li
+                v-for="route of nonAuthRoutes"
+                class="first:ml-0 ml-3"
+        >
             <router-link :to="route.path">{{ route.name }}</router-link>
         </li>
     </ul>
