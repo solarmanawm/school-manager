@@ -113,7 +113,9 @@ import AppFormGroup from '../shared/FormGroup.vue'
 import AppAlert from '../Alert.vue'
 
 import service from '../../service'
+import {useAuthStore} from "../../store/auth";
 
+const authStore = useAuthStore()
 const alertType = ref('error')
 const alertMessage = ref('')
 const loading = ref(false)
@@ -184,8 +186,11 @@ const submit = () => {
         } else {
             throw new Error('Form is not valid.')
         }
-    }).then((userInfo: object) => {
-        console.log(userInfo)
+    }).then((userInfo: {
+        accessToken: string;
+        refreshToken: string;
+    }) => {
+        authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)
         alertType.value = 'success'
         alertMessage.value = 'You\'ve successfully registered a new account.'
     }).catch(errorHandler).finally(() => {

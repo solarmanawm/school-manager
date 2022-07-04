@@ -64,8 +64,10 @@ import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
 import AppAlert from '../Alert.vue'
 
+import {useAuthStore} from '../../store/auth'
 import service from "../../service";
 
+const authStore = useAuthStore()
 const alert = reactive({
     type: 'error',
     message: '',
@@ -119,8 +121,11 @@ const submit = () => {
         } else {
             throw new Error('Form is not valid.')
         }
-    }).then((userInfo: object) => {
-        console.log(userInfo)
+    }).then((userInfo: {
+        accessToken: string;
+        refreshToken: string;
+    }) => {
+        authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)
         alert.type = 'success'
         alert.message = 'You\'ve successfully signed in into your account.'
     }).catch(errorHandler).finally(() => {
