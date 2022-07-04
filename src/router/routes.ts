@@ -3,6 +3,7 @@ import Login from '../components/pages/Login.vue'
 import Register from '../components/pages/Register.vue'
 import Dashboard from '../components/pages/Dashboard.vue'
 import Families from '../components/pages/Families.vue'
+import Students from '../components/pages/Students.vue'
 
 import routeNames from './names'
 
@@ -41,6 +42,15 @@ const routes: any[] = [
         meta: {
             requiresAuth: true,
             title: 'Dashboard',
+        },
+    },
+    {
+        path: '/students',
+        name: routeNames.students,
+        component: Students,
+        meta: {
+            requiresAuth: true,
+            title: 'Students',
         },
     },
     {

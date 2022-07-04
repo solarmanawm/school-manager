@@ -6,6 +6,7 @@ const routeNames: {
     register: 'REGISTER',
     dashboard: 'DASHBOARD',
     families: 'FAMILIES',
+    students: 'STUDENTS',
 }
 
 export default routeNames
