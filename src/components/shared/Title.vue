@@ -1,7 +1,7 @@
 <template>
     <p
             v-if="title"
-            class="mb-6 text-xl font-bold"
+            class="text-xl font-bold"
     >{{ title }}</p>
 </template>
 

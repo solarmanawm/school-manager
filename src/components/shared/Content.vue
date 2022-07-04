@@ -2,8 +2,9 @@
     <div class="w-full flex-1 flex justify-center">
         <app-container>
             <app-row>
-                <app-col>
+                <app-col class="w-full mb-6 flex items-center justify-between">
                     <app-title :title="uiStore.title"/>
+                    <div id="app-context-buttons"></div>
                 </app-col>
             </app-row>
             <slot></slot>
