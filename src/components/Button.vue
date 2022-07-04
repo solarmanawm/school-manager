@@ -36,6 +36,7 @@ enum Type {
 
 enum Variant {
     PRIMARY = 'primary',
+    LIGHT = 'light',
     SECONDARY = 'secondary',
 }
 </script>
@@ -62,7 +63,12 @@ const variant = ref(Object.values(Variant).includes(props.variant) ? props.varia
 const name = 'Button'
 
 const classList = computed(() => ({
+    // Primary
     'bg-blue-500 text-white hover:bg-blue-700': variant.value === Variant.PRIMARY && !props.outline,
     'bg-transparent border border-blue-500 text-blue-500 hover:border-blue-700 text-blue-700': variant.value === Variant.PRIMARY && props.outline,
+
+    // Light
+    'bg-gray-100 text-gray-600 hover:bg-gray-300': variant.value === Variant.LIGHT && !props.outline,
+    'bg-transparent border border-gray-500 text-gray-500 hover:border-gray-700 text-blue-700': variant.value === Variant.LIGHT && props.outline,
 }))
 </script>
