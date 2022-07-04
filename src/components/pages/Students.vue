@@ -9,7 +9,21 @@
         <app-popup
                 v-model:visible="visible"
         >
-            <p>popup</p>
+            <template v-slot:title>
+                Create a new student
+            </template>
+            <template v-slot:content>
+                <p>popup</p>
+            </template>
+            <template v-slot:footer="props">
+                <div class="w-full flex items-center justify-between">
+                    <app-button
+                            @click="props.close()"
+                            variant="light"
+                    >Cancel</app-button>
+                    <app-button>Add</app-button>
+                </div>
+            </template>
         </app-popup>
     </Teleport>
 </template>

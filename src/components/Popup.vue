@@ -25,7 +25,7 @@
                     </g>
                 </svg>
             </div>
-            <app-card class="bg-white">
+            <div class="w-full border border-gray-200 p-8 rounded bg-white">
                 <h3
                         v-if="titleHasContent"
                         class="font-bold pb-6 mb-6 border-b text-xl capitalize border-b-gray-200"
@@ -39,7 +39,7 @@
                 >
                     <slot name="footer" :close="close"></slot>
                 </div>
-            </app-card>
+            </div>
         </div>
     </div>
 </template>
@@ -47,8 +47,6 @@
 <script setup lang="ts">
 // @ts-ignore
 import {defineProps, defineEmits, useSlots, computed} from "vue";
-
-import AppCard from './Card.vue'
 
 interface Props {
     visible: boolean;
