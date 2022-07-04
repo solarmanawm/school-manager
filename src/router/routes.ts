@@ -2,6 +2,7 @@ import Home from '../components/pages/Home.vue'
 import Login from '../components/pages/Login.vue'
 import Register from '../components/pages/Register.vue'
 import Dashboard from '../components/pages/Dashboard.vue'
+import Families from '../components/pages/Families.vue'
 
 import routeNames from './names'
 
@@ -40,6 +41,15 @@ const routes: any[] = [
         meta: {
             requiresAuth: true,
             title: 'Dashboard',
+        },
+    },
+    {
+        path: '/families',
+        name: routeNames.families,
+        component: Families,
+        meta: {
+            requiresAuth: true,
+            title: 'Families',
         },
     },
 ]

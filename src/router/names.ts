@@ -5,6 +5,7 @@ const routeNames: {
     login: 'LOGIN',
     register: 'REGISTER',
     dashboard: 'DASHBOARD',
+    families: 'FAMILIES',
 }
 
 export default routeNames
