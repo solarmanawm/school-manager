@@ -7,7 +7,7 @@
 
     <Teleport to="#app-popup">
         <app-popup
-                v-model:visible="visible"
+                v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
                 Create a new student
@@ -15,10 +15,10 @@
             <template v-slot:content>
                 <p>popup</p>
             </template>
-            <template v-slot:footer="props">
+            <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
-                            @click="props.close()"
+                            @click="popup.close()"
                             variant="light"
                     >Cancel</app-button>
                     <app-button>Add</app-button>
@@ -35,11 +35,12 @@ import {ref} from "vue";
 import AppPopup from '../Popup.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
+import {usePopup} from "../../use/popup";
+
+const popup = usePopup()
+const name = 'Students'
 
 const addStudent = () => {
-    visible.value = true
+    popup.open()
 }
-
-const visible = ref(false)
-const name = 'Students'
 </script>
