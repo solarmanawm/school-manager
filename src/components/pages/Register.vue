@@ -1,17 +1,22 @@
 <template>
     <div class="w-full flex-1 flex items-center justify-center">
         <app-card class="sm:max-w-sm">
-            <app-form @submit.prevent="submit()">
+            <app-alert
+                    v-if="alertMessage"
+                    :type="alertType"
+            >{{ alertMessage }}
+            </app-alert>
+            <app-form @submit.prevent="submit()" ref="form">
                 <app-form-group
                         class="w-full"
                         label="Username"
                         for="username"
                         :required="true"
-                        :errors="loginValidator.username.$errors"
+                        :errors="registerValidator.username.$errors"
                 >
                     <app-control
-                            v-model="loginValidator.username.$model"
-                            :error="loginValidator.username.$error"
+                            v-model="registerValidator.username.$model"
+                            :error="registerValidator.username.$error"
                             class="w-full"
                             placeholder="Username..."
                             id="username"
@@ -22,11 +27,11 @@
                         label="Password"
                         for="password"
                         :required="true"
-                        :errors="loginValidator.password.$errors"
+                        :errors="registerValidator.password.$errors"
                 >
                     <app-control
-                            v-model="loginValidator.password.$model"
-                            :error="loginValidator.password.$error"
+                            v-model="registerValidator.password.$model"
+                            :error="registerValidator.password.$error"
                             type="password"
                             placeholder="Password..."
                             class="w-full"
@@ -38,11 +43,11 @@
                         label="Repeat password"
                         for="repeat-password"
                         :required="true"
-                        :errors="loginValidator.repeatPassword.$errors"
+                        :errors="registerValidator.repeatPassword.$errors"
                 >
                     <app-control
-                            v-model="loginValidator.repeatPassword.$model"
-                            :error="loginValidator.repeatPassword.$error"
+                            v-model="registerValidator.repeatPassword.$model"
+                            :error="registerValidator.repeatPassword.$error"
                             type="password"
                             placeholder="Repeat password..."
                             class="w-full"
@@ -53,11 +58,11 @@
                         class="w-full"
                         label="First name"
                         for="first-name"
-                        :errors="loginValidator.firstName.$errors"
+                        :errors="registerValidator.firstName.$errors"
                 >
                     <app-control
-                            v-model="loginValidator.firstName.$model"
-                            :error="loginValidator.firstName.$error"
+                            v-model="registerValidator.firstName.$model"
+                            :error="registerValidator.firstName.$error"
                             class="w-full"
                             placeholder="First name"
                             id="first-name"
@@ -68,11 +73,11 @@
                         label="Last name"
                         for="last-name"
                         :required="true"
-                        :errors="loginValidator.lastName.$errors"
+                        :errors="registerValidator.lastName.$errors"
                 >
                     <app-control
-                            v-model="loginValidator.lastName.$model"
-                            :error="loginValidator.lastName.$error"
+                            v-model="registerValidator.lastName.$model"
+                            :error="registerValidator.lastName.$error"
                             class="w-full"
                             placeholder="Last name"
                             id="last-name"
@@ -80,9 +85,11 @@
                 </app-form-group>
                 <app-form-group class="w-full">
                     <app-button
+                            :loading="loading"
                             type="submit"
                             class="w-full"
-                    >Sign In</app-button>
+                    >Create a Free Account
+                    </app-button>
                 </app-form-group>
             </app-form>
         </app-card>
@@ -91,9 +98,10 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref} from "vue";
+import {reactive, ref, toRef} from "vue";
 import useVuelidate from "@vuelidate/core"
-import {email, required, sameAs} from "@vuelidate/validators";
+import {email, required} from "@vuelidate/validators";
+import {helpers} from '@vuelidate/validators'
 
 // @ts-ignore
 import AppButton from '../Button.vue'
@@ -102,13 +110,21 @@ import AppControl from '../Control.vue'
 import AppCard from '../Card.vue'
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
+import AppAlert from '../Alert.vue'
 
-const firstName = ref('')
-const lastName = ref('')
-const username = ref('')
-const password = ref('')
-const repeatPassword = ref('')
-const loginValidator = useVuelidate({
+import service from '../../service'
+
+const alertType = ref('error')
+const alertMessage = ref('')
+const loading = ref(false)
+const form = reactive({
+    username: '',
+    password: '',
+    repeatPassword: '',
+    firstName: '',
+    lastName: '',
+})
+const registerValidator = useVuelidate({
     username: {
         required,
         email,
@@ -120,7 +136,7 @@ const loginValidator = useVuelidate({
     },
     repeatPassword: {
         required,
-        sameAs: sameAs(password),
+        sameAs: helpers.withMessage('Password fields should match.', (value: string) => value === form.password),
         $lazy: true,
     },
     firstName: {
@@ -129,17 +145,51 @@ const loginValidator = useVuelidate({
     lastName: {
         $lazy: true,
     },
-}, {
-    username,
-    password,
-    repeatPassword,
-    firstName,
-    lastName,
-})
+}, form)
+
+const clearForm = () => {
+    registerValidator.value.username.$model = ''
+    registerValidator.value.password.$model = ''
+    registerValidator.value.repeatPassword.$model = ''
+    registerValidator.value.firstName.$model = ''
+    registerValidator.value.lastName.$model = ''
+    registerValidator.value.$reset()
+}
+
+const errorHandler = (error: Error | any) => {
+    if (error.name) {
+        if (error.name === 'AxiosError') {
+            const {message} = error.response.data
+            alertMessage.value = message
+            clearForm()
+        } else {
+            console.warn(error.message)
+        }
+    } else {
+        console.error(error)
+    }
+}
 
 const submit = () => {
-    return loginValidator.value.$validate().then((isValid: boolean) => {
-        console.log({isValid})
+    loading.value = true
+
+    return registerValidator.value.$validate().then((isValid: boolean) => {
+        if (isValid) {
+            return service.user.create({
+                username: form.username,
+                password: form.password,
+                firstName: form.firstName,
+                lastName: form.lastName,
+            })
+        } else {
+            throw new Error('Form is not valid.')
+        }
+    }).then((userInfo: object) => {
+        console.log(userInfo)
+        alertType.value = 'success'
+        alertMessage.value = 'You\'ve successfully registered a new account.'
+    }).catch(errorHandler).finally(() => {
+        loading.value = false
     })
 }
 

@@ -15,6 +15,7 @@ class FirebaseUserService extends AbstractUserService {
             .url('user/new')
             .data(params)
             .send()
+
         return this.provider.auth.login(params)
     }
 }

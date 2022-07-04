@@ -22,7 +22,7 @@ enum Type {
 
 <script setup lang="ts">
 // @ts-ignore
-import {computed, defineProps, defineEmits, ref, withDefaults} from "vue";
+import {computed, defineProps, defineEmits, ref, withDefaults, watch} from "vue";
 
 interface Emits {
     (e: 'update:modelValue', value: string): void;
@@ -54,6 +54,10 @@ const name = 'Control'
 const update = () => {
     emit('update:modelValue', value.value)
 }
+
+watch(() => props.modelValue, (newValue: string) => {
+    value.value = newValue
+})
 </script>
 
 <style lang="css" scoped>

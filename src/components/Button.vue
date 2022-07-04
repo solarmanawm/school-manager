@@ -2,9 +2,29 @@
     <button
             :type="type"
             :class="classList"
-            class="rounded h-10 font-bold"
+            :disabled="loading"
+            class="rounded h-10 font-bold flex items-center justify-center"
     >
-        <slot>Button</slot>
+        <svg v-if="loading" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             x="0px" y="0px"
+             width="24" height="24"
+             viewBox="0 0 100 100" xml:space="preserve"
+        >
+            <path fill="#fff"
+                  d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"
+            >
+                <animateTransform
+                        attributeName="transform"
+                        attributeType="XML"
+                        type="rotate"
+                        dur="1s"
+                        from="0 50 50"
+                        to="360 50 50"
+                        repeatCount="indefinite"/>
+                </path>
+            </svg>
+        <slot v-else>Button</slot>
     </button>
 </template>
 
@@ -25,6 +45,7 @@ enum Variant {
 import {defineProps, withDefaults, ref, computed} from "vue";
 
 interface Props {
+    loading?: boolean;
     type?: string;
     variant?: string;
     outline?: boolean;
@@ -34,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
     type: Type.BUTTON,
     variant: Variant.PRIMARY,
     outline: false,
+    loading: false,
 })
 const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.BUTTON)
 const variant = ref(Object.values(Variant).includes(props.variant) ? props.variant : Variant.PRIMARY)
