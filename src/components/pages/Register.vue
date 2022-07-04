@@ -102,6 +102,7 @@ import {reactive, ref, toRef} from "vue";
 import useVuelidate from "@vuelidate/core"
 import {email, required} from "@vuelidate/validators";
 import {helpers} from '@vuelidate/validators'
+import {useRouter} from "vue-router";
 
 // @ts-ignore
 import AppButton from '../Button.vue'
@@ -114,7 +115,9 @@ import AppAlert from '../Alert.vue'
 
 import service from '../../service'
 import {useAuthStore} from "../../store/auth";
+import routeNames from "../../router/names";
 
+const router = useRouter()
 const authStore = useAuthStore()
 const alertType = ref('error')
 const alertMessage = ref('')
@@ -190,9 +193,15 @@ const submit = () => {
         accessToken: string;
         refreshToken: string;
     }) => {
-        authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)
-        alertType.value = 'success'
-        alertMessage.value = 'You\'ve successfully registered a new account.'
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve()
+            }, 1000)
+        }).then(() => {
+            authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)
+        }).then(() => router.push({
+            name: routeNames.dashboard,
+        }))
     }).catch(errorHandler).finally(() => {
         loading.value = false
     })

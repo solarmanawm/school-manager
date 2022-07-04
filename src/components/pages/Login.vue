@@ -54,6 +54,7 @@
 import {reactive, ref} from "vue";
 import useVuelidate from "@vuelidate/core";
 import {email, required} from "@vuelidate/validators";
+import {useRouter} from "vue-router";
 
 // @ts-ignore
 import AppButton from '../Button.vue'
@@ -65,8 +66,10 @@ import AppFormGroup from '../shared/FormGroup.vue'
 import AppAlert from '../Alert.vue'
 
 import {useAuthStore} from '../../store/auth'
+import routeNames from "../../router/names";
 import service from "../../service";
 
+const router = useRouter()
 const authStore = useAuthStore()
 const alert = reactive({
     type: 'error',
@@ -125,9 +128,17 @@ const submit = () => {
         accessToken: string;
         refreshToken: string;
     }) => {
-        authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)
         alert.type = 'success'
         alert.message = 'You\'ve successfully signed in into your account.'
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve()
+            }, 1000)
+        }).then(() => {
+            authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)
+        }).then(() => router.push({
+            name: routeNames.dashboard,
+        }))
     }).catch(errorHandler).finally(() => {
         loading.value = false
     })
