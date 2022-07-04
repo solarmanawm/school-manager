@@ -9,6 +9,9 @@
         >
             <router-link :to="route.path">{{ route.name }}</router-link>
         </li>
+        <li class="ml-3">
+            <a href="#" @click.prevent="logout">LOGOUT</a>
+        </li>
     </ul>
     <ul
             v-else
@@ -26,13 +29,21 @@
 <script setup lang="ts">
 import routes from "../../router/routes";
 import {useAuthStore} from "../../store/auth";
+import service from "../../service";
+import routeNames from '../../router/names'
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const authStore = useAuthStore()
 const authRoutes = routes.filter((route) => typeof route.meta === 'object' && route.meta.requiresAuth)
 const nonAuthRoutes = routes.filter((route) => typeof route.meta === 'undefined' || !route.meta.requiresAuth)
 const name = 'Nav'
+
+const logout = () => {
+    return service.auth.logout().then(() => {
+        authStore.updateAuthState();
+    }).then(() => router.push({
+        name: routeNames.login,
+    }))
+}
 </script>
-
-<style scoped>
-
-</style>
