@@ -1,17 +1,22 @@
 <template>
     <div class="w-full flex-1 flex items-center justify-center">
         <app-card class="sm:max-w-sm">
-            <app-form @submit.prevent="login.submit()">
+            <app-alert
+                    v-if="alert.message"
+                    :type="alert.type"
+            >{{ alert.message }}
+            </app-alert>
+            <app-form @submit.prevent="submit()">
                 <app-form-group
                         class="w-full"
                         label="Username"
                         for="username"
                         :required="true"
-                        :errors="login.$v.username.$errors"
+                        :errors="loginValidator.username.$errors"
                 >
                     <app-control
-                            v-model="login.$v.username.$model"
-                            :error="login.$v.username.$error"
+                            v-model="loginValidator.username.$model"
+                            :error="loginValidator.username.$error"
                             class="w-full"
                             id="username"
                     />
@@ -21,11 +26,11 @@
                         label="Password"
                         for="password"
                         :required="true"
-                        :errors="login.$v.password.$errors"
+                        :errors="loginValidator.password.$errors"
                 >
                     <app-control
-                            v-model="login.$v.password.$model"
-                            :error="login.$v.password.$error"
+                            v-model="loginValidator.password.$model"
+                            :error="loginValidator.password.$error"
                             type="password"
                             class="w-full"
                             id="password"
@@ -33,9 +38,11 @@
                 </app-form-group>
                 <app-form-group class="w-full">
                     <app-button
+                            :loading="loading"
                             type="submit"
                             class="w-full"
-                    >Sign In</app-button>
+                    >Sign In
+                    </app-button>
                 </app-form-group>
             </app-form>
         </app-card>
@@ -43,6 +50,9 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
+import {reactive, ref} from "vue";
+import useVuelidate from "@vuelidate/core";
 import {email, required} from "@vuelidate/validators";
 
 // @ts-ignore
@@ -52,37 +62,71 @@ import AppControl from '../Control.vue'
 import AppCard from '../Card.vue'
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
+import AppAlert from '../Alert.vue'
 
-import {useForm} from '../../use/form'
+import service from "../../service";
 
-interface LoginFormInterface {
-    username: string;
-    password: string;
-}
-
-const {form: login, onSubmit, onError} = useForm<LoginFormInterface>({
+const alert = reactive({
+    type: 'error',
+    message: '',
+})
+const loading = ref(false)
+const form = reactive({
+    username: '',
+    password: '',
+})
+const loginValidator = useVuelidate({
     username: {
-        value: '',
-        validation: {
-            required,
-            email,
-        },
+        required,
+        email,
+        $lazy: true,
     },
     password: {
-        value: '',
-        validation: {
-            required,
-        },
+        required,
+        $lazy: true,
     },
-})
+}, form)
 
-onSubmit((resolve) => {
-    resolve()
-})
+const clearForm = () => {
+    loginValidator.value.username.$model = ''
+    loginValidator.value.password.$model = ''
+    loginValidator.value.$reset()
+}
 
-onError((error) => {
-    console.error(error)
-})
+const errorHandler = (error: Error | any) => {
+    if (error.name) {
+        if (error.name === 'AxiosError') {
+            const {message} = error.response.data
+            alert.message = message
+            clearForm()
+        } else {
+            console.warn(error.message)
+        }
+    } else {
+        console.error(error)
+    }
+}
+
+const submit = () => {
+    loading.value = true
+
+    return loginValidator.value.$validate().then((isValid: boolean) => {
+        if (isValid) {
+            return service.auth.login({
+                username: form.username,
+                password: form.password,
+            })
+        } else {
+            throw new Error('Form is not valid.')
+        }
+    }).then((userInfo: object) => {
+        console.log(userInfo)
+        alert.type = 'success'
+        alert.message = 'You\'ve successfully signed in into your account.'
+    }).catch(errorHandler).finally(() => {
+        loading.value = false
+    })
+}
 
 const name = 'Login'
 </script>
