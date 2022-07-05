@@ -7,7 +7,7 @@
         >{{ label }} <span v-if="required" class="text-red-500 font-bold">*</span></label>
         <slot></slot>
         <ul v-if="errors.length">
-            <li v-for="error in errors" class="text-red-500 mt-2 text-sm">{{ error.$message }}</li>
+            <li v-for="error in errors" class="text-red-500 mt-2 text-sm">{{ error }}</li>
         </ul>
     </div>
 </template>
@@ -15,13 +15,12 @@
 <script setup lang="ts">
 // @ts-ignore
 import {defineProps, watch, withDefaults} from 'vue'
-import {ErrorObject} from "@vuelidate/core";
 
 interface Props {
     label?: string;
     target?: string;
     required?: boolean;
-    errors?: ErrorObject[];
+    errors?: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
