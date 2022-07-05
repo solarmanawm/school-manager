@@ -9,7 +9,7 @@ type Data<T> = { [key in keyof T]?: string | number }
 type UseFormParams<T, V> = {
     initialValues?: Data<T>;
     validation?: V,
-    onSuccess?: VoidFunction;
+    onValidated?: VoidFunction;
     onError?: (error: any) => void;
 }
 
@@ -22,7 +22,7 @@ class FormValidationError extends Error {
 }
 
 export function useForm<T, V>(params: UseFormParams<T, V>) {
-    const {onSuccess, onError, initialValues = {}, validation} = params
+    const {onValidated, onError, initialValues = {}, validation} = params
     const fields = reactive<T>(initialValues)
     const validationKeys = validation ? Object.keys(validation) : []
     const validator = validation ? useFormValidator<V>(fields, validation) : null
@@ -55,8 +55,8 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
                 }
             )
         }).then(() => {
-            if (typeof onSuccess === 'function') {
-                return onSuccess()
+            if (typeof onValidated === 'function') {
+                return onValidated()
             }
         }).catch((error) => {
             if (typeof onError === 'function') {

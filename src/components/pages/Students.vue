@@ -126,7 +126,7 @@ const onError = (error: any) => {
 
     console.error(error)
 }
-const onSuccess = () => {
+const onValidated = () => {
     const newStudent: StudentServiceCreateParamsInterface = Object.create(null, {
         id: {
             value: form.fields.id || DefaultStudent.ID,
@@ -173,7 +173,7 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
         },
         fatherName: {},
     },
-    onSuccess,
+    onValidated,
     onError,
 })
 const popup = usePopup({
