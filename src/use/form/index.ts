@@ -23,25 +23,18 @@ class FormValidationError extends Error {
 
 export function useForm<T, V>(params: UseFormParams<T, V>) {
     const {onValidated, onError, initialValues = {}, validation} = params
-    const fields = reactive<T>(initialValues)
+    const fields = reactive<T>({...initialValues})
     const validationKeys = validation ? Object.keys(validation) : []
-    const validator = validation ? useFormValidator<V>(fields, validation) : null
-    const errors = reactive<V>(validationKeys.reduce((acc: {}, key: string) => {
-        // @ts-ignore
-        acc[key] = []
+    const errorsPlaceholder = validationKeys.reduce((acc: {[key in keyof V]?: string[]}, key: string) => {
+        acc[key as keyof V] = []
         return acc
-    }, {}))
+    }, {})
+    const validator = validation ? useFormValidator<V>(fields, validation) : null
 
     const submit = () => {
         return new Promise((resolve) => {
             if (validator) {
                 validator.validate().then((isValid: boolean) => {
-                    const validatorErrors = validator.getErrors()
-                    for (const key of validationKeys) {
-                        if (validatorErrors[key as keyof typeof validatorErrors]) {
-                            errors[key] = validatorErrors[key as keyof typeof validatorErrors]
-                        }
-                    }
                     resolve(isValid)
                 })
             } else {
@@ -66,6 +59,12 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
     }
 
     const reset = () => {
+        const keys = Object.keys(initialValues)
+
+        for (const key of keys) {
+            fields[key] = initialValues[key as keyof typeof initialValues]
+        }
+
         if (validator) {
             validator.reset()
         }
@@ -73,7 +72,7 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
 
     return {
         fields,
-        errors,
+        errors: validator ? validator.errors : errorsPlaceholder,
         submit,
         reset,
     }
