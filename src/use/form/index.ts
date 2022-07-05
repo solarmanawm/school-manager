@@ -1,20 +1,41 @@
-import {Validation} from "@vuelidate/core";
+// @ts-ignore
+import {isRef, reactive, ref, Ref} from "vue";
+import {useFormValidator} from "../formValidator";
 
 type VoidFunction = () => void
 
-type UseFormParams = {
-    validator?: Validation;
+type Data<T> = {[key in keyof T]?: string | number}
+
+type UseFormParams<T, V> = {
+    initialValues?: Data<T>;
+    validation?: V,
     onSuccess?: VoidFunction;
     onError?: (error: any) => void;
 }
 
-export const useForm = (params: UseFormParams) => {
-    const {validator, onSuccess, onError} = params
+export function useForm<T, V>(params: UseFormParams<T, V>) {
+    const {onSuccess, onError, initialValues, validation} = params
+    const fields = reactive<T>(initialValues)
+    const validationKeys = validation ? Object.keys(validation) : []
+    const validator = validation ? useFormValidator<V>(fields, validation) : null
+    const errors = reactive<V>(validationKeys.reduce((acc: {}, key: string) => {
+        // @ts-ignore
+        acc[key] = []
+        return acc
+    }, {}))
 
     const submit = () => {
         return new Promise((resolve) => {
             if (validator) {
-                validator.$validate().then((isValid) => resolve(isValid))
+                validator.validate().then((isValid: boolean) => {
+                    const validatorErrors = validator.getErrors()
+                    for (const key of validationKeys) {
+                        if (validatorErrors[key as keyof typeof validatorErrors]) {
+                            errors[key] = validatorErrors[key as keyof typeof validatorErrors]
+                        }
+                    }
+                    resolve(isValid)
+                })
             } else {
                 resolve(true)
             }
@@ -38,9 +59,15 @@ export const useForm = (params: UseFormParams) => {
         })
     }
 
-    const reset = () => {}
+    const reset = () => {
+        if (validator) {
+            validator.reset()
+        }
+    }
 
     return {
+        fields,
+        errors,
         submit,
         reset,
     }
