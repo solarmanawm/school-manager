@@ -3,18 +3,19 @@ import AbstractService from "./AbstractService";
 /**
  * Student Service Create Params Interface
  */
-export interface StudentServiceCreateParamsInterface {}
-
-/**
- * Student Service Create Response Interface
- */
-export interface StudentServiceCreateResponseInterface {
+export interface StudentServiceCreateParamsInterface {
     id: string;
     sex: string;
     firstName: string;
     lastName: string;
     fatherName?: string;
     dateOfBirth?: string;
+}
+
+/**
+ * Student Service Create Response Interface
+ */
+export interface StudentServiceCreateResponseInterface {
 }
 
 /**
