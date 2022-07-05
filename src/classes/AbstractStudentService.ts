@@ -10,6 +10,7 @@ export interface StudentServiceCreateParamsInterface {}
  */
 export interface StudentServiceCreateResponseInterface {
     id: string;
+    sex: string;
     firstName: string;
     lastName: string;
     fatherName?: string;
