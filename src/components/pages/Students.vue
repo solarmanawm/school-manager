@@ -23,11 +23,11 @@
                             label="First name"
                             for="firstName"
                             :required="true"
-                            :errors="form.errors.firstName"
+                            :errors="form.errors.firstName.value"
                     >
                         <app-control
                                 v-model="form.fields.firstName"
-                                :error="form.errors.firstName.length"
+                                :error="form.errors.firstName.value.length > 0"
                                 class="w-full"
                                 id="firstName"
                         />
@@ -37,11 +37,11 @@
                             label="Last name"
                             for="lastName"
                             :required="true"
-                            :errors="form.errors.lastName"
+                            :errors="form.errors.lastName.value"
                     >
                         <app-control
                                 v-model="form.fields.lastName"
-                                :error="form.errors.lastName.length"
+                                :error="form.errors.lastName.value.length > 0"
                                 class="w-full"
                                 id="lastName"
                         />
@@ -50,11 +50,11 @@
                             class="w-full"
                             label="Father name"
                             for="fatherName"
-                            :errors="form.errors.fatherName"
+                            :errors="form.errors.fatherName.value"
                     >
                         <app-control
                                 v-model="form.fields.fatherName"
-                                :error="form.errors.fatherName.length"
+                                :error="form.errors.fatherName.value.length > 0"
                                 class="w-full"
                                 id="fatherName"
                         />
@@ -114,6 +114,7 @@ enum DefaultStudent {
     SEX = 'male',
     DATE_OF_BIRTH = ''
 }
+
 type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'fatherName'>;
 
 type StudentValidation = {[key in StudentValidationKeys]: {[key: string]: any}}
