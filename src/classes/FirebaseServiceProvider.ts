@@ -4,6 +4,7 @@ import {getAuth} from "firebase/auth"
 import AbstractServiceProvider from './AbstractServiceProvider'
 import FirebaseAuthService from "./FirebaseAuthService"
 import FirebaseUserService from './FirebaseUserService'
+import FirebaseStudentService from "./FirebaseStudentService";
 
 const firebaseConfig = {
     "apiKey": "AIzaSyBMyjMaCx6XzQG5WBIkeYpzXvJp0_UXyyk",
@@ -21,6 +22,7 @@ class FirebaseServiceProvider extends AbstractServiceProvider {
     protected factory(): void {
         this.authService = new FirebaseAuthService(this, auth)
         this.userService = new FirebaseUserService(this)
+        this.studentService = new FirebaseStudentService(this)
     }
 }
 
