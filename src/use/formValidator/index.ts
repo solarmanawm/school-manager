@@ -31,6 +31,7 @@ export function useFormValidator<T>(fields: Ref, validation: T) {
 
     const getErrors = () => {
         for (const k of validationKeys) {
+            errors[k] = []
             const prop = validator.value[k]
             if (prop) {
                 errors[k] = prop.$errors.map((e: ErrorObject) => e.$message)
