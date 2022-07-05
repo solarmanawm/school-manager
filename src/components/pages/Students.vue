@@ -23,11 +23,11 @@
                             label="First name"
                             for="firstName"
                             :required="true"
-                            :errors="validator.firstName.$errors"
+                            :errors="form.errors.firstName"
                     >
                         <app-control
-                                v-model="validator.firstName.$model"
-                                :error="validator.firstName.$error"
+                                v-model="form.fields.firstName"
+                                :error="form.errors.firstName.length"
                                 class="w-full"
                                 id="firstName"
                         />
@@ -37,11 +37,11 @@
                             label="Last name"
                             for="lastName"
                             :required="true"
-                            :errors="validator.lastName.$errors"
+                            :errors="form.errors.lastName"
                     >
                         <app-control
-                                v-model="validator.lastName.$model"
-                                :error="validator.lastName.$error"
+                                v-model="form.fields.lastName"
+                                :error="form.errors.lastName.length"
                                 class="w-full"
                                 id="lastName"
                         />
@@ -50,11 +50,11 @@
                             class="w-full"
                             label="Father name"
                             for="fatherName"
-                            :errors="validator.fatherName.$errors"
+                            :errors="form.errors.fatherName"
                     >
                         <app-control
-                                v-model="validator.fatherName.$model"
-                                :error="validator.fatherName.$error"
+                                v-model="form.fields.fatherName"
+                                :error="form.errors.fatherName.length"
                                 class="w-full"
                                 id="fatherName"
                         />
@@ -65,7 +65,7 @@
                             for="sex"
                     >
                         <app-control
-                                v-model="data.sex"
+                                v-model="form.fields.sex"
                                 class="w-full"
                                 id="sex"
                         />
@@ -94,8 +94,6 @@
 <script setup lang="ts">
 // @ts-ignore
 import {reactive, ref} from "vue";
-import useVuelidate from "@vuelidate/core";
-import {required} from "@vuelidate/validators"
 
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
@@ -115,6 +113,9 @@ enum DefaultStudent {
     SEX = 'male',
     DATE_OF_BIRTH = ''
 }
+type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'fatherName'>;
+
+type StudentValidation = {[key in StudentValidationKeys]: {[key: string]: any}}
 
 const onError = (error: Error) => {
     console.error(error)
@@ -122,22 +123,22 @@ const onError = (error: Error) => {
 const onSuccess = () => {
     const newStudent: StudentServiceCreateParamsInterface = Object.create(null, {
         id: {
-            value: data.id || DefaultStudent.ID,
+            value: form.fields.id || DefaultStudent.ID,
         },
         firstName: {
-            value: data.firstName,
+            value: form.fields.firstName,
         },
         lastName: {
-            value: data.lastName,
+            value: form.fields.lastName,
         },
         fatherName: {
-            value: data.fatherName,
+            value: form.fields.fatherName,
         },
         sex: {
-            value: data.sex || DefaultStudent.SEX,
+            value: form.fields.sex || DefaultStudent.SEX,
         },
         dateOfBirth: {
-            value: data.dateOfBirth || DefaultStudent.DATE_OF_BIRTH,
+            value: form.fields.dateOfBirth || DefaultStudent.DATE_OF_BIRTH,
         },
     })
 
@@ -148,24 +149,24 @@ const onSuccess = () => {
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
 const formRef = ref(null)
-const data = reactive({
-    sex: '',
-    firstName: '',
-    lastName: '',
-    fatherName: '',
-    dateOfBirth: '',
-})
-const validator = useVuelidate({
-    firstName: {
-        required,
+const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
+    initialValues: {
+        id: '',
+        sex: '',
+        firstName: '',
+        lastName: '',
+        fatherName: '',
+        dateOfBirth: '',
     },
-    lastName: {
-        required,
+    validation: {
+        firstName: {
+            required: true,
+        },
+        lastName: {
+            required: true,
+        },
+        fatherName: {},
     },
-    fatherName: {},
-}, data)
-const form = useForm({
-    validator: validator.value,
     onSuccess,
     onError,
 })
