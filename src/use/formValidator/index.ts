@@ -1,6 +1,6 @@
 // @ts-ignore
-import {reactive, Ref} from "vue";
-import useVuelidate, {ErrorObject, Validation} from "@vuelidate/core"
+import {computed, ComputedRef, ref, Ref} from "vue";
+import useVuelidate, {ErrorObject} from "@vuelidate/core"
 import * as validators from "@vuelidate/validators"
 
 const mappedValidators = {
@@ -9,35 +9,28 @@ const mappedValidators = {
 
 export function useFormValidator<T>(fields: Ref, validation: T) {
     const validationKeys = Object.keys(validation)
-    const errors = reactive<{[key in keyof T]: string[]}>({})
-    const validationObj = validationKeys.reduce((acc: object, key: string) => {
-        const current = Object.entries(validation[key as keyof typeof validation])
+    const validationObj = validationKeys.reduce((acc: {[key in keyof T]?: any}, key: string) => {
+        const current = Object.entries(validation[key as keyof T])
 
         if (current.length) {
             const [validatorName, validatorParam] = current.pop()!
-            // @ts-ignore
-            acc[key] = {
-                [validatorName]: mappedValidators[validatorName as unknown as keyof typeof mappedValidators](fields, validatorParam),
+            acc[key as keyof T] = {
+                [validatorName]: mappedValidators[validatorName as keyof typeof mappedValidators](fields, validatorParam),
             }
         }
 
         return acc
     }, {})
     const validator = useVuelidate(validationObj, fields)
+    const errors = validationKeys.reduce((acc: {[key in keyof T]?: ComputedRef<ErrorObject[]>}, key) => {
+        acc[key as keyof T] = computed(() => validator.value[key] ? validator.value[key].$errors : [])
+        return acc
+    }, {})
 
     const validate = () => {
-        return validator.value.$validate()
-    }
-
-    const getErrors = () => {
-        for (const k of validationKeys) {
-            errors[k] = []
-            const prop = validator.value[k]
-            if (prop) {
-                errors[k] = prop.$errors.map((e: ErrorObject) => e.$message)
-            }
-        }
-        return errors
+        return validator.value.$validate().then((isValid: boolean) => {
+            return Promise.resolve(isValid)
+        })
     }
 
     const reset = () => {
@@ -46,7 +39,7 @@ export function useFormValidator<T>(fields: Ref, validation: T) {
 
     return {
         validate,
-        getErrors,
+        errors,
         reset,
     }
 }
