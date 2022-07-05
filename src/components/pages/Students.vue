@@ -59,6 +59,17 @@
                                 id="fatherName"
                         />
                     </app-form-group>
+                    <app-form-group
+                            class="w-full"
+                            label="Sex"
+                            for="sex"
+                    >
+                        <app-control
+                                v-model="data.sex"
+                                class="w-full"
+                                id="sex"
+                        />
+                    </app-form-group>
                 </app-form>
             </template>
             <template v-slot:footer>
@@ -74,6 +85,10 @@
             </template>
         </app-popup>
     </Teleport>
+
+    <div class="">
+        <app-student v-for="item in students" :key="item.id" :item="item"/>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -87,20 +102,54 @@ import AppFormGroup from '../shared/FormGroup.vue'
 // @ts-ignore
 import AppControl from '../Control.vue'
 import AppPopup from '../Popup.vue'
+import AppStudent from '../Student.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
 import {usePopup} from "../../use/popup";
 import {useForm} from "../../use/form";
+import {StudentServiceCreateParamsInterface} from "../../classes/AbstractStudentService";
+import service from "../../service";
+
+enum DefaultStudent {
+    ID = 'id',
+    SEX = 'male',
+    DATE_OF_BIRTH = ''
+}
 
 const onError = (error: Error) => {
     console.error(error)
 }
 const onSuccess = () => {
-    popup.close()
-}
+    const newStudent: StudentServiceCreateParamsInterface = Object.create(null, {
+        id: {
+            value: data.id || DefaultStudent.ID,
+        },
+        firstName: {
+            value: data.firstName,
+        },
+        lastName: {
+            value: data.lastName,
+        },
+        fatherName: {
+            value: data.fatherName,
+        },
+        sex: {
+            value: data.sex || DefaultStudent.SEX,
+        },
+        dateOfBirth: {
+            value: data.dateOfBirth || DefaultStudent.DATE_OF_BIRTH,
+        },
+    })
 
+    return service.student.create(newStudent).then(() => {
+        students.value.push(newStudent)
+        popup.close()
+    })
+}
+const students = ref<StudentServiceCreateParamsInterface[]>([])
 const formRef = ref(null)
 const data = reactive({
+    sex: '',
     firstName: '',
     lastName: '',
     fatherName: '',
