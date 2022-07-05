@@ -117,7 +117,13 @@ type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'fi
 
 type StudentValidation = {[key in StudentValidationKeys]: {[key: string]: any}}
 
-const onError = (error: Error) => {
+const onError = (error: any) => {
+    if (typeof error === 'object') {
+        if (error.name && error.name === 'FormValidationError') {
+            return
+        }
+    }
+
     console.error(error)
 }
 const onSuccess = () => {

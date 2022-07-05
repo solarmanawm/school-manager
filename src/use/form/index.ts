@@ -13,6 +13,14 @@ type UseFormParams<T, V> = {
     onError?: (error: any) => void;
 }
 
+class FormValidationError extends Error {
+    constructor(message: string) {
+        super(message);
+
+        this.name = 'FormValidationError'
+    }
+}
+
 export function useForm<T, V>(params: UseFormParams<T, V>) {
     const {onSuccess, onError, initialValues = {}, validation} = params
     const fields = reactive<T>(initialValues)
@@ -43,7 +51,7 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
             return new Promise((resolve, reject) => {
                     return validated
                         ? resolve()
-                        : reject(new Error('Form is invalid.'))
+                        : reject(new FormValidationError('Form is invalid.'))
                 }
             )
         }).then(() => {
