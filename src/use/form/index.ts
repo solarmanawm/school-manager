@@ -29,11 +29,11 @@ export const useForm = (params: UseFormParams) => {
             })
         }).then(() => {
             if (typeof onSuccess === 'function') {
-                onSuccess()
+                return onSuccess()
             }
         }).catch((error) => {
             if (typeof onError === 'function') {
-                onError(error)
+                return onError(error)
             }
         })
     }
