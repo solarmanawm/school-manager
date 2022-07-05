@@ -1,5 +1,6 @@
 import {AuthServiceInterface} from './AbstractAuthService'
 import {UserServiceInterface} from './AbstractUserService'
+import {StudentServiceInterface} from "./AbstractStudentService";
 
 /**
  * Service Provider Interface
@@ -7,6 +8,7 @@ import {UserServiceInterface} from './AbstractUserService'
 export interface ServiceProviderInterface {
     auth: AuthServiceInterface;
     user: UserServiceInterface;
+    student: StudentServiceInterface;
 }
 
 /**
@@ -16,6 +18,7 @@ export interface ServiceProviderInterface {
 abstract class AbstractServiceProvider implements ServiceProviderInterface {
     protected authService!: AuthServiceInterface
     protected userService!: UserServiceInterface
+    protected studentService!: StudentServiceInterface
 
     protected abstract factory(): void;
 
@@ -29,6 +32,10 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface {
 
     get user() {
         return this.userService;
+    }
+
+    get student() {
+        return this.studentService;
     }
 }
 
