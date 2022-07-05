@@ -103,8 +103,9 @@ import AppPopup from '../Popup.vue'
 import AppStudent from '../Student.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
-import {usePopup} from "../../use/popup";
-import {useForm} from "../../use/form";
+import {usePopup} from "../../use/popup"
+import {useForm} from "../../use/form"
+import {useError} from '../../use/error'
 import {StudentServiceCreateParamsInterface} from "../../classes/AbstractStudentService";
 import service from "../../service";
 
@@ -117,14 +118,10 @@ type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'fi
 
 type StudentValidation = {[key in StudentValidationKeys]: {[key: string]: any}}
 
+const errors = ref([])
+const errorHandler = useError(errors)
 const onError = (error: any) => {
-    if (typeof error === 'object') {
-        if (error.name && error.name === 'FormValidationError') {
-            return
-        }
-    }
-
-    console.error(error)
+    errorHandler(error)
 }
 const onValidated = () => {
     const newStudent: StudentServiceCreateParamsInterface = Object.create(null, {
