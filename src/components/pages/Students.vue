@@ -2,7 +2,8 @@
     <Teleport to="#app-context-buttons">
         <app-button
                 @click="addStudent"
-        >New Student</app-button>
+        >New Student
+        </app-button>
     </Teleport>
 
     <Teleport to="#app-popup">
@@ -77,18 +78,31 @@
                     <app-button
                             @click="popup.close()"
                             variant="light"
-                    >Cancel</app-button>
+                    >Cancel
+                    </app-button>
                     <app-button
                             @click="form.submit()"
-                    >Add</app-button>
+                    >Add
+                    </app-button>
                 </div>
             </template>
         </app-popup>
     </Teleport>
 
-    <div class="">
-        <app-student v-for="item in students" :key="item.id" :item="item"/>
-    </div>
+    <app-container>
+        <app-row>
+            <app-col
+                    v-for="item in students"
+                    class="w-1/3"
+            >
+                <app-student
+                        :key="item.id"
+                        :item="item"
+                        class="w-full mb-6"
+                />
+            </app-col>
+        </app-row>
+    </app-container>
 </template>
 
 <script setup lang="ts">
@@ -103,6 +117,10 @@ import AppPopup from '../Popup.vue'
 import AppStudent from '../Student.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
+import AppContainer from '../shared/Container.vue'
+import AppRow from '../shared/Row.vue'
+import AppCol from '../shared/Col.vue'
+
 import {usePopup} from "../../use/popup"
 import {useForm} from "../../use/form"
 import {useError} from '../../use/error'
@@ -117,7 +135,7 @@ enum DefaultStudent {
 
 type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'fatherName'>;
 
-type StudentValidation = {[key in StudentValidationKeys]: {[key: string]: any}}
+type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
 const errors = ref([])
 const errorHandler = useError(errors)
