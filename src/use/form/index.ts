@@ -4,7 +4,7 @@ import {useFormValidator} from "../formValidator";
 
 type VoidFunction = () => void
 
-type Data<T> = {[key in keyof T]?: string | number}
+type Data<T> = { [key in keyof T]?: string | number }
 
 type UseFormParams<T, V> = {
     initialValues?: Data<T>;
@@ -14,7 +14,7 @@ type UseFormParams<T, V> = {
 }
 
 export function useForm<T, V>(params: UseFormParams<T, V>) {
-    const {onSuccess, onError, initialValues, validation} = params
+    const {onSuccess, onError, initialValues = {}, validation} = params
     const fields = reactive<T>(initialValues)
     const validationKeys = validation ? Object.keys(validation) : []
     const validator = validation ? useFormValidator<V>(fields, validation) : null
@@ -41,13 +41,11 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
             }
         }).then((validated) => {
             return new Promise((resolve, reject) => {
-                if (validated) {
-                    // Send data to server
-                    return Promise.resolve().then(() => resolve())
-                } else {
-                    reject(new Error('Form is invalid.'))
+                    return validated
+                        ? resolve()
+                        : reject(new Error('Form is invalid.'))
                 }
-            })
+            )
         }).then(() => {
             if (typeof onSuccess === 'function') {
                 return onSuccess()
