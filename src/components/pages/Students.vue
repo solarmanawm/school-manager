@@ -49,13 +49,13 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Father name"
-                            for="fatherName"
-                            :errors="form.errors.fatherName.value"
+                            label="Patronymic"
+                            for="patronymic"
+                            :errors="form.errors.patronymic.value"
                     >
                         <app-control
-                                v-model="form.fields.fatherName"
-                                :error="form.errors.fatherName.value.length > 0"
+                                v-model="form.fields.patronymic"
+                                :error="form.errors.patronymic.value.length > 0"
                                 class="w-full"
                                 id="fatherName"
                         />
@@ -69,6 +69,11 @@
                                 v-model="form.fields.sex"
                                 class="w-full"
                                 id="sex"
+                                type="button-set"
+                                :options="[
+                                        {title: 'Male', value: 'male'},
+                                        {title: 'Female', value: 'female'},
+                                ]"
                         />
                     </app-form-group>
                 </app-form>
@@ -107,7 +112,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
@@ -133,7 +138,7 @@ enum DefaultStudent {
     DATE_OF_BIRTH = ''
 }
 
-type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'fatherName'>;
+type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic'>;
 
 type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
@@ -153,8 +158,8 @@ const onValidated = () => {
         lastName: {
             value: form.fields.lastName,
         },
-        fatherName: {
-            value: form.fields.fatherName,
+        patronymic: {
+            value: form.fields.patronymic,
         },
         sex: {
             value: form.fields.sex || DefaultStudent.SEX,
@@ -174,10 +179,10 @@ const formRef = ref(null)
 const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
     initialValues: {
         id: '',
-        sex: '',
+        sex: 'male',
         firstName: '',
         lastName: '',
-        fatherName: '',
+        patronymic: '',
         dateOfBirth: '',
     },
     validation: {
@@ -187,7 +192,7 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
         lastName: {
             required: true,
         },
-        fatherName: {},
+        patronymic: {},
     },
     onValidated,
     onError,

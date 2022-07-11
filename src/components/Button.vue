@@ -34,7 +34,7 @@ enum Type {
     SUBMIT = 'submit',
 }
 
-enum Variant {
+export enum Variant {
     PRIMARY = 'primary',
     LIGHT = 'light',
     SECONDARY = 'secondary',
@@ -43,7 +43,7 @@ enum Variant {
 
 <script setup lang="ts">
 // @ts-ignore
-import {defineProps, withDefaults, ref, computed} from "vue";
+import {defineProps, withDefaults, ref, computed, watch} from "vue";
 
 interface Props {
     loading?: boolean;
@@ -61,14 +61,21 @@ const props = withDefaults(defineProps<Props>(), {
 const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.BUTTON)
 const variant = ref(Object.values(Variant).includes(props.variant) ? props.variant : Variant.PRIMARY)
 const name = 'Button'
-
 const classList = computed(() => ({
     // Primary
     'bg-blue-500 text-white hover:bg-blue-700': variant.value === Variant.PRIMARY && !props.outline,
     'bg-transparent border border-blue-500 text-blue-500 hover:border-blue-700 text-blue-700': variant.value === Variant.PRIMARY && props.outline,
 
+    // Secondary
+    'bg-gray-500 text-white hover:bg-gray-700': variant.value === Variant.SECONDARY && !props.outline,
+    'bg-transparent border border-gray-500 text-gray-500 hover:border-gray-700 text-gray-700': variant.value === Variant.SECONDARY && props.outline,
+
     // Light
     'bg-gray-100 text-gray-600 hover:bg-gray-300': variant.value === Variant.LIGHT && !props.outline,
     'bg-transparent border border-gray-500 text-gray-500 hover:border-gray-700 text-blue-700': variant.value === Variant.LIGHT && props.outline,
 }))
+
+watch(() => props.variant, (value: string) => {
+    variant.value = value
+})
 </script>

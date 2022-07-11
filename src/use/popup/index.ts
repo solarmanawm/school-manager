@@ -22,7 +22,7 @@ const defaultParams: UsePopupParams = {
 }
 
 export const usePopup: UsePopup = (params: UsePopupParams = defaultParams) => {
-    const {state, onOpen, onClose} = params
+    const {state = false, onOpen, onClose} = params
     const visible = ref<boolean>(state)
 
     const open = () => {
