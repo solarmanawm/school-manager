@@ -49,7 +49,7 @@
                         />
                     </app-form-group>
                 </app-form>
-                <p v-else class="text-center">Are you sure you want to remove this student?</p>
+                <p v-else class="text-center">Are you sure you want to remove this family?</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
