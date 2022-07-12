@@ -9,7 +9,7 @@
         ></span>
         <div class="mb-6">
             <p class="text-2xl font-bold mb-1">{{ item.lastName }}</p>
-            <p>{{ item.firstName }} {{ item.fatherName }}</p>
+            <p>{{ item.firstName }} {{ item.patronymic }}</p>
         </div>
         <p class="mb-6">
             <svg
