@@ -26,7 +26,7 @@
                     <path fill="currentColor" d="m205.002,95.547c1.778,0 3.563-0.628 4.993-1.905 3.09-2.759 3.358-7.5 0.6-10.59-5.353-5.995-8.3-13.71-8.3-21.726 0-17.564 13.299-35.9 32.706-45.552 19.407,9.651 32.706,27.987 32.706,45.552 0,8.016-2.948,15.731-8.3,21.726-2.759,3.089-2.491,7.831 0.599,10.589 3.088,2.758 7.83,2.491 10.589-0.599 7.81-8.747 12.111-20.01 12.111-31.716 0-24.235-18.382-49.196-44.702-60.699-1.915-0.837-4.092-0.836-6.007,0-26.32,11.503-44.702,36.463-44.702,60.698 0,11.706 4.301,22.969 12.111,31.716 1.481,1.661 3.534,2.507 5.596,2.506z"/>
                 </g>
             </svg>
-            <span>{{ new Date().toLocaleDateString() }}</span>
+            <span class="capitalize">{{ formattedDate }}</span>
         </p>
         <p class="flex justify-between">
             <app-button
@@ -59,6 +59,8 @@ import {ref, computed, defineProps, defineEmits, watch} from 'vue'
 import AppCard from './Card.vue'
 // @ts-ignore
 import AppButton, {Variant, Size} from './Button.vue'
+import {format} from "date-fns";
+import {ru} from 'date-fns/locale'
 
 interface Emits {
     (event: 'edit', item: Student): void;
@@ -70,7 +72,7 @@ export interface Student {
     sex: string;
     name: string;
     family: string;
-    dateOfBirth?: string;
+    dateOfBirth: string;
 }
 
 interface Props {
@@ -83,6 +85,9 @@ const props = defineProps<Props>()
 const isMale = props.item.sex === 'male'
 const view = ref(props.view)
 const isCardView = computed(() => view.value === Views.CARD)
+const formattedDate = computed(() => format(new Date(props.item.dateOfBirth), 'dd MMMM, YYY', {
+    locale: ru,
+}))
 const bgColor = computed(() => ({
     'bg-blue-500': isMale,
     'bg-red-500': !isMale,

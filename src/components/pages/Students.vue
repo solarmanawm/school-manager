@@ -69,6 +69,18 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
+                            label="Date of birth"
+                            for="dateOfBirth"
+                    >
+                        <app-control
+                                v-model="form.fields.dateOfBirth"
+                                :type="Type.DATE_PICKER"
+                                class="w-full"
+                                id="dateOfBirth"
+                        />
+                    </app-form-group>
+                    <app-form-group
+                            class="w-full"
                             label="Sex"
                             for="sex"
                     >

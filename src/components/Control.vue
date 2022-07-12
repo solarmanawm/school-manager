@@ -23,6 +23,11 @@
             :current="value"
             :options="options"
     />
+    <app-date-picker
+            v-else-if="isDatePicker"
+            v-model="value"
+            :error="error"
+    />
 </template>
 
 <script lang="ts">
@@ -33,6 +38,7 @@ export enum Type {
     BUTTON_SET = 'button-set',
     SELECT = 'select',
     DROPDOWN = 'dropdown',
+    DATE_PICKER = 'date-picker',
 }
 </script>
 
@@ -42,6 +48,7 @@ import {computed, defineProps, defineEmits, ref, withDefaults, watch} from "vue"
 
 import AppButtonSet, {Option} from './ButtonSet.vue'
 import AppDropdown from './controls/Dropdown.vue'
+import AppDatePicker from './controls/DatePicker.vue'
 
 interface Emits {
     (e: 'update:modelValue', value: string): void;
@@ -67,6 +74,7 @@ const value = ref(props.modelValue)
 const isInput = computed(() => type.value === Type.TEXT || type.value === Type.EMAIL || type.value === Type.PASSWORD)
 const isDropdown = computed(() => type.value === Type.DROPDOWN)
 const isButtonSet = computed(() => type.value === Type.BUTTON_SET)
+const isDatePicker = computed(() => type.value === Type.DATE_PICKER)
 const classList = computed(() => ({
     'border h-10 rounded px-3 focus:bg-gray-100 focus:border-blue-500': isInput,
     'border-gray-200 hover:border-gray-300': isInput && !props.error,
