@@ -89,6 +89,7 @@
 <script setup lang="ts">
 // @ts-ignore
 import {ref} from "vue";
+import {FamilyServiceCreateParamsInterface} from '../../classes/AbstractFamilyService'
 // @ts-ignore
 import {Views} from "../FamilyCard.vue"
 // @ts-ignore
@@ -122,11 +123,6 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
-interface FamilyServiceCreateParamsInterface {
-    id: string;
-    name: string;
-}
-
 type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name'>;
 
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
@@ -138,13 +134,13 @@ const onError = useError(errors)
 const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
-            service.student.create(form.fields).then(() => {
+            service.family.create(form.fields).then(() => {
                 families.value.push({...form.fields})
             }).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {
-            service.student.update({
+            service.family.update({
                 from: {} as StudentServiceCreateParamsInterface,
                 to: form.fields,
             }).then(() => {
@@ -153,7 +149,7 @@ const onValidated = () => {
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
-            service.student.delete(itemToHandleId).then(() => {
+            service.family.delete(itemToHandleId).then(() => {
                 //
             }).then(resolve)
         }

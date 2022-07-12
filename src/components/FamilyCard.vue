@@ -14,6 +14,7 @@ export enum Views {
 // @ts-ignore
 import {ref} from "vue";
 
+// @ts-ignore
 export interface Family {
     id: string;
     name: string;
