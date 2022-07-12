@@ -1,17 +1,18 @@
 <template>
     <app-card
-            :class="borderColor"
-            class="relative flex flex-col justify-between border-l-2 shadow-sm hover:shadow-lg"
+            :class="cardClassList"
+            class="relative flex justify-between border-l-2 shadow-sm hover:shadow-lg"
     >
         <span
+                v-if="isCardView"
                 class="absolute left-3 top-3 w-3 h-3 rounded-full inline-block"
                 :class="bgColor"
         ></span>
-        <div class="mb-6">
-            <p class="text-2xl font-bold mb-1">{{ item.lastName }}</p>
-            <p>{{ item.firstName }} {{ item.patronymic }}</p>
+        <div :class="isCardView ? 'mb-6' : 'flex-1'">
+            <p class="text-xl font-bold mb-1">{{ item.lastName }}</p>
+            <p class="text-sm">{{ item.firstName }} {{ item.patronymic }}</p>
         </div>
-        <p class="mb-6">
+        <p :class="isCardView ? 'mb-6' : 'mr-6'">
             <svg
                     :class="textColor"
                     class="inline-block mr-2"
@@ -45,7 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import {computed, defineProps, defineEmits} from 'vue'
+// @ts-ignore
+import {ref, computed, defineProps, defineEmits, watch} from 'vue'
 
 import AppCard from './Card.vue'
 // @ts-ignore
@@ -66,29 +68,38 @@ export interface Student {
 }
 
 interface Props {
+    view: string;
     item: Student;
 }
 
 const emit = defineEmits<Emits>()
-const {item} = defineProps<Props>()
-const isMale = item.sex === 'male'
+const props = defineProps<Props>()
+const isMale = props.item.sex === 'male'
+const view = ref(props.view)
+const isCardView = computed(() => view.value === 'card')
 const bgColor = computed(() => ({
     'bg-blue-500': isMale,
     'bg-red-500': !isMale,
 }))
-const borderColor = computed(() => ({
+const cardClassList = computed(() => ({
     'border-l-blue-500': isMale,
     'border-l-red-500': !isMale,
+    'flex-col': isCardView.value,
+    'mb-3 py-3 items-center': !isCardView.value,
 }))
 const textColor = computed(() => ({
     'text-blue-500': isMale,
     'text-red-500': !isMale,
 }))
 const edit = () => {
-    emit('edit', item)
+    emit('edit', props.item)
 }
 const remove = () => {
-    emit('remove', item.id)
+    emit('remove', props.item.id)
 }
 const name = 'Student'
+
+watch(() => props.view, (value: string) => {
+    view.value = value
+})
 </script>
