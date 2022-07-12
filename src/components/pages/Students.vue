@@ -103,6 +103,8 @@
                 <app-student
                         :key="item.id"
                         :item="item"
+                        @edit="edit"
+                        @remove="remove"
                         class="w-full mb-6"
                 />
             </app-col>
@@ -119,7 +121,7 @@ import AppFormGroup from '../shared/FormGroup.vue'
 // @ts-ignore
 import AppControl from '../Control.vue'
 import AppPopup from '../Popup.vue'
-import AppStudent from '../Student.vue'
+import AppStudent, {Student} from '../Student.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
 import AppContainer from '../shared/Container.vue'
@@ -205,5 +207,11 @@ const popup = usePopup({
 const name = 'Students'
 const addStudent = () => {
     popup.open()
+}
+const edit = (item: Student) => {
+    console.log({item})
+}
+const remove = (id: string) => {
+    console.log({id})
 }
 </script>

@@ -52,21 +52,21 @@ import AppCard from './Card.vue'
 import AppButton, {Variant, Size} from './Button.vue'
 
 interface Emits {
-    (event: 'edit', item: Item): void;
+    (event: 'edit', item: Student): void;
     (event: 'remove', id: string): void;
 }
 
-interface Item {
+export interface Student {
     id: string;
     sex: string;
     firstName: string;
     lastName: string;
-    fatherName?: string;
+    patronymic?: string;
     dateOfBirth?: string;
 }
 
 interface Props {
-    item: Item;
+    item: Student;
 }
 
 const emit = defineEmits<Emits>()
