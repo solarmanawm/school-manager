@@ -6,10 +6,8 @@ import AbstractService from "./AbstractService";
 export interface StudentServiceCreateParamsInterface {
     id: string;
     sex: string;
-    firstName: string;
-    lastName: string;
+    name: string;
     family: string;
-    patronymic?: string;
     dateOfBirth?: string;
 }
 

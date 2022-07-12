@@ -38,12 +38,15 @@
                             class="w-full"
                             label="Family"
                             for="family"
+                            :required="true"
+                            :errors="form.errors.family.value"
                     >
                         <app-control
                                 v-model="form.fields.family"
                                 class="w-full"
                                 id="family"
                                 :type="Type.DROPDOWN"
+                                :error="form.errors.family.value.length > 0"
                                 :options="[
                                         {title: 'Male', value: 'male'},
                                         {title: 'Female', value: 'female'},
@@ -52,43 +55,16 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="First name"
-                            for="firstName"
+                            label="Name"
+                            for="Name"
                             :required="true"
-                            :errors="form.errors.firstName.value"
+                            :errors="form.errors.name.value"
                     >
                         <app-control
-                                v-model="form.fields.firstName"
-                                :error="form.errors.firstName.value.length > 0"
+                                v-model="form.fields.name"
+                                :error="form.errors.name.value.length > 0"
                                 class="w-full"
-                                id="firstName"
-                        />
-                    </app-form-group>
-                    <app-form-group
-                            class="w-full"
-                            label="Last name"
-                            for="lastName"
-                            :required="true"
-                            :errors="form.errors.lastName.value"
-                    >
-                        <app-control
-                                v-model="form.fields.lastName"
-                                :error="form.errors.lastName.value.length > 0"
-                                class="w-full"
-                                id="lastName"
-                        />
-                    </app-form-group>
-                    <app-form-group
-                            class="w-full"
-                            label="Patronymic"
-                            for="patronymic"
-                            :errors="form.errors.patronymic.value"
-                    >
-                        <app-control
-                                v-model="form.fields.patronymic"
-                                :error="form.errors.patronymic.value.length > 0"
-                                class="w-full"
-                                id="fatherName"
+                                id="name"
                         />
                     </app-form-group>
                     <app-form-group
@@ -184,7 +160,7 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
-type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic' | 'family'>;
+type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'name' | 'family'>;
 
 type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
@@ -226,23 +202,17 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
     initialValues: {
         id: '',
         sex: 'male',
-        firstName: '',
-        lastName: '',
-        patronymic: '',
+        name: '',
         family: '',
         dateOfBirth: '',
     },
     validation: {
-        firstName: {
-            required: true,
-        },
-        lastName: {
+        name: {
             required: true,
         },
         family: {
             required: true,
         },
-        patronymic: {},
     },
     onValidated,
     onError,
@@ -259,9 +229,7 @@ const add = () => {
 }
 const edit = (item: Student) => {
     itemToHandleId = item.id
-    form.fields.firstName = item.firstName
-    form.fields.lastName = item.lastName
-    form.fields.patronymic = item.patronymic
+    form.fields.name = item.name
     form.fields.sex = item.sex
     form.fields.dateOfBirth = item.dateOfBirth
     form.fields.family = item.family

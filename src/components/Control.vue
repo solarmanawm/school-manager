@@ -19,6 +19,7 @@
     <app-dropdown
             v-else-if="isDropdown"
             v-model="value"
+            :error="error"
             :current="value"
             :options="options"
     />

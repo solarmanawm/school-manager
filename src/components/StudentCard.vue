@@ -68,9 +68,7 @@ interface Emits {
 export interface Student {
     id: string;
     sex: string;
-    firstName: string;
-    lastName: string;
-    patronymic?: string;
+    name: string;
     family: string;
     dateOfBirth?: string;
 }

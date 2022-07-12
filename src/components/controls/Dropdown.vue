@@ -1,9 +1,7 @@
 <template>
     <div class="w-full relative z-10">
         <input
-                :class="{
-                    'focus:border-blue-500': visible,
-                }"
+                :class="classList"
                 :value="title"
                 @click="visible = !visible"
                 class="w-full control border h-10 rounded px-3 cursor-pointer relative"
@@ -32,6 +30,7 @@ interface Emits {
 }
 
 interface Props {
+    error: boolean;
     modelValue: string;
     options: Option[];
 }
@@ -46,6 +45,11 @@ const change = (option: Option) => {
     title.value = option.title
     emits('update:modelValue', option.value.toString())
 }
+const classList = computed(() => ({
+    'focus:border-blue-500': visible.value,
+    'border-gray-200 hover:border-gray-300': !props.error,
+    'border-red-500': props.error,
+}))
 const name = 'Dropdown'
 
 onClickOutside(dropdown, () => {
