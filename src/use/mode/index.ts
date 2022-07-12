@@ -2,8 +2,9 @@
 import {computed, ComputedRef, ref, watch} from 'vue'
 
 interface UseMode<T> {
-    is: (modeToCompare: ValueOf<T>) => boolean;
+    is: (modeToCompare?: ValueOf<T>) => boolean;
     set: (newMode: ValueOf<T>) => void;
+    reset: () => void;
 }
 
 type ValueOf<T> = T[keyof T];
@@ -12,8 +13,8 @@ export function useMode<T>(modes: T, onChange?: () => void): UseMode<T> {
     const values = Object.values(modes)
     const mode = ref('')
 
-    const is = (modeToCompare: ValueOf<T>) => {
-        return mode.value === modeToCompare
+    const is = (modeToCompare?: ValueOf<T>) => {
+        return typeof modeToCompare !== 'undefined' ? mode.value === modeToCompare : mode.value !== ''
     }
 
     const set = (newMode: ValueOf<T>) => {
@@ -22,6 +23,10 @@ export function useMode<T>(modes: T, onChange?: () => void): UseMode<T> {
         }
 
         mode.value = newMode
+    }
+
+    const reset = () => {
+        mode.value = ''
     }
 
     watch(mode, () => {
@@ -33,5 +38,6 @@ export function useMode<T>(modes: T, onChange?: () => void): UseMode<T> {
     return {
         is,
         set,
+        reset,
     }
 }
