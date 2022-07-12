@@ -71,6 +71,7 @@ export interface Student {
     firstName: string;
     lastName: string;
     patronymic?: string;
+    family: string;
     dateOfBirth?: string;
 }
 

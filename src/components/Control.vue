@@ -16,15 +16,22 @@
             :options="options"
             @change="update"
     />
+    <app-dropdown
+            v-else-if="isDropdown"
+            v-model="value"
+            :current="value"
+            :options="options"
+    />
 </template>
 
 <script lang="ts">
-enum Type {
+export enum Type {
     TEXT = 'text',
     EMAIL = 'email',
     PASSWORD = 'password',
     BUTTON_SET = 'button-set',
     SELECT = 'select',
+    DROPDOWN = 'dropdown',
 }
 </script>
 
@@ -33,6 +40,7 @@ enum Type {
 import {computed, defineProps, defineEmits, ref, withDefaults, watch} from "vue"
 
 import AppButtonSet, {Option} from './ButtonSet.vue'
+import AppDropdown from './controls/Dropdown.vue'
 
 interface Emits {
     (e: 'update:modelValue', value: string): void;
@@ -56,6 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
 const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.TEXT)
 const value = ref(props.modelValue)
 const isInput = computed(() => type.value === Type.TEXT || type.value === Type.EMAIL || type.value === Type.PASSWORD)
+const isDropdown = computed(() => type.value === Type.DROPDOWN)
 const isButtonSet = computed(() => type.value === Type.BUTTON_SET)
 const classList = computed(() => ({
     'border h-10 rounded px-3 focus:bg-gray-100 focus:border-blue-500': isInput,

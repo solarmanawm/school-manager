@@ -36,6 +36,22 @@
                 >
                     <app-form-group
                             class="w-full"
+                            label="Family"
+                            for="family"
+                    >
+                        <app-control
+                                v-model="form.fields.family"
+                                class="w-full"
+                                id="family"
+                                :type="Type.DROPDOWN"
+                                :options="[
+                                        {title: 'Male', value: 'male'},
+                                        {title: 'Female', value: 'female'},
+                                ]"
+                        />
+                    </app-form-group>
+                    <app-form-group
+                            class="w-full"
                             label="First name"
                             for="firstName"
                             :required="true"
@@ -137,10 +153,11 @@ import {reactive, ref, watch} from "vue";
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
 // @ts-ignore
-import AppControl from '../Control.vue'
+import AppControl, {Type} from '../Control.vue'
 // @ts-ignore
 import {Variant} from "../Button.vue";
 import AppPopup from '../Popup.vue'
+// @ts-ignore
 import AppStudentCard, {Student, Views} from '../StudentCard.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
@@ -167,7 +184,7 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
-type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic'>;
+type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic' | 'family'>;
 
 type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
@@ -212,6 +229,7 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
         firstName: '',
         lastName: '',
         patronymic: '',
+        family: '',
         dateOfBirth: '',
     },
     validation: {
@@ -219,6 +237,9 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
             required: true,
         },
         lastName: {
+            required: true,
+        },
+        family: {
             required: true,
         },
         patronymic: {},
@@ -243,6 +264,7 @@ const edit = (item: Student) => {
     form.fields.patronymic = item.patronymic
     form.fields.sex = item.sex
     form.fields.dateOfBirth = item.dateOfBirth
+    form.fields.family = item.family
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {
