@@ -152,19 +152,28 @@ type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'fi
 
 type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
+let itemToHandleId: string = ''
 const errors = ref([])
 const onError = useError(errors)
 const onValidated = () => {
-    if (mode.is(Modes.ADD)) {
-        return service.student.create(form.fields).then(() => {
-            students.value.push({...form.fields})
-            popup.close()
-        })
-    }
+    return new Promise((resolve) => {
+        if (mode.is(Modes.ADD)) {
+            service.student.create(form.fields).then(resolve)
+        }
 
-    if (mode.is(Modes.EDIT)) {}
+        if (mode.is(Modes.EDIT)) {
+            service.student.update({
+                from: {} as StudentServiceCreateParamsInterface,
+                to: form.fields,
+            }).then(resolve)
+        }
 
-    if (mode.is(Modes.REMOVE)) {}
+        if (mode.is(Modes.REMOVE)) {
+            service.student.delete(itemToHandleId).then(resolve)
+        }
+    }).finally(() => {
+        popup.close()
+    })
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
 const mode = useMode<ModesInterface>(Modes)
@@ -191,6 +200,7 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
 })
 const popup = usePopup({
     onClose: () => {
+        itemToHandleId = ''
         form.reset()
     },
 })
@@ -198,18 +208,13 @@ const add = () => {
     mode.set(Modes.ADD)
     popup.open()
 }
-const edit = (item: Student) => {
-    form.fields.id = item.id
-    form.fields.firstName = item.firstName
-    form.fields.lastName = item.lastName
-    form.fields.patronymic = item.patronymic
-    form.fields.sex = item.sex
-    form.fields.dateOfBirth = item.dateOfBirth
+const edit = (id: string) => {
+    itemToHandleId = id
     mode.set(Modes.EDIT)
     popup.open()
 }
 const remove = (id: string) => {
-    form.fields.id = id
+    itemToHandleId = id
     mode.set(Modes.REMOVE)
     popup.open()
 }
