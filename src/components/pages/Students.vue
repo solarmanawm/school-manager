@@ -171,9 +171,7 @@ const onValidated = () => {
         if (mode.is(Modes.REMOVE)) {
             service.student.delete(itemToHandleId).then(resolve)
         }
-    }).finally(() => {
-        popup.close()
-    })
+    }).then(popup.close)
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
 const mode = useMode<ModesInterface>(Modes)
