@@ -12,6 +12,7 @@
     <app-button-set
             v-else-if="isButtonSet"
             v-model="value"
+            :variant="variant"
             :options="options"
             @change="update"
     />
@@ -42,6 +43,7 @@ interface Props {
     error?: boolean;
     placeholder?: string;
     modelValue: string;
+    variant?: string;
     options?: Option[];
 }
 
