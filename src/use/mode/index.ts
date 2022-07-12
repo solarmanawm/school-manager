@@ -4,7 +4,6 @@ import {computed, ComputedRef, ref} from 'vue'
 interface UseMode<T> {
     is: (modeToCompare: ValueOf<T>) => boolean;
     set: (newMode: ValueOf<T>) => void;
-    current: ComputedRef<string>;
 }
 
 type ValueOf<T> = T[keyof T];
@@ -12,7 +11,6 @@ type ValueOf<T> = T[keyof T];
 export function useMode<T>(modes: T): UseMode<T> {
     const values = Object.values(modes)
     const mode = ref('')
-    const shadowMode = computed(() => mode.value)
 
     const is = (modeToCompare: ValueOf<T>) => {
         return mode.value === modeToCompare
@@ -29,6 +27,5 @@ export function useMode<T>(modes: T): UseMode<T> {
     return {
         is,
         set,
-        current: shadowMode,
     }
 }

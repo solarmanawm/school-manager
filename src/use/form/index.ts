@@ -31,9 +31,9 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
     }, {})
     const validator = validation ? useFormValidator<V>(fields, validation) : null
 
-    const submit = () => {
+    const submit = (shouldBeValidated: boolean = true) => {
         return new Promise((resolve) => {
-            if (validator) {
+            if (validator && shouldBeValidated) {
                 validator.validate().then((isValid: boolean) => {
                     resolve(isValid)
                 })

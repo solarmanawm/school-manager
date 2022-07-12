@@ -1,7 +1,7 @@
 <template>
     <Teleport to="#app-context-buttons">
         <app-button
-                @click="addStudent"
+                @click="add"
         >New Student
         </app-button>
     </Teleport>
@@ -15,7 +15,7 @@
             </template>
             <template v-slot:content>
                 <app-form
-                        ref="formRef"
+                        v-if="mode.is(Modes.ADD) || mode.is(Modes.EDIT)"
                         @submit.prevent=""
                         class="mb-0"
                 >
@@ -77,6 +77,7 @@
                         />
                     </app-form-group>
                 </app-form>
+                <p v-else class="text-center">Are you sure you want to remove this student?</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
@@ -86,7 +87,7 @@
                     >Cancel
                     </app-button>
                     <app-button
-                            @click="form.submit()"
+                            @click="form.submit(!mode.is(Modes.REMOVE))"
                     >Add
                     </app-button>
                 </div>
@@ -133,11 +134,18 @@ import {useForm} from "../../use/form"
 import {useError} from '../../use/error'
 import {StudentServiceCreateParamsInterface} from "../../classes/AbstractStudentService";
 import service from "../../service";
+import {useMode} from "../../use/mode";
 
-enum DefaultStudent {
-    ID = 'id',
-    SEX = 'male',
-    DATE_OF_BIRTH = ''
+enum Modes {
+    ADD = 'ADD',
+    EDIT = 'EDIT',
+    REMOVE = 'REMOVE',
+}
+
+interface ModesInterface {
+    ADD: string;
+    EDIT: string;
+    REMOVE: string;
 }
 
 type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic'>;
@@ -145,39 +153,21 @@ type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'fi
 type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
 const errors = ref([])
-const errorHandler = useError(errors)
-const onError = (error: any) => {
-    errorHandler(error)
-}
+const onError = useError(errors)
 const onValidated = () => {
-    const newStudent: StudentServiceCreateParamsInterface = Object.create(null, {
-        id: {
-            value: form.fields.id || DefaultStudent.ID,
-        },
-        firstName: {
-            value: form.fields.firstName,
-        },
-        lastName: {
-            value: form.fields.lastName,
-        },
-        patronymic: {
-            value: form.fields.patronymic,
-        },
-        sex: {
-            value: form.fields.sex || DefaultStudent.SEX,
-        },
-        dateOfBirth: {
-            value: form.fields.dateOfBirth || DefaultStudent.DATE_OF_BIRTH,
-        },
-    })
+    if (mode.is(Modes.ADD)) {
+        return service.student.create(form.fields).then(() => {
+            students.value.push({...form.fields})
+            popup.close()
+        })
+    }
 
-    return service.student.create(newStudent).then(() => {
-        students.value.push(newStudent)
-        popup.close()
-    })
+    if (mode.is(Modes.EDIT)) {}
+
+    if (mode.is(Modes.REMOVE)) {}
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
-const formRef = ref(null)
+const mode = useMode<ModesInterface>(Modes)
 const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
     initialValues: {
         id: '',
@@ -204,14 +194,24 @@ const popup = usePopup({
         form.reset()
     },
 })
-const name = 'Students'
-const addStudent = () => {
+const add = () => {
+    mode.set(Modes.ADD)
     popup.open()
 }
 const edit = (item: Student) => {
-    console.log({item})
+    form.fields.id = item.id
+    form.fields.firstName = item.firstName
+    form.fields.lastName = item.lastName
+    form.fields.patronymic = item.patronymic
+    form.fields.sex = item.sex
+    form.fields.dateOfBirth = item.dateOfBirth
+    mode.set(Modes.EDIT)
+    popup.open()
 }
 const remove = (id: string) => {
-    console.log({id})
+    form.fields.id = id
+    mode.set(Modes.REMOVE)
+    popup.open()
 }
+const name = 'Students'
 </script>
