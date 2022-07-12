@@ -116,7 +116,7 @@
                     v-for="item in students"
                     class="w-1/3"
             >
-                <app-student
+                <app-student-card
                         :view="viewMode"
                         :key="item.id"
                         :item="item"
@@ -139,7 +139,7 @@ import AppFormGroup from '../shared/FormGroup.vue'
 import AppControl from '../Control.vue'
 import {Variant} from "../Button.vue";
 import AppPopup from '../Popup.vue'
-import AppStudent, {Student} from '../Student.vue'
+import AppStudentCard, {Student} from '../StudentCard.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
 import AppContainer from '../shared/Container.vue'
@@ -159,20 +159,10 @@ enum SubmitActions {
     REMOVE = 'REMOVE',
 }
 
-enum StudentsView {
-    LIST = 'LIST',
-    THUMBS = 'THUMBS',
-}
-
 interface SubmitActionsInterface {
     ADD: string;
     EDIT: string;
     REMOVE: string;
-}
-
-interface StudentsViewInterface {
-    LIST: string;
-    THUMBS: string;
 }
 
 type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic'>;
