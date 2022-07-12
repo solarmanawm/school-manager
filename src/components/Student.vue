@@ -11,7 +11,7 @@
             <p class="text-2xl font-bold mb-1">{{ item.lastName }}</p>
             <p>{{ item.firstName }} {{ item.fatherName }}</p>
         </div>
-        <p>
+        <p class="mb-6">
             <svg
                     :class="textColor"
                     class="inline-block mr-2"
@@ -27,25 +27,49 @@
             </svg>
             <span>{{ new Date().toLocaleDateString() }}</span>
         </p>
+        <p class="flex justify-between">
+            <app-button
+                    class="flex-1 mr-1"
+                    :variant="Variant.LIGHT"
+                    :size="Size.SMALL"
+                    @click="edit"
+            >Edit</app-button>
+            <app-button
+                    class="flex-1 ml-1"
+                    :variant="Variant.LIGHT"
+                    :size="Size.SMALL"
+                    @click="remove"
+            >Remove</app-button>
+        </p>
     </app-card>
 </template>
 
 <script setup lang="ts">
-import {computed, defineProps} from 'vue'
+import {computed, defineProps, defineEmits} from 'vue'
 
 import AppCard from './Card.vue'
+// @ts-ignore
+import AppButton, {Variant, Size} from './Button.vue'
 
-interface Props {
-    item: {
-        id: string;
-        sex: string;
-        firstName: string;
-        lastName: string;
-        fatherName?: string;
-        dateOfBirth?: string;
-    };
+interface Emits {
+    (event: 'edit', item: Item): void;
+    (event: 'remove', id: string): void;
 }
 
+interface Item {
+    id: string;
+    sex: string;
+    firstName: string;
+    lastName: string;
+    fatherName?: string;
+    dateOfBirth?: string;
+}
+
+interface Props {
+    item: Item;
+}
+
+const emit = defineEmits<Emits>()
 const {item} = defineProps<Props>()
 const isMale = item.sex === 'male'
 const bgColor = computed(() => ({
@@ -60,5 +84,11 @@ const textColor = computed(() => ({
     'text-blue-500': isMale,
     'text-red-500': !isMale,
 }))
+const edit = () => {
+    emit('edit', item)
+}
+const remove = () => {
+    emit('remove', item.id)
+}
 const name = 'Student'
 </script>
