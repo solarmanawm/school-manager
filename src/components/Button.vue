@@ -3,7 +3,7 @@
             :type="type"
             :class="classList"
             :disabled="loading"
-            class="rounded h-10 px-6 font-bold flex items-center justify-center"
+            class="rounded font-bold flex items-center justify-center"
     >
         <svg v-if="loading" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -34,6 +34,12 @@ enum Type {
     SUBMIT = 'submit',
 }
 
+export enum Size {
+    SMALL = 'small',
+    NORMAL = 'normal',
+    LARGE = 'large',
+}
+
 export enum Variant {
     PRIMARY = 'primary',
     LIGHT = 'light',
@@ -49,19 +55,31 @@ interface Props {
     loading?: boolean;
     type?: string;
     variant?: string;
+    size?: string;
     outline?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     type: Type.BUTTON,
     variant: Variant.PRIMARY,
+    size: Size.NORMAL,
     outline: false,
     loading: false,
 })
 const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.BUTTON)
 const variant = ref(Object.values(Variant).includes(props.variant) ? props.variant : Variant.PRIMARY)
+const size = ref(Object.values(Size).includes(props.size) ? props.size : Size.NORMAL)
 const name = 'Button'
 const classList = computed(() => ({
+    // Small
+    'h-8 px-4 text-sm': size.value === Size.SMALL,
+
+    // Normal
+    'h-10 px-6': size.value === Size.NORMAL,
+
+    // Large
+    'h-12 px-8': size.value === Size.LARGE,
+
     // Primary
     'bg-blue-500 text-white hover:bg-blue-700': variant.value === Variant.PRIMARY && !props.outline,
     'bg-transparent border border-blue-500 text-blue-500 hover:border-blue-700 text-blue-700': variant.value === Variant.PRIMARY && props.outline,
