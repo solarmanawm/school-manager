@@ -85,6 +85,7 @@
                                 class="w-full"
                                 id="sex"
                                 type="button-set"
+                                :variant="Variant.LIGHT"
                                 :options="[
                                         {title: 'Male', value: 'male'},
                                         {title: 'Female', value: 'female'},
@@ -98,7 +99,7 @@
                 <div class="w-full flex items-center justify-between">
                     <app-button
                             @click="popup.close()"
-                            variant="light"
+                            :variant="Variant.SECONDARY"
                     >Cancel
                     </app-button>
                     <app-button
