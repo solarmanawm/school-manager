@@ -9,8 +9,8 @@
                 :class="bgColor"
         ></span>
         <div :class="isCardView ? 'mb-6' : 'flex-1'">
-            <p class="text-xl font-bold mb-1">{{ item.lastName }}</p>
-            <p class="text-sm">{{ item.firstName }} {{ item.patronymic }}</p>
+            <p class="text-xl font-bold mb-1">Family</p>
+            <p class="text-sm">{{ item.name }}</p>
         </div>
         <p :class="isCardView ? 'mb-6' : 'mr-6'">
             <svg
