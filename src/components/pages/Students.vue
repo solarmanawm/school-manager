@@ -158,18 +158,24 @@ const onError = useError(errors)
 const onValidated = () => {
     return new Promise((resolve) => {
         if (mode.is(Modes.ADD)) {
-            service.student.create(form.fields).then(resolve)
+            service.student.create(form.fields).then(() => {
+                students.value.push({...form.fields})
+            }).then(resolve)
         }
 
         if (mode.is(Modes.EDIT)) {
             service.student.update({
                 from: {} as StudentServiceCreateParamsInterface,
                 to: form.fields,
+            }).then(() => {
+                ;
             }).then(resolve)
         }
 
         if (mode.is(Modes.REMOVE)) {
-            service.student.delete(itemToHandleId).then(resolve)
+            service.student.delete(itemToHandleId).then(() => {
+                ;
+            }).then(resolve)
         }
     }).then(popup.close)
 }
@@ -206,8 +212,13 @@ const add = () => {
     mode.set(Modes.ADD)
     popup.open()
 }
-const edit = (id: string) => {
-    itemToHandleId = id
+const edit = (item: Student) => {
+    itemToHandleId = item.id
+    form.fields.firstName = item.firstName
+    form.fields.lastName = item.lastName
+    form.fields.patronymic = item.patronymic
+    form.fields.sex = item.sex
+    form.fields.dateOfBirth = item.dateOfBirth
     mode.set(Modes.EDIT)
     popup.open()
 }

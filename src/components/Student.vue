@@ -52,7 +52,7 @@ import AppCard from './Card.vue'
 import AppButton, {Variant, Size} from './Button.vue'
 
 interface Emits {
-    (event: 'edit', id: string): void;
+    (event: 'edit', item: Student): void;
     (event: 'remove', id: string): void;
 }
 
@@ -85,7 +85,7 @@ const textColor = computed(() => ({
     'text-red-500': !isMale,
 }))
 const edit = () => {
-    emit('edit', item.id)
+    emit('edit', item)
 }
 const remove = () => {
     emit('remove', item.id)
