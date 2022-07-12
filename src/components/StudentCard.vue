@@ -45,6 +45,13 @@
     </app-card>
 </template>
 
+<script lang="ts">
+export enum Views {
+    CARD = 'CARD',
+    LIST = 'LIST',
+}
+</script>
+
 <script setup lang="ts">
 // @ts-ignore
 import {ref, computed, defineProps, defineEmits, watch} from 'vue'
@@ -76,7 +83,7 @@ const emit = defineEmits<Emits>()
 const props = defineProps<Props>()
 const isMale = props.item.sex === 'male'
 const view = ref(props.view)
-const isCardView = computed(() => view.value === 'card')
+const isCardView = computed(() => view.value === Views.CARD)
 const bgColor = computed(() => ({
     'bg-blue-500': isMale,
     'bg-red-500': !isMale,

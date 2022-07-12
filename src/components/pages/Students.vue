@@ -14,8 +14,8 @@
                     type="button-set"
                     :variant="Variant.LIGHT"
                     :options="[
-                        {icon: 'fa-solid fa-border-all', value: 'card'},
-                        {icon: 'fa-solid fa-list', value: 'list'},
+                        {icon: 'fa-solid fa-border-all', value: Views.CARD},
+                        {icon: 'fa-solid fa-list', value: Views.LIST},
                 ]"
             />
         </div>
@@ -115,7 +115,7 @@
         <app-row>
             <app-col
                     v-for="item in students"
-                    :class="viewMode === 'card' ? 'w-1/3' : 'w-full'"
+                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
             >
                 <app-student-card
                         :view="viewMode"
@@ -141,7 +141,7 @@ import AppControl from '../Control.vue'
 // @ts-ignore
 import {Variant} from "../Button.vue";
 import AppPopup from '../Popup.vue'
-import AppStudentCard, {Student} from '../StudentCard.vue'
+import AppStudentCard, {Student, Views} from '../StudentCard.vue'
 // @ts-ignore
 import AppButton from '../Button.vue'
 import AppContainer from '../shared/Container.vue'
@@ -199,7 +199,7 @@ const onValidated = () => {
     }).then(popup.close)
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
-const viewMode = ref('card')
+const viewMode = ref(Views.CARD)
 const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
     if (actionMode.is()) {
         popup.open()
