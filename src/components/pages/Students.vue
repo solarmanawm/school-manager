@@ -1,10 +1,24 @@
 <template>
     <Teleport to="#app-context-buttons">
-        <app-button
-                @click="add"
-        >New Student
-        </app-button>
-        <app-control/>
+        <div class="flex">
+            <app-button
+                    :variant="Variant.LIGHT"
+                    @click="add"
+                    class="whitespace-nowrap mr-3"
+            >New Student
+            </app-button>
+            <app-control
+                    v-model="viewMode"
+                    class="w-full"
+                    id="sex"
+                    type="button-set"
+                    :variant="Variant.LIGHT"
+                    :options="[
+                        {icon: 'fa-solid fa-border-all', value: 'list'},
+                        {icon: 'fa-solid fa-list', value: 'cards'},
+                ]"
+            />
+        </div>
     </Teleport>
 
     <Teleport to="#app-popup">
@@ -103,6 +117,7 @@
                     class="w-1/3"
             >
                 <app-student
+                        :view="viewMode"
                         :key="item.id"
                         :item="item"
                         @edit="edit"
@@ -122,6 +137,7 @@ import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
 // @ts-ignore
 import AppControl from '../Control.vue'
+import {Variant} from "../Button.vue";
 import AppPopup from '../Popup.vue'
 import AppStudent, {Student} from '../Student.vue'
 // @ts-ignore
@@ -191,8 +207,12 @@ const onValidated = () => {
     }).then(popup.close)
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
-const actionMode = useMode<SubmitActionsInterface>(SubmitActions)
-const viewMode = useMode<StudentsViewInterface>(StudentsView)
+const viewMode = ref('list')
+const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
+    if (actionMode.is()) {
+        popup.open()
+    }
+})
 const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
     initialValues: {
         id: '',
@@ -217,12 +237,12 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
 const popup = usePopup({
     onClose: () => {
         itemToHandleId = ''
+        actionMode.reset()
         form.reset()
     },
 })
 const add = () => {
     actionMode.set(SubmitActions.ADD)
-    popup.open()
 }
 const edit = (item: Student) => {
     itemToHandleId = item.id
@@ -232,12 +252,10 @@ const edit = (item: Student) => {
     form.fields.sex = item.sex
     form.fields.dateOfBirth = item.dateOfBirth
     actionMode.set(SubmitActions.EDIT)
-    popup.open()
 }
 const remove = (id: string) => {
     itemToHandleId = id
     actionMode.set(SubmitActions.REMOVE)
-    popup.open()
 }
 const name = 'Students'
 </script>
