@@ -1,5 +1,5 @@
 // @ts-ignore
-import {computed, ComputedRef, ref} from 'vue'
+import {computed, ComputedRef, ref, watch} from 'vue'
 
 interface UseMode<T> {
     is: (modeToCompare: ValueOf<T>) => boolean;
@@ -8,7 +8,7 @@ interface UseMode<T> {
 
 type ValueOf<T> = T[keyof T];
 
-export function useMode<T>(modes: T): UseMode<T> {
+export function useMode<T>(modes: T, onChange?: () => void): UseMode<T> {
     const values = Object.values(modes)
     const mode = ref('')
 
@@ -23,6 +23,12 @@ export function useMode<T>(modes: T): UseMode<T> {
 
         mode.value = newMode
     }
+
+    watch(mode, () => {
+        if (typeof onChange === 'function') {
+            onChange()
+        }
+    })
 
     return {
         is,

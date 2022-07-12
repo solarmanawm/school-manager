@@ -4,6 +4,7 @@
                 @click="add"
         >New Student
         </app-button>
+        <app-control/>
     </Teleport>
 
     <Teleport to="#app-popup">
@@ -15,7 +16,7 @@
             </template>
             <template v-slot:content>
                 <app-form
-                        v-if="mode.is(Modes.ADD) || mode.is(Modes.EDIT)"
+                        v-if="actionMode.is(SubmitActions.ADD) || actionMode.is(SubmitActions.EDIT)"
                         @submit.prevent=""
                         class="mb-0"
                 >
@@ -87,7 +88,7 @@
                     >Cancel
                     </app-button>
                     <app-button
-                            @click="form.submit(!mode.is(Modes.REMOVE))"
+                            @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
                     >Add
                     </app-button>
                 </div>
@@ -136,16 +137,26 @@ import {StudentServiceCreateParamsInterface} from "../../classes/AbstractStudent
 import service from "../../service";
 import {useMode} from "../../use/mode";
 
-enum Modes {
+enum SubmitActions {
     ADD = 'ADD',
     EDIT = 'EDIT',
     REMOVE = 'REMOVE',
 }
 
-interface ModesInterface {
+enum StudentsView {
+    LIST = 'LIST',
+    THUMBS = 'THUMBS',
+}
+
+interface SubmitActionsInterface {
     ADD: string;
     EDIT: string;
     REMOVE: string;
+}
+
+interface StudentsViewInterface {
+    LIST: string;
+    THUMBS: string;
 }
 
 type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'firstName' | 'lastName' | 'patronymic'>;
@@ -157,30 +168,31 @@ const errors = ref([])
 const onError = useError(errors)
 const onValidated = () => {
     return new Promise((resolve) => {
-        if (mode.is(Modes.ADD)) {
+        if (actionMode.is(SubmitActions.ADD)) {
             service.student.create(form.fields).then(() => {
                 students.value.push({...form.fields})
             }).then(resolve)
         }
 
-        if (mode.is(Modes.EDIT)) {
+        if (actionMode.is(SubmitActions.EDIT)) {
             service.student.update({
                 from: {} as StudentServiceCreateParamsInterface,
                 to: form.fields,
             }).then(() => {
-                ;
+                //
             }).then(resolve)
         }
 
-        if (mode.is(Modes.REMOVE)) {
+        if (actionMode.is(SubmitActions.REMOVE)) {
             service.student.delete(itemToHandleId).then(() => {
-                ;
+                //
             }).then(resolve)
         }
     }).then(popup.close)
 }
 const students = ref<StudentServiceCreateParamsInterface[]>([])
-const mode = useMode<ModesInterface>(Modes)
+const actionMode = useMode<SubmitActionsInterface>(SubmitActions)
+const viewMode = useMode<StudentsViewInterface>(StudentsView)
 const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
     initialValues: {
         id: '',
@@ -209,7 +221,7 @@ const popup = usePopup({
     },
 })
 const add = () => {
-    mode.set(Modes.ADD)
+    actionMode.set(SubmitActions.ADD)
     popup.open()
 }
 const edit = (item: Student) => {
@@ -219,12 +231,12 @@ const edit = (item: Student) => {
     form.fields.patronymic = item.patronymic
     form.fields.sex = item.sex
     form.fields.dateOfBirth = item.dateOfBirth
-    mode.set(Modes.EDIT)
+    actionMode.set(SubmitActions.EDIT)
     popup.open()
 }
 const remove = (id: string) => {
     itemToHandleId = id
-    mode.set(Modes.REMOVE)
+    actionMode.set(SubmitActions.REMOVE)
     popup.open()
 }
 const name = 'Students'
