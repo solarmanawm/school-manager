@@ -1,5 +1,5 @@
 <template>
-    <form class="-mx-3 -mb-6">
+    <form class="-mx-3">
         <slot></slot>
     </form>
 </template>
