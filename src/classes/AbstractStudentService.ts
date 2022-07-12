@@ -13,6 +13,14 @@ export interface StudentServiceCreateParamsInterface {
 }
 
 /**
+ * Student Service Update Params Interface
+ */
+export interface StudentServiceUpdateParamsInterface {
+    from: StudentServiceCreateParamsInterface,
+    to: StudentServiceCreateParamsInterface,
+}
+
+/**
  * Student Service Create Response Interface
  */
 export interface StudentServiceCreateResponseInterface {
@@ -23,6 +31,8 @@ export interface StudentServiceCreateResponseInterface {
  */
 export interface StudentServiceInterface {
     create: (payload: StudentServiceCreateParamsInterface) => Promise<StudentServiceCreateResponseInterface>;
+    update: (payload: StudentServiceUpdateParamsInterface) => Promise<StudentServiceCreateResponseInterface>;
+    delete: (id: string) => Promise<StudentServiceCreateResponseInterface>;
 }
 
 /**
@@ -38,6 +48,22 @@ abstract class AbstractStudentService extends AbstractService implements Student
      * @returns Promise<StudentServiceRegisterResponseInterface>
      */
     abstract create(params: StudentServiceCreateParamsInterface): Promise<StudentServiceCreateResponseInterface>;
+
+    /**
+     * Update a certain user
+     * @param {StudentServiceUpdateParamsInterface} params
+     * @abstract
+     * @returns Promise<StudentServiceRegisterResponseInterface>
+     */
+    abstract update(params: StudentServiceUpdateParamsInterface): Promise<StudentServiceCreateResponseInterface>;
+
+    /**
+     * Delete a certain user
+     * @param {string} id
+     * @abstract
+     * @returns Promise<StudentServiceRegisterResponseInterface>
+     */
+    abstract delete(id: string): Promise<StudentServiceCreateResponseInterface>;
 }
 
 export default AbstractStudentService
