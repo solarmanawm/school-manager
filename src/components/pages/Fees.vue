@@ -26,7 +26,7 @@
                     <app-form-group
                             class="w-full"
                             label="Name"
-                            for="name"
+                            target="name"
                             :required="true"
                             :errors="form.errors.name.value"
                     >
@@ -36,6 +36,55 @@
                                 id="name"
                                 :type="Type.TEXT"
                                 :error="form.errors.name.value.length > 0"
+                        />
+                    </app-form-group>
+                    <app-form-group
+                            class="w-full"
+                            label="Value"
+                            target="value"
+                            :required="true"
+                            :errors="form.errors.value.value"
+                    >
+                        <app-control
+                                v-model="form.fields.value"
+                                class="w-full"
+                                id="value"
+                                :type="Type.TEXT"
+                                :error="form.errors.value.value.length > 0"
+                        />
+                    </app-form-group>
+                    <app-form-group
+                            class="w-full"
+                            label="Families"
+                            target="families"
+                            :required="true"
+                            :errors="form.errors.families.value"
+                    >
+                        <app-control
+                                v-model="form.fields.families"
+                                class="w-full"
+                                id="families"
+                                :type="Type.CHECKBOX"
+                                :error="form.errors.families.value.length > 0"
+                                :options="[
+                                    {title: 'Family #1', value: 'id1'},
+                                    {title: 'Family #2', value: 'id2'},
+                                ]"
+                        />
+                    </app-form-group>
+                    <app-form-group
+                            class="w-full"
+                            label="Description"
+                            target="description"
+                            :required="true"
+                            :errors="form.errors.description.value"
+                    >
+                        <app-control
+                                v-model="form.fields.description"
+                                class="w-full"
+                                id="description"
+                                :type="Type.TEXTAREA"
+                                :error="form.errors.description.value.length > 0"
                         />
                     </app-form-group>
                 </app-form>
@@ -111,7 +160,7 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
-type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'value'>;
+type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'value' | 'description' | 'families'>;
 
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
@@ -160,6 +209,8 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
         id: '',
         name: '',
         value: '',
+        description: '',
+        families: [],
     },
     validation: {
         name: {
@@ -168,6 +219,8 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
         value: {
             required: true,
         },
+        description: {},
+        families: {},
     },
     onValidated,
     onError,
