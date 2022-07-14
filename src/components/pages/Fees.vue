@@ -17,7 +17,29 @@
             <template v-slot:title>
                 Create a new student
             </template>
-            <template v-slot:content></template>
+            <template v-slot:content>
+                <app-form
+                        v-if="actionMode.is(SubmitActions.ADD) || actionMode.is(SubmitActions.EDIT)"
+                        @submit.prevent=""
+                        class="mb-0"
+                >
+                    <app-form-group
+                            class="w-full"
+                            label="Name"
+                            for="name"
+                            :required="true"
+                            :errors="form.errors.name.value"
+                    >
+                        <app-control
+                                v-model="form.fields.name"
+                                class="w-full"
+                                id="name"
+                                :type="Type.TEXT"
+                                :error="form.errors.name.value.length > 0"
+                        />
+                    </app-form-group>
+                </app-form>
+            </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
@@ -26,14 +48,31 @@
                     >Cancel
                     </app-button>
                     <app-button
-                            @click=""
+                            @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
                     >Add
                     </app-button>
                 </div>
             </template>
         </app-popup>
     </Teleport>
-</template>
+
+    <app-container>
+        <app-row>
+            <app-col
+                    v-for="item in fees"
+                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
+            >
+                <app-fee-card
+                        :view="viewMode"
+                        :key="item.id"
+                        :item="item"
+                        @edit="edit"
+                        @remove="remove"
+                        class="w-full mb-6"
+                />
+            </app-col>
+        </app-row>
+    </app-container></template>
 
 <script setup lang="ts">
 // @ts-ignore
@@ -42,7 +81,16 @@ import {ref} from 'vue'
 import AppButton, {Variant} from "../Button.vue";
 import AppPopup from '../Popup.vue'
 // @ts-ignore
-import AppControl from '../Control.vue'
+import {Views} from "../FeeCard.vue";
+// @ts-ignore
+import AppControl, {Type} from '../Control.vue'
+// @ts-ignore
+import AppFeeCard from '../FeeCard.vue'
+import AppContainer from '../shared/Container.vue'
+import AppRow from '../shared/Row.vue'
+import AppCol from '../shared/Col.vue'
+import AppForm from '../shared/Form.vue'
+import AppFormGroup from '../shared/FormGroup.vue'
 import {usePopup} from "../../use/popup";
 import {useMode} from "../../use/mode";
 import {useForm} from "../../use/form";
@@ -67,7 +115,8 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId = ''
-const fees = ref([])
+const viewMode = ref(Views.CARD)
+const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const errors = ref([])
 const onError = useError(errors)
 const onValidated = () => {
@@ -125,7 +174,7 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
 const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
-const edit = () => {
+const edit = (item: FeeServiceCreateParamsInterface) => {
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = () => {
