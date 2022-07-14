@@ -37,7 +37,7 @@
                     <app-form-group
                             class="w-full"
                             label="Family"
-                            for="family"
+                            target="family"
                             :required="true"
                             :errors="form.errors.family.value"
                     >
@@ -56,7 +56,7 @@
                     <app-form-group
                             class="w-full"
                             label="Name"
-                            for="Name"
+                            target="Name"
                             :required="true"
                             :errors="form.errors.name.value"
                     >
@@ -70,7 +70,7 @@
                     <app-form-group
                             class="w-full"
                             label="Date of birth"
-                            for="dateOfBirth"
+                            target="dateOfBirth"
                     >
                         <app-control
                                 v-model="form.fields.dateOfBirth"
@@ -82,7 +82,7 @@
                     <app-form-group
                             class="w-full"
                             label="Sex"
-                            for="sex"
+                            target="sex"
                     >
                         <app-control
                                 v-model="form.fields.sex"

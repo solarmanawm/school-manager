@@ -37,7 +37,7 @@
                     <app-form-group
                             class="w-full"
                             label="Name"
-                            for="Name"
+                            target="Name"
                             :required="true"
                             :errors="form.errors.name.value"
                     >
