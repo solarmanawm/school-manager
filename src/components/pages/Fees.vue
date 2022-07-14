@@ -60,23 +60,26 @@
                             :required="true"
                             :errors="form.errors.families.value"
                     >
+                        <template #context>
+                            <a
+                                    href="#"
+                                    @click.prevent="selectAllFamilies"
+                                    class="text-blue-500 hover:text-blue-700 underline decoration-dashed hover:no-underline"
+                            >Select all</a>
+                        </template>
                         <app-control
                                 v-model="form.fields.families"
                                 class="w-full"
                                 id="families"
                                 :type="Type.CHECKBOX"
                                 :error="form.errors.families.value.length > 0"
-                                :options="[
-                                    {title: 'Family #1', value: 'id1'},
-                                    {title: 'Family #2', value: 'id2'},
-                                ]"
+                                :options="families"
                         />
                     </app-form-group>
                     <app-form-group
                             class="w-full"
                             label="Description"
                             target="description"
-                            :required="true"
                             :errors="form.errors.description.value"
                     >
                         <app-control
@@ -147,6 +150,11 @@ import {useForm} from "../../use/form";
 import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
 import {useError} from "../../use/error";
 import service from "../../service";
+
+const families = [
+    {title: 'Family #1', value: 'id1'},
+    {title: 'Family #2', value: 'id2'},
+];
 
 enum SubmitActions {
     ADD = 'ADD',
@@ -234,5 +242,12 @@ const edit = (item: FeeServiceCreateParamsInterface) => {
 const remove = () => {
     actionMode.set(SubmitActions.REMOVE)
 }
+const selectAllFamilies = (() => {
+    let selected = false;
+    return () => {
+        form.fields.families = selected ? [] : families.map(({value}) => value)
+        selected = !selected
+    }
+})()
 const name = 'Fees'
 </script>

@@ -3,8 +3,11 @@
         <label
                 v-if="label"
                 :for="target"
-                class="text-sm mb-2"
-        >{{ label }} <span v-if="required" class="text-red-500 font-bold">*</span></label>
+                class="text-sm mb-2 flex items-center justify-between"
+        >
+            <span>{{ label }} <span v-if="required" class="text-red-500 font-bold">*</span></span>
+            <slot name="context"></slot>
+        </label>
         <slot></slot>
         <ul v-if="errors.length">
             <li v-for="error in errors" class="text-red-500 mt-2 text-sm">{{ error.$message }}</li>
