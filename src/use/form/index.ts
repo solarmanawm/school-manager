@@ -4,7 +4,7 @@ import {useFormValidator} from "../formValidator";
 
 type VoidFunction = () => void
 
-type Data<T> = { [key in keyof T]?: string | number }
+type Data<T> = { [key in keyof T]?: string | number | any[] }
 
 type UseFormParams<T, V> = {
     initialValues?: Data<T>;
