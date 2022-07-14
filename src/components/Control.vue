@@ -1,5 +1,8 @@
 <template>
-    <div class="w-full">
+    <div
+            :class="rootClassList"
+            class="w-full"
+    >
         <input
                 v-model="value"
                 v-if="isInput"
@@ -9,7 +12,6 @@
                 :placeholder="placeholder"
                 @change="update"
                 @input="update"
-                class="control w-full h-10"
         />
         <app-button-set
                 v-else-if="isButtonSet"
@@ -38,8 +40,22 @@
                 :placeholder="placeholder"
                 @change="update"
                 @input="update"
-                class="control w-full h-24 py-2"
+                class="control w-full py-2"
         />
+        <template v-else-if="isCheckbox">
+            <label
+                    v-for="option in options"
+                    class="first:mt-0 mt-1"
+            >
+                <input
+                        type="checkbox"
+                        v-model="value"
+                        :value="option.value"
+                        @change="update"
+                />
+                {{ option.title }}
+            </label>
+        </template>
     </div>
 </template>
 
@@ -53,6 +69,7 @@ export enum Type {
     SELECT = 'select',
     DROPDOWN = 'dropdown',
     DATE_PICKER = 'date-picker',
+    CHECKBOX = 'checkbox',
 }
 </script>
 
@@ -65,7 +82,7 @@ import AppDropdown from './controls/Dropdown.vue'
 import AppDatePicker from './controls/DatePicker.vue'
 
 interface Emits {
-    (e: 'update:modelValue', value: string): void;
+    (e: 'update:modelValue', value: string | string[]): void;
 }
 
 interface Props {
@@ -73,7 +90,7 @@ interface Props {
     type?: string;
     error?: boolean;
     placeholder?: string;
-    modelValue: string;
+    modelValue: string | string[];
     variant?: string;
     options?: Option[];
 }
@@ -91,10 +108,16 @@ const isDropdown = computed(() => type.value === Type.DROPDOWN)
 const isButtonSet = computed(() => type.value === Type.BUTTON_SET)
 const isDatePicker = computed(() => type.value === Type.DATE_PICKER)
 const isTextArea = computed(() => type.value === Type.TEXTAREA)
+const isCheckbox = computed(() => type.value === Type.CHECKBOX)
 const classList = computed(() => ({
-    'border rounded px-3 focus:bg-gray-100 focus:border-blue-500': isInput || isTextArea,
-    'border-gray-200 hover:border-gray-300': (isInput || isTextArea) && !props.error,
-    'border-red-500': (isInput || isTextArea) && props.error,
+    'control w-full border rounded px-3 focus:bg-gray-100 focus:border-blue-500': isInput.value || isTextArea.value,
+    'border-gray-200 hover:border-gray-300': (isInput.value || isTextArea.value) && !props.error,
+    'h-10': isInput.value,
+    'h-24 py-2': isTextArea.value,
+    'border-red-500': (isInput.value || isTextArea.value) && props.error,
+}))
+const rootClassList = computed(() => ({
+    'flex flex-col items-start': isCheckbox.value,
 }))
 const name = 'Control'
 
