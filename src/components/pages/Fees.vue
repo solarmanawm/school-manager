@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-const name = 'Pays'
+const name = 'Fees'
 </script>

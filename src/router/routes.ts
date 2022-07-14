@@ -4,7 +4,7 @@ import Register from '../components/pages/Register.vue'
 import Dashboard from '../components/pages/Dashboard.vue'
 import Families from '../components/pages/Families.vue'
 import Students from '../components/pages/Students.vue'
-import Pays from '../components/pages/Pays.vue'
+import Fees from '../components/pages/Fees.vue'
 
 import routeNames from './names'
 
@@ -46,12 +46,12 @@ const routes: any[] = [
         },
     },
     {
-        path: '/pays',
-        name: routeNames.pays,
-        component: Pays,
+        path: '/fees',
+        name: routeNames.fees,
+        component: Fees,
         meta: {
             requiresAuth: true,
-            title: 'Pays',
+            title: 'Fees',
         },
     },
     {

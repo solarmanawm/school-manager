@@ -7,7 +7,7 @@ const routeNames: {
     dashboard: 'DASHBOARD',
     families: 'FAMILIES',
     students: 'STUDENTS',
-    pays: 'PAYS',
+    fees: 'FEES',
 }
 
 export default routeNames
