@@ -72,7 +72,8 @@
                 />
             </app-col>
         </app-row>
-    </app-container></template>
+    </app-container>
+</template>
 
 <script setup lang="ts">
 // @ts-ignore
