@@ -1,13 +1,7 @@
 <template>
-$END$
+
 </template>
 
-<script>
-export default {
-name: "FeeCard"
-}
+<script setup lang="ts">
+const name = 'FeeCard'
 </script>
-
-<style scoped>
-
-</style>
