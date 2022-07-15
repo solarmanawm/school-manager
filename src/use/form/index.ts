@@ -6,6 +6,8 @@ type VoidFunction = () => void
 
 type Data<T> = { [key in keyof T]?: string | number | any[] }
 
+type Fields<T> = { [key in keyof T]: Ref }
+
 type UseFormParams<T, V> = {
     initialValues?: Data<T>;
     validation?: V,
@@ -23,7 +25,11 @@ class FormValidationError extends Error {
 
 export function useForm<T, V>(params: UseFormParams<T, V>) {
     const {onValidated, onError, initialValues = {}, validation} = params
-    const fields = reactive<T>({...initialValues})
+    // const fields = reactive<T>({...initialValues})
+    const fields: Fields<T> = Object.keys(initialValues).reduce((acc: Fields<T>, current: string) => {
+        acc[current as keyof Fields<T>] = ref(initialValues[current as keyof typeof initialValues])
+        return acc
+    }, {} as Fields<T>)
     const validationKeys = validation ? Object.keys(validation) : []
     const errorsPlaceholder = validationKeys.reduce((acc: {[key in keyof V]?: string[]}, key: string) => {
         acc[key as keyof V] = []
@@ -62,7 +68,7 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
         const keys = Object.keys(initialValues)
 
         for (const key of keys) {
-            fields[key] = initialValues[key as keyof typeof initialValues]
+            fields[key as keyof Fields<T>].value = initialValues[key as keyof typeof initialValues]
         }
 
         if (validator) {
