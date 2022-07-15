@@ -12,6 +12,15 @@
                 'mr-6': !isCardView,
             }">Children: <strong>2</strong></p>
         </div>
+        <p class="w-full">
+            <app-button
+                    class="w-full mb-2"
+                    :variant="Variant.PRIMARY"
+                    :size="Size.SMALL"
+                    @click="showDetails"
+            >Details
+            </app-button>
+        </p>
         <p class="flex justify-between">
             <app-button
                     class="flex-1 mr-1"
@@ -73,6 +82,7 @@ const edit = () => {
 const remove = () => {
     emit('remove', props.item.id)
 }
+const showDetails = () => {}
 const name = 'FamilyCard'
 
 watch(() => props.view, (value: string) => {
