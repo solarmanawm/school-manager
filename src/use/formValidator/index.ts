@@ -3,19 +3,26 @@ import {computed, ComputedRef, ref, Ref} from "vue";
 import useVuelidate, {ErrorObject} from "@vuelidate/core"
 import * as validators from "@vuelidate/validators"
 
+type Fields = { [key: string]: Ref }
+
 const mappedValidators = {
-    required: (formFields: Ref, value: any) => validators.required,
+    required: () => validators.required,
+    minLength: (value: [] | object | string) => validators.minLength(value),
 }
 
-export function useFormValidator<T>(fields: Ref, validation: T) {
+export function useFormValidator<T>(fields: Fields, validation: T) {
     const validationKeys = Object.keys(validation)
     const validationObj = validationKeys.reduce((acc: {[key in keyof T]?: any}, key: string) => {
         const current = Object.entries(validation[key as keyof T])
 
         if (current.length) {
-            const [validatorName, validatorParam] = current.pop()!
-            acc[key as keyof T] = {
-                [validatorName]: mappedValidators[validatorName as keyof typeof mappedValidators](fields, validatorParam),
+            for (const v of [...current]) {
+                if (!acc[key as keyof T]) {
+                    acc[key as keyof T] = {}
+                }
+
+                const [validatorName, validatorParam] = v
+                acc[key as keyof T][validatorName] = mappedValidators[validatorName as keyof typeof mappedValidators](validatorParam)
             }
         }
 
