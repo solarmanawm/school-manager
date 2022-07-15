@@ -6,18 +6,18 @@ import * as validators from "@vuelidate/validators"
 
 type Fields = { [key: string]: Ref }
 
-const wightMessage = (message: string, fn: ValidationRule) => {
-    return helpers.withMessage(message, fn)
+const withMessage = (message: string, rule: ValidationRule) => {
+    return helpers.withMessage(message, rule)
 }
 
 const mappedValidators = {
     required: (_: any, message?: string) => {
         const rule = validators.required
-        return message ? wightMessage(message, rule) : rule
+        return message ? withMessage(message, rule) : rule
     },
     minLength: (value: [] | object | string, message?: string) => {
         const rule = validators.minLength(value)
-        return message ? wightMessage(message, rule) : rule
+        return message ? withMessage(message, rule) : rule
     },
 }
 
