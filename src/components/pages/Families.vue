@@ -42,7 +42,7 @@
                             :errors="form.errors.name.value"
                     >
                         <app-control
-                                v-model="form.fields.name"
+                                v-model="form.fields.name.value"
                                 :error="form.errors.name.value.length > 0"
                                 class="w-full"
                                 id="name"

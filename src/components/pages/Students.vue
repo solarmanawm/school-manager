@@ -42,7 +42,7 @@
                             :errors="form.errors.family.value"
                     >
                         <app-control
-                                v-model="form.fields.family"
+                                v-model="form.fields.family.value"
                                 class="w-full"
                                 id="family"
                                 :type="Type.DROPDOWN"
@@ -61,7 +61,7 @@
                             :errors="form.errors.name.value"
                     >
                         <app-control
-                                v-model="form.fields.name"
+                                v-model="form.fields.name.value"
                                 :error="form.errors.name.value.length > 0"
                                 class="w-full"
                                 id="name"
@@ -73,7 +73,7 @@
                             target="dateOfBirth"
                     >
                         <app-control
-                                v-model="form.fields.dateOfBirth"
+                                v-model="form.fields.dateOfBirth.value"
                                 :type="Type.DATE_PICKER"
                                 class="w-full"
                                 id="dateOfBirth"
@@ -85,7 +85,7 @@
                             target="sex"
                     >
                         <app-control
-                                v-model="form.fields.sex"
+                                v-model="form.fields.sex.value"
                                 class="w-full"
                                 id="sex"
                                 type="button-set"

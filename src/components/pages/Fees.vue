@@ -31,7 +31,7 @@
                             :errors="form.errors.name.value"
                     >
                         <app-control
-                                v-model="form.fields.name"
+                                v-model="form.fields.name.value"
                                 class="w-full"
                                 id="name"
                                 :type="Type.TEXT"
@@ -46,7 +46,7 @@
                             :errors="form.errors.value.value"
                     >
                         <app-control
-                                v-model="form.fields.value"
+                                v-model="form.fields.value.value"
                                 class="w-full"
                                 id="value"
                                 :type="Type.TEXT"
@@ -68,7 +68,7 @@
                             >Select all</a>
                         </template>
                         <app-control
-                                v-model="form.fields.families"
+                                v-model="form.fields.families.value"
                                 class="w-full"
                                 id="families"
                                 :type="Type.CHECKBOX"
@@ -83,7 +83,7 @@
                             :errors="form.errors.description.value"
                     >
                         <app-control
-                                v-model="form.fields.description"
+                                v-model="form.fields.description.value"
                                 class="w-full"
                                 id="description"
                                 :type="Type.TEXTAREA"
@@ -228,7 +228,10 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
             required: true,
         },
         description: {},
-        families: {},
+        families: {
+            required: true,
+            minLength: 2,
+        },
     },
     onValidated,
     onError,
@@ -245,7 +248,7 @@ const remove = () => {
 const selectAllFamilies = (() => {
     let selected = false;
     return () => {
-        form.fields.families = selected ? [] : families.map(({value}) => value)
+        form.fields.families.value = selected ? [] : families.map(({value}) => value)
         selected = !selected
     }
 })()
