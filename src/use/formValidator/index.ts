@@ -1,16 +1,27 @@
 // @ts-ignore
 import {computed, ComputedRef, ref, Ref} from "vue";
-import useVuelidate, {ErrorObject} from "@vuelidate/core"
+import useVuelidate, {ErrorObject, ValidationRule} from "@vuelidate/core"
+import { helpers } from '@vuelidate/validators'
 import * as validators from "@vuelidate/validators"
 
 type Fields = { [key: string]: Ref }
 
-const mappedValidators = {
-    required: () => validators.required,
-    minLength: (value: [] | object | string) => validators.minLength(value),
+const wightMessage = (message: string, fn: ValidationRule) => {
+    return helpers.withMessage(message, fn)
 }
 
-export function useFormValidator<T>(fields: Fields, validation: T) {
+const mappedValidators = {
+    required: (_: any, message?: string) => {
+        const rule = validators.required
+        return message ? wightMessage(message, rule) : rule
+    },
+    minLength: (value: [] | object | string, message?: string) => {
+        const rule = validators.minLength(value)
+        return message ? wightMessage(message, rule) : rule
+    },
+}
+
+export function useFormValidator<T>(fields: Fields, validation: T, validationMessages: Partial<T>) {
     const validationKeys = Object.keys(validation)
     const validationObj = validationKeys.reduce((acc: {[key in keyof T]?: any}, key: string) => {
         const current = Object.entries(validation[key as keyof T])
@@ -22,7 +33,10 @@ export function useFormValidator<T>(fields: Fields, validation: T) {
                 }
 
                 const [validatorName, validatorParam] = v
-                acc[key as keyof T][validatorName] = mappedValidators[validatorName as keyof typeof mappedValidators](validatorParam)
+                const validationMessage = validationMessages[key as keyof T]
+                // @ts-ignore
+                const message = validationMessage ? validationMessage[validatorName] : ''
+                acc[key as keyof T][validatorName] = mappedValidators[validatorName as keyof typeof mappedValidators](validatorParam, message)
             }
         }
 

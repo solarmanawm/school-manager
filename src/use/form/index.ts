@@ -11,6 +11,7 @@ type Fields<T> = { [key in keyof T]: Ref }
 type UseFormParams<T, V> = {
     initialValues?: Data<T>;
     validation?: V,
+    validationMessages?: Partial<V>,
     onValidated?: VoidFunction;
     onError?: (error: any) => void;
 }
@@ -24,7 +25,7 @@ class FormValidationError extends Error {
 }
 
 export function useForm<T, V>(params: UseFormParams<T, V>) {
-    const {onValidated, onError, initialValues = {}, validation} = params
+    const {onValidated, onError, initialValues = {}, validation, validationMessages = {}} = params
     // const fields = reactive<T>({...initialValues})
     const fields: Fields<T> = Object.keys(initialValues).reduce((acc: Fields<T>, current: string) => {
         acc[current as keyof Fields<T>] = ref(initialValues[current as keyof typeof initialValues])
@@ -35,7 +36,7 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
         acc[key as keyof V] = []
         return acc
     }, {})
-    const validator = validation ? useFormValidator<V>(fields, validation) : null
+    const validator = validation ? useFormValidator<V>(fields, validation, validationMessages) : null
 
     const submit = (shouldBeValidated: boolean = true) => {
         return new Promise((resolve) => {

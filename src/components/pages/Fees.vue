@@ -232,7 +232,19 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
         description: {},
         families: {
             required: true,
-            minLength: 2,
+            minLength: 1,
+        },
+    },
+    validationMessages: {
+        name: {
+            required: 'Please, enter a name.',
+        },
+        value: {
+            required: 'You need to define a fee amount.',
+        },
+        families: {
+            required: 'You need to select at least one item.',
+            minLength: 'You need to select at least one item.',
         },
     },
     onValidated,
