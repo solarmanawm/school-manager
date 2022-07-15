@@ -264,9 +264,14 @@ const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
 const edit = (item: FeeServiceCreateParamsInterface) => {
+    itemToHandleId = item.id
+    form.fields.name.value = item.name
+    form.fields.value.value = item.value
+    form.fields.families.value = item.families
     actionMode.set(SubmitActions.EDIT)
 }
-const remove = () => {
+const remove = (id: string) => {
+    itemToHandleId = id
     actionMode.set(SubmitActions.REMOVE)
 }
 const name = 'Fees'

@@ -210,7 +210,7 @@ const add = () => {
 }
 const edit = (item: Family) => {
     itemToHandleId = item.id
-    form.fields.name = item.name
+    form.fields.name.value = item.name
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {

@@ -248,10 +248,10 @@ const add = () => {
 }
 const edit = (item: Student) => {
     itemToHandleId = item.id
-    form.fields.name = item.name
-    form.fields.sex = item.sex
-    form.fields.dateOfBirth = item.dateOfBirth
-    form.fields.family = item.family
+    form.fields.name.value = item.name
+    form.fields.sex.value = item.sex
+    form.fields.dateOfBirth.value = item.dateOfBirth
+    form.fields.family.value = item.family
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {
