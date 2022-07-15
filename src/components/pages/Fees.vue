@@ -228,6 +228,7 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
         },
         value: {
             required: true,
+            integer: true,
         },
         description: {},
         families: {

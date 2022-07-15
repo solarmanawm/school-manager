@@ -11,14 +11,9 @@ const withMessage = (message: string, rule: ValidationRule) => {
 }
 
 const mappedValidators = {
-    required: (_: any, message?: string) => {
-        const rule = validators.required
-        return message ? withMessage(message, rule) : rule
-    },
-    minLength: (value: [] | object | string, message?: string) => {
-        const rule = validators.minLength(value)
-        return message ? withMessage(message, rule) : rule
-    },
+    integer: () => validators.integer,
+    required: () => validators.required,
+    minLength: (value: [] | object | string) => validators.minLength(value),
 }
 
 export function useFormValidator<T>(fields: Fields, validation: T, validationMessages: Partial<T>) {
@@ -36,7 +31,8 @@ export function useFormValidator<T>(fields: Fields, validation: T, validationMes
                 const validationMessage = validationMessages[key as keyof T]
                 // @ts-ignore
                 const message = validationMessage ? validationMessage[validatorName] : ''
-                acc[key as keyof T][validatorName] = mappedValidators[validatorName as keyof typeof mappedValidators](validatorParam, message)
+                const rule = mappedValidators[validatorName as keyof typeof mappedValidators](validatorParam)
+                acc[key as keyof T][validatorName] = message ? withMessage(message, rule) : rule
             }
         }
 
