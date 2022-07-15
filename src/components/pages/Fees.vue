@@ -15,7 +15,7 @@
                 v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
-                Create a new student
+                {{ popupTitle }}
             </template>
             <template v-slot:content>
                 <app-form
@@ -91,6 +91,7 @@
                         />
                     </app-form-group>
                 </app-form>
+                <p v-else class="text-center">Are you sure you want to remove this fee?</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
@@ -162,6 +163,12 @@ enum SubmitActions {
     REMOVE = 'REMOVE',
 }
 
+enum PopupTitle {
+    ADD = 'Create a new fee',
+    EDIT = 'Edit the fee',
+    REMOVE = 'Remove the fee',
+}
+
 interface SubmitActionsInterface {
     ADD: string;
     EDIT: string;
@@ -175,6 +182,7 @@ type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 let itemToHandleId = ''
 const allFieldsSelected = ref(false)
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
+const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const viewMode = ref(Views.CARD)
 const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const errors = ref([])

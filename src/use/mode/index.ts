@@ -5,6 +5,7 @@ interface UseMode<T> {
     is: (modeToCompare?: ValueOf<T>) => boolean;
     set: (newMode: ValueOf<T>) => void;
     reset: () => void;
+    value: () => string;
 }
 
 type ValueOf<T> = T[keyof T];
@@ -29,6 +30,8 @@ export function useMode<T>(modes: T, onChange?: () => void): UseMode<T> {
         mode.value = ''
     }
 
+    const value = () => mode.value
+
     watch(mode, () => {
         if (typeof onChange === 'function') {
             onChange()
@@ -39,5 +42,6 @@ export function useMode<T>(modes: T, onChange?: () => void): UseMode<T> {
         is,
         set,
         reset,
+        value,
     }
 }

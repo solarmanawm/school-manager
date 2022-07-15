@@ -26,7 +26,7 @@
                 v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
-                Create a new student
+                {{ popupTitle }}
             </template>
             <template v-slot:content>
                 <app-form
@@ -48,8 +48,8 @@
                                 :type="Type.DROPDOWN"
                                 :error="form.errors.family.value.length > 0"
                                 :options="[
-                                        {title: 'Male', value: 'male'},
-                                        {title: 'Female', value: 'female'},
+                                        {title: 'Family #1', value: '1'},
+                                        {title: 'Family #2', value: '2'},
                                 ]"
                         />
                     </app-form-group>
@@ -136,7 +136,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {reactive, ref, watch} from "vue";
+import {computed, reactive, ref, watch} from "vue";
 
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
@@ -164,6 +164,12 @@ enum SubmitActions {
     ADD = 'ADD',
     EDIT = 'EDIT',
     REMOVE = 'REMOVE',
+}
+
+enum PopupTitle {
+    ADD = 'Create a new student',
+    EDIT = 'Edit the student',
+    REMOVE = 'Remove the student',
 }
 
 interface SubmitActionsInterface {
@@ -236,6 +242,7 @@ const popup = usePopup({
         form.reset()
     },
 })
+const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const add = () => {
     actionMode.set(SubmitActions.ADD)
 }

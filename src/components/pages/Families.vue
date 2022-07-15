@@ -26,7 +26,7 @@
                 v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
-                Create a new student
+                {{ popupTitle }}
             </template>
             <template v-slot:content>
                 <app-form
@@ -105,7 +105,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {FamilyServiceCreateParamsInterface} from '../../classes/AbstractFamilyService'
 // @ts-ignore
 import {Views} from "../FamilyCard.vue"
@@ -132,6 +132,12 @@ enum SubmitActions {
     ADD = 'ADD',
     EDIT = 'EDIT',
     REMOVE = 'REMOVE',
+}
+
+enum PopupTitle {
+    ADD = 'Create a new family',
+    EDIT = 'Edit the family',
+    REMOVE = 'Remove the family',
 }
 
 interface SubmitActionsInterface {
@@ -211,5 +217,6 @@ const remove = (id: string) => {
     itemToHandleId = id
     actionMode.set(SubmitActions.REMOVE)
 }
+const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const name = 'Families'
 </script>
