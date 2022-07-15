@@ -88,7 +88,7 @@
                                 v-model="form.fields.sex.value"
                                 class="w-full"
                                 id="sex"
-                                type="button-set"
+                                :type="Type.BUTTON_SET"
                                 :variant="Variant.LIGHT"
                                 :options="[
                                         {title: 'Male', value: 'male'},

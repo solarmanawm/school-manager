@@ -9,6 +9,7 @@ export interface FamilyServiceCreateParamsInterface {
     name: string;
     family: string;
     dateOfBirth?: string;
+    fees?: string[];
 }
 
 /**

@@ -48,6 +48,23 @@
                                 id="name"
                         />
                     </app-form-group>
+                    <app-form-group
+                            class="w-full"
+                            label="Fees"
+                            target="fees"
+                            :required="true"
+                    >
+                        <app-control
+                                v-model="form.fields.fees.value"
+                                class="w-full"
+                                id="fees"
+                                :type="Type.DROPDOWN"
+                                :options="[
+                                        {title: 'Fee 1', value: '1'},
+                                        {title: 'Fee 2', value: '2'},
+                                ]"
+                        />
+                    </app-form-group>
                 </app-form>
                 <p v-else class="text-center">Are you sure you want to remove this family?</p>
             </template>
@@ -93,7 +110,7 @@ import {FamilyServiceCreateParamsInterface} from '../../classes/AbstractFamilySe
 // @ts-ignore
 import {Views} from "../FamilyCard.vue"
 // @ts-ignore
-import AppControl from '../Control.vue'
+import AppControl, {Type} from '../Control.vue'
 // @ts-ignore
 import AppButton, {Variant} from "../Button.vue"
 import AppPopup from '../Popup.vue'
@@ -165,6 +182,7 @@ const form = useForm<FamilyServiceCreateParamsInterface, FamilyValidation>({
     initialValues: {
         id: '',
         name: '',
+        fees: [],
     },
     validation: {
         name: {
