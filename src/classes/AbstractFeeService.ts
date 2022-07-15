@@ -24,6 +24,8 @@ export interface FeeServiceUpdateParamsInterface {
  * Student Service Create Response Interface
  */
 export interface FeeServiceCreateResponseInterface {
+    error: Error;
+    item: FeeServiceCreateParamsInterface;
 }
 
 /**

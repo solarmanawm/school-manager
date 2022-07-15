@@ -1,6 +1,8 @@
-import {FeeServiceCreateResponseInterface, FeeServiceCreateParamsInterface, FeeServiceUpdateParamsInterface, FeeServiceInterface} from "./AbstractFeeService";
+import {FeeServiceCreateResponseInterface, FeeServiceCreateParamsInterface, FeeServiceUpdateParamsInterface} from "./AbstractFeeService";
 import AbstractFeeService from "./AbstractFeeService"
-// import RequestBuilder from "./RequestBuilder";
+import RequestBuilder from "./RequestBuilder"
+
+import {useFeeStore} from "../store/fee";
 
 class FirebaseStudentService extends AbstractFeeService {
     /**
@@ -9,12 +11,19 @@ class FirebaseStudentService extends AbstractFeeService {
      * @returns Promise<FeeServiceCreateResponseInterface>
      */
     async create(params: FeeServiceCreateParamsInterface): Promise<FeeServiceCreateResponseInterface> {
-        // await new RequestBuilder()
-        //     .method('post')
-        //     .url('user/new')
-        //     .data(params)
-        //     .send()
-        return Promise.resolve({} as FeeServiceCreateResponseInterface)
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data(params)
+            .mock<FeeServiceCreateParamsInterface>(true)
+            .then(({error, item}) => {
+                if (!error) {
+                    const feeStore = useFeeStore()
+                    feeStore.add(params)
+                }
+
+                return Promise.resolve({} as FeeServiceCreateResponseInterface)
+            })
     }
 
     /**
@@ -23,12 +32,14 @@ class FirebaseStudentService extends AbstractFeeService {
      * @returns Promise<StudentServiceCreateResponseInterface>
      */
     async update(params: FeeServiceUpdateParamsInterface): Promise<FeeServiceCreateResponseInterface> {
-        // await new RequestBuilder()
-        //     .method('post')
-        //     .url('user/new')
-        //     .data(params)
-        //     .send()
-        return Promise.resolve({} as FeeServiceCreateResponseInterface)
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data(params)
+            .mock(true)
+            .then(() => {
+                return Promise.resolve({} as FeeServiceCreateResponseInterface)
+            })
     }
 
     /**

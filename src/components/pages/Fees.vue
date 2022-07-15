@@ -1,6 +1,6 @@
 <template>
     <router-view
-            :fees="fees"
+            :fees="feeStore.items"
             @add="add"
             @edit="edit"
             @remove="remove"
@@ -121,6 +121,7 @@ import {usePopup} from "../../use/popup";
 import {useMode} from "../../use/mode";
 import {useForm} from "../../use/form";
 import {useError} from "../../use/error";
+import {useFeeStore} from "../../store/fee";
 import service from "../../service";
 
 const families = [
@@ -157,6 +158,7 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId = ''
+const feeStore = useFeeStore()
 const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
@@ -167,22 +169,20 @@ const onError = useError(errors)
 const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
-            service.fee.create(form.fields).then(() => {
-                fees.value.push(form.values())
-            }).then(resolve)
+            return service.fee.create(form.values()).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {
-            service.fee.update({
+            return service.fee.update({
                 from: {} as FeeServiceCreateParamsInterface,
-                to: form.fields,
+                to: form.values(),
             }).then(() => {
 
             }).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
-            service.fee.delete(itemToHandleId).then(() => {
+            return service.fee.delete(itemToHandleId).then(() => {
 
             }).then(resolve)
         }
@@ -239,7 +239,8 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
 const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
-const edit = (item: FeeServiceCreateParamsInterface) => {
+const edit = (id: string) => {
+    const item = feeStore.getById(id)
     itemToHandleId = item.id
     form.fields.name.value = item.name
     form.fields.value.value = item.value

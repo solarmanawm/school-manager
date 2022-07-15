@@ -60,6 +60,15 @@ class RequestBuilder<T> implements RequestBuilderInterface {
 
         return axios(this.requestConfig as AxiosRequestConfig)
     }
+
+    mock<T>(state: boolean): Promise<{error?: Error; item: T}> {
+        const error = state ? undefined : new Error('Mocked error in RequestBuilder')
+        return Promise.resolve({
+            error,
+            item: {} as T,
+        })
+    }
 }
+
 
 export default RequestBuilder

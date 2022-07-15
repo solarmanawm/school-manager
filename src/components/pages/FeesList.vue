@@ -51,9 +51,7 @@ interface Props {
 
 interface Emits {
     (event: 'add'): void;
-
-    (event: 'edit', item: FeeServiceCreateParamsInterface): void;
-
+    (event: 'edit', id: string): void;
     (event: 'remove', id: string): void;
 }
 
@@ -64,8 +62,8 @@ const viewMode = ref(Views.CARD)
 const add = () => {
     emits('add')
 }
-const edit = (item: FeeServiceCreateParamsInterface) => {
-    emits('edit', item)
+const edit = (id: string) => {
+    emits('edit', id)
 }
 const remove = (id: string) => {
     emits('remove', id)
