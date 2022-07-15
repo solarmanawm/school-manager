@@ -63,9 +63,9 @@
                         <template #context>
                             <a
                                     href="#"
-                                    @click.prevent="selectAllFamilies"
+                                    @click.prevent="allFieldsSelected = !allFieldsSelected"
                                     class="text-blue-500 hover:text-blue-700 underline decoration-dashed hover:no-underline"
-                            >Select all</a>
+                            >{{ selectAllText }}</a>
                         </template>
                         <app-control
                                 v-model="form.fields.families.value"
@@ -129,7 +129,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 // @ts-ignore
 import AppButton, {Variant} from "../Button.vue";
 import AppPopup from '../Popup.vue'
@@ -173,6 +173,8 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId = ''
+const allFieldsSelected = ref(false)
+const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const viewMode = ref(Views.CARD)
 const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const errors = ref([])
@@ -245,12 +247,9 @@ const edit = (item: FeeServiceCreateParamsInterface) => {
 const remove = () => {
     actionMode.set(SubmitActions.REMOVE)
 }
-const selectAllFamilies = (() => {
-    let selected = false;
-    return () => {
-        form.fields.families.value = selected ? [] : families.map(({value}) => value)
-        selected = !selected
-    }
-})()
 const name = 'Fees'
+
+watch(allFieldsSelected, (isSelected: boolean) => {
+    form.fields.families.value = isSelected ? families.map(({value}) => value) : []
+})
 </script>
