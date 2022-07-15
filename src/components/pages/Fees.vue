@@ -183,7 +183,7 @@ const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
             service.fee.create(form.fields).then(() => {
-                fees.value.push({...form.fields})
+                fees.value.push(form.values())
             }).then(resolve)
         }
 

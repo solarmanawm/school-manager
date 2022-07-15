@@ -77,8 +77,16 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
         }
     }
 
+    const values = () => {
+        return Object.keys(fields).reduce((acc, current: string) => {
+            acc[current as keyof Fields<T>] = fields[current as keyof Fields<T>].value
+            return acc
+        }, {} as Fields<T>)
+    }
+
     return {
         fields,
+        values,
         errors: validator ? validator.errors : errorsPlaceholder,
         submit,
         reset,

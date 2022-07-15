@@ -183,7 +183,7 @@ const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
             service.student.create(form.fields).then(() => {
-                students.value.push({...form.fields})
+                students.value.push(form.values())
             }).then(resolve)
         }
 

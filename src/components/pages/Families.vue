@@ -152,7 +152,7 @@ const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
             service.family.create(form.fields).then(() => {
-                families.value.push({...form.fields})
+                families.value.push(form.values())
             }).then(resolve)
         }
 
