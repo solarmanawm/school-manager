@@ -2,12 +2,18 @@
     <p>single fee</p>
 </template>
 
-<script>
-export default {
-    name: "SingleFee"
+<script setup lang="ts">
+import {defineProps} from "vue";
+import {useUIStore} from "../../store/ui";
+import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
+
+interface Props {
+    fees: FeeServiceCreateParamsInterface[];
 }
+
+const name = 'FeesItem'
+const props = defineProps<Props>()
+const uiStore = useUIStore()
+
+uiStore.title = 'new title'
 </script>
-
-<style scoped>
-
-</style>
