@@ -16,7 +16,7 @@
                         class="w-full mb-2"
                         :variant="Variant.PRIMARY"
                         :size="Size.SMALL"
-                        @click="showDetails"
+                        @click="details"
                 >Details
                 </app-button>
             </p>
@@ -58,8 +58,8 @@ import AppCard from './Card.vue'
 
 interface Emits {
     (event: 'edit', item: FeeServiceCreateParamsInterface): void;
-
     (event: 'remove', id: string): void;
+    (event: 'details', id: string): void;
 }
 
 interface Props {
@@ -77,7 +77,8 @@ const edit = () => {
 const remove = () => {
     emit('remove', props.item.id)
 }
-const showDetails = () => {
+const details = () => {
+    emit('details', props.item.id)
 }
 const name = 'FeeCard'
 

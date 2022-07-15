@@ -5,6 +5,8 @@ import Dashboard from '../components/pages/Dashboard.vue'
 import Families from '../components/pages/Families.vue'
 import Students from '../components/pages/Students.vue'
 import Fees from '../components/pages/Fees.vue'
+import FeesList from '../components/pages/FeesList.vue'
+import FeesItem from '../components/pages/FeesItem.vue'
 
 import routeNames from './names'
 
@@ -47,12 +49,32 @@ const routes: any[] = [
     },
     {
         path: '/fees',
-        name: routeNames.fees,
         component: Fees,
+        name: routeNames.fees,
         meta: {
             requiresAuth: true,
             title: 'Fees',
         },
+        children: [
+            {
+                path: '',
+                name: routeNames.fees,
+                component: FeesList,
+                meta: {
+                    requiresAuth: true,
+                    title: 'All Fee',
+                },
+            },
+            {
+                path: ':id',
+                name: routeNames.fee,
+                component: FeesItem,
+                meta: {
+                    requiresAuth: true,
+                    title: 'Single Fee',
+                },
+            },
+        ],
     },
     {
         path: '/students',

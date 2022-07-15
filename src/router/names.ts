@@ -8,6 +8,7 @@ const routeNames: {
     families: 'FAMILIES',
     students: 'STUDENTS',
     fees: 'FEES',
+    fee: 'FEE',
 }
 
 export default routeNames

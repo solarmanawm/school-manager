@@ -1,14 +1,10 @@
 <template>
-    <Teleport to="#app-context-buttons">
-        <div class="flex">
-            <app-button
-                    :variant="Variant.LIGHT"
-                    @click="add"
-                    class="whitespace-nowrap"
-            >New Fee
-            </app-button>
-        </div>
-    </Teleport>
+    <router-view
+            :fees="fees"
+            @add="add"
+            @edit="edit"
+            @remove="remove"
+    ></router-view>
 
     <Teleport to="#app-popup">
         <app-popup
@@ -108,48 +104,22 @@
             </template>
         </app-popup>
     </Teleport>
-
-    <app-container>
-        <app-row>
-            <app-col
-                    v-for="item in fees"
-                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
-                    class="flex"
-            >
-                <app-fee-card
-                        :view="viewMode"
-                        :key="item.id"
-                        :item="item"
-                        @edit="edit"
-                        @remove="remove"
-                        class="w-full mb-6"
-                />
-            </app-col>
-        </app-row>
-    </app-container>
 </template>
 
 <script setup lang="ts">
-// @ts-ignore
-import {computed, ref, watch} from 'vue'
+import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
 // @ts-ignore
 import AppButton, {Variant} from "../Button.vue";
+// @ts-ignore
+import {computed, ref, watch} from "vue";
 import AppPopup from '../Popup.vue'
 // @ts-ignore
-import {Views} from "../FeeCard.vue";
-// @ts-ignore
 import AppControl, {Type} from '../Control.vue'
-// @ts-ignore
-import AppFeeCard from '../FeeCard.vue'
-import AppContainer from '../shared/Container.vue'
-import AppRow from '../shared/Row.vue'
-import AppCol from '../shared/Col.vue'
 import AppForm from '../shared/Form.vue'
 import AppFormGroup from '../shared/FormGroup.vue'
 import {usePopup} from "../../use/popup";
 import {useMode} from "../../use/mode";
 import {useForm} from "../../use/form";
-import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
 import {useError} from "../../use/error";
 import service from "../../service";
 
@@ -187,12 +157,11 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId = ''
-const allFieldsSelected = ref(false)
+const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
-const viewMode = ref(Views.CARD)
-const fees = ref<FeeServiceCreateParamsInterface[]>([])
+const allFieldsSelected = ref(false)
 const errors = ref([])
 const onError = useError(errors)
 const onValidated = () => {
@@ -281,7 +250,6 @@ const remove = (id: string) => {
     itemToHandleId = id
     actionMode.set(SubmitActions.REMOVE)
 }
-const name = 'Fees'
 
 watch(allFieldsSelected, (isSelected: boolean) => {
     form.fields.families.value = isSelected ? families.map(({value}) => value) : []
