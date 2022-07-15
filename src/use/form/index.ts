@@ -26,7 +26,6 @@ class FormValidationError extends Error {
 
 export function useForm<T, V>(params: UseFormParams<T, V>) {
     const {onValidated, onError, initialValues = {}, validation, validationMessages = {}} = params
-    // const fields = reactive<T>({...initialValues})
     const fields: Fields<T> = Object.keys(initialValues).reduce((acc: Fields<T>, current: string) => {
         acc[current as keyof Fields<T>] = ref(initialValues[current as keyof typeof initialValues])
         return acc
