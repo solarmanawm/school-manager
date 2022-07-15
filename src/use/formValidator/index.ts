@@ -13,7 +13,7 @@ const withMessage = (message: string, rule: ValidationRule) => {
 const mappedValidators = {
     integer: () => validators.integer,
     required: () => validators.required,
-    minLength: (value: [] | object | string) => validators.minLength(value),
+    minLength: (value: number) => validators.minLength(value),
 }
 
 export function useFormValidator<T>(fields: Fields, validation: T, validationMessages: Partial<T>) {
