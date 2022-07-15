@@ -102,7 +102,7 @@
                     </app-button>
                     <app-button
                             @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
-                    >Add
+                    >{{ popupSubmitButtonText }}
                     </app-button>
                 </div>
             </template>
@@ -170,6 +170,12 @@ enum PopupTitle {
     REMOVE = 'Remove the fee',
 }
 
+enum PopupSubmitButtonText {
+    ADD = 'Create',
+    EDIT = 'Save',
+    REMOVE = 'Remove',
+}
+
 interface SubmitActionsInterface {
     ADD: string;
     EDIT: string;
@@ -183,6 +189,7 @@ type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 let itemToHandleId = ''
 const allFieldsSelected = ref(false)
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
+const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const viewMode = ref(Views.CARD)
 const fees = ref<FeeServiceCreateParamsInterface[]>([])

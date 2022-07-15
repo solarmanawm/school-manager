@@ -108,7 +108,7 @@
                     </app-button>
                     <app-button
                             @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
-                    >Add
+                    >{{ popupSubmitButtonText }}
                     </app-button>
                 </div>
             </template>
@@ -170,6 +170,12 @@ enum PopupTitle {
     ADD = 'Create a new student',
     EDIT = 'Edit the student',
     REMOVE = 'Remove the student',
+}
+
+enum PopupSubmitButtonText {
+    ADD = 'Create',
+    EDIT = 'Save',
+    REMOVE = 'Remove',
 }
 
 interface SubmitActionsInterface {
@@ -243,6 +249,7 @@ const popup = usePopup({
     },
 })
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
+const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
