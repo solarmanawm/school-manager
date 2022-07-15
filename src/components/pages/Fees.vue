@@ -114,6 +114,7 @@
             <app-col
                     v-for="item in fees"
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
+                    class="flex"
             >
                 <app-fee-card
                         :view="viewMode"

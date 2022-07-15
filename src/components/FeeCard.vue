@@ -8,32 +8,35 @@
     >
         <div :class="isCardView ? 'mb-6' : 'flex-1 flex items-center justify-between'">
             <p class="text-xl font-bold mb-1">{{ item.name }}</p>
+            <p class="text-3xl text-blue-500 font-bold mb-1">{{ item.value }} <i class="fa-solid fa-ruble-sign"></i></p>
         </div>
-        <p class="w-full">
-            <app-button
-                    class="w-full mb-2"
-                    :variant="Variant.PRIMARY"
-                    :size="Size.SMALL"
-                    @click="showDetails"
-            >Details
-            </app-button>
-        </p>
-        <p class="flex justify-between">
-            <app-button
-                    class="flex-1 mr-1"
-                    :variant="Variant.LIGHT"
-                    :size="Size.SMALL"
-                    @click="edit"
-            >Edit
-            </app-button>
-            <app-button
-                    class="flex-1 ml-1"
-                    :variant="Variant.LIGHT"
-                    :size="Size.SMALL"
-                    @click="remove"
-            >Remove
-            </app-button>
-        </p>
+        <div>
+            <p class="w-full">
+                <app-button
+                        class="w-full mb-2"
+                        :variant="Variant.PRIMARY"
+                        :size="Size.SMALL"
+                        @click="showDetails"
+                >Details
+                </app-button>
+            </p>
+            <p class="flex justify-between">
+                <app-button
+                        class="flex-1 mr-1"
+                        :variant="Variant.LIGHT"
+                        :size="Size.SMALL"
+                        @click="edit"
+                >Edit
+                </app-button>
+                <app-button
+                        class="flex-1 ml-1"
+                        :variant="Variant.LIGHT"
+                        :size="Size.SMALL"
+                        @click="remove"
+                >Remove
+                </app-button>
+            </p>
+        </div>
     </app-card>
 </template>
 
@@ -74,7 +77,8 @@ const edit = () => {
 const remove = () => {
     emit('remove', props.item.id)
 }
-const showDetails = () => {}
+const showDetails = () => {
+}
 const name = 'FeeCard'
 
 watch(() => props.view, (value: string) => {
