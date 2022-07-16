@@ -39,7 +39,7 @@ const routes: any[] = [
     },
     {
         path: '/fees',
-        component: () => import('../components/pages/Fees.vue'),
+        component: () => import('../components/Fees.vue'),
         name: routeNames.fees,
         meta: {
             requiresAuth: true,
@@ -49,7 +49,7 @@ const routes: any[] = [
             {
                 path: '',
                 name: routeNames.fees,
-                component: () => import('../components/pages/FeesList.vue'),
+                component: () => import('../components/FeesList.vue'),
                 meta: {
                     requiresAuth: true,
                     title: 'All Fee',
@@ -58,7 +58,7 @@ const routes: any[] = [
             {
                 path: ':id',
                 name: routeNames.fee,
-                component: () => import('../components/pages/FeesItemDetails.vue'),
+                component: () => import('../components/FeesItemDetails.vue'),
                 meta: {
                     requiresAuth: true,
                     title: 'Single Fee',

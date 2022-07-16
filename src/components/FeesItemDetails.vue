@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 import {defineProps} from "vue";
-import {useUIStore} from "../../store/ui";
-import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
+import {useUIStore} from "../store/ui";
+import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
 
 interface Props {
     fees: FeeServiceCreateParamsInterface[];

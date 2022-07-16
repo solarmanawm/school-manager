@@ -107,22 +107,22 @@
 </template>
 
 <script setup lang="ts">
-import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
+import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
 // @ts-ignore
-import AppButton, {Variant} from "../Button.vue";
+import AppButton, {Variant} from "./Button.vue";
 // @ts-ignore
 import {computed, ref, watch} from "vue";
-import AppPopup from '../Popup.vue'
+import AppPopup from './Popup.vue'
 // @ts-ignore
-import AppControl, {Type} from '../Control.vue'
-import AppForm from '../shared/Form.vue'
-import AppFormGroup from '../shared/FormGroup.vue'
-import {usePopup} from "../../use/popup";
-import {useMode} from "../../use/mode";
-import {useForm} from "../../use/form";
-import {useError} from "../../use/error";
-import {useFeeStore} from "../../store/fee";
-import service from "../../service";
+import AppControl, {Type} from './Control.vue'
+import AppForm from './shared/Form.vue'
+import AppFormGroup from './shared/FormGroup.vue'
+import {usePopup} from "../use/popup";
+import {useMode} from "../use/mode";
+import {useForm} from "../use/form";
+import {useError} from "../use/error";
+import {useFeeStore} from "../store/fee";
+import service from "../service";
 
 const families = [
     {title: 'Family #1', value: 'id1'},

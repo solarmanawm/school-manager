@@ -32,18 +32,18 @@
 </template>
 
 <script setup lang="ts">
-import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
+import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
 import {useRouter} from "vue-router"
 // @ts-ignore
 import {computed, ref, watch, defineProps, defineEmits} from 'vue'
 // @ts-ignore
-import AppButton, {Variant} from "../Button.vue";
+import AppButton, {Variant} from "./Button.vue";
 // @ts-ignore
 import AppFeesListItem, {Views} from './FeesListItem.vue'
-import AppContainer from '../shared/Container.vue'
-import AppRow from '../shared/Row.vue'
-import AppCol from '../shared/Col.vue'
-import routeNames from '../../router/names'
+import AppContainer from './shared/Container.vue'
+import AppRow from './shared/Row.vue'
+import AppCol from './shared/Col.vue'
+import routeNames from '../router/names'
 
 interface Props {
     fees: FeeServiceCreateParamsInterface[];
