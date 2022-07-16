@@ -113,7 +113,7 @@ import AppForm from './AppForm.vue'
 import AppFormGroup from './AppFormGroup.vue'
 import AppAlert from './AppAlert.vue'
 
-import service from '../../service'
+import service from '../service'
 import {useAuthStore} from "../store/auth";
 import routeNames from "../router/names";
 

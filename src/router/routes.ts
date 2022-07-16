@@ -4,7 +4,7 @@ const routes: any[] = [
     {
         path: '/',
         name: routeNames.home,
-        component: () => import('../components/Home.vue'),
+        component: () => import('../components/HomeMain.vue'),
         meta: {
             requiresAuth: false,
             title: 'Home',
@@ -13,7 +13,7 @@ const routes: any[] = [
     {
         path: '/sign-in',
         name: routeNames.login,
-        component: () => import('../components/Login.vue'),
+        component: () => import('../components/LoginMain.vue'),
         meta: {
             requiresAuth: false,
             title: 'Sign In',
@@ -22,7 +22,7 @@ const routes: any[] = [
     {
         path: '/sign-up',
         name: routeNames.register,
-        component: () => import('../components/Register.vue'),
+        component: () => import('../components/RegisterMain.vue'),
         meta: {
             requiresAuth: false,
             title: 'Sign Up',
@@ -31,7 +31,7 @@ const routes: any[] = [
     {
         path: '/dashboard',
         name: routeNames.dashboard,
-        component: () => import('../components/Dashboard.vue'),
+        component: () => import('../components/DashboardMain.vue'),
         meta: {
             requiresAuth: true,
             title: 'Dashboard',
@@ -39,7 +39,7 @@ const routes: any[] = [
     },
     {
         path: '/fees',
-        component: () => import('../components/Fees.vue'),
+        component: () => import('../components/FeesMain.vue'),
         name: routeNames.fees,
         meta: {
             requiresAuth: true,
@@ -69,7 +69,7 @@ const routes: any[] = [
     {
         path: '/students',
         name: routeNames.students,
-        component: () => import('../components/Students.vue'),
+        component: () => import('../components/StudentsMain.vue'),
         meta: {
             requiresAuth: true,
             title: 'Students',
@@ -78,7 +78,7 @@ const routes: any[] = [
     {
         path: '/families',
         name: routeNames.families,
-        component: () => import('../components/Families.vue'),
+        component: () => import('../components/FamiliesMain.vue'),
         meta: {
             requiresAuth: true,
             title: 'Families',
