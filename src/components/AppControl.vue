@@ -13,21 +13,21 @@
                 @change="update"
                 @input="update"
         />
-        <app-button-set
+        <app-control-button-set
                 v-else-if="isButtonSet"
                 v-model="value"
                 :variant="variant"
                 :options="options"
                 @change="update"
         />
-        <app-dropdown
+        <app-control-dropdown
                 v-else-if="isDropdown"
                 v-model="value"
                 :error="error"
                 :current="value"
                 :options="options"
         />
-        <app-date-picker
+        <app-control-date-picker
                 v-else-if="isDatePicker"
                 v-model="value"
                 :error="error"
@@ -78,9 +78,9 @@ export enum Type {
 import {computed, defineProps, defineEmits, ref, withDefaults, watch} from "vue"
 
 // @ts-ignore
-import AppButtonSet, {Option} from './AppControlButtonSet.vue'
-import AppDropdown from './AppControlDropdown.vue'
-import AppDatePicker from './AppControlDatePicker.vue'
+import AppControlButtonSet, {Option} from './AppControlButtonSet.vue'
+import AppControlDropdown from './AppControlDropdown.vue'
+import AppControlDatePicker from './AppControlDatePicker.vue'
 
 interface Emits {
     (e: 'update:modelValue', value: string | string[]): void;

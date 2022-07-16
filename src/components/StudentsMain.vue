@@ -115,9 +115,9 @@
         </app-popup>
     </Teleport>
 
-    <app-container>
-        <app-row>
-            <app-col
+    <app-grid-container>
+        <app-grid-row>
+            <app-grid-col
                     v-for="item in students"
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
             >
@@ -129,9 +129,9 @@
                         @remove="remove"
                         class="w-full mb-6"
                 />
-            </app-col>
-        </app-row>
-    </app-container>
+            </app-grid-col>
+        </app-grid-row>
+    </app-grid-container>
 </template>
 
 <script setup lang="ts">
@@ -149,9 +149,9 @@ import AppPopup from './AppPopup.vue'
 import AppStudentCard, {Student, Views} from './StudentCard.vue'
 // @ts-ignore
 import AppButton from './AppButton.vue'
-import AppContainer from './AppGridContainer.vue'
-import AppRow from './AppGridRow.vue'
-import AppCol from './AppGridCol.vue'
+import AppGridContainer from './AppGridContainer.vue'
+import AppGridRow from './AppGridRow.vue'
+import AppGridCol from './AppGridCol.vue'
 
 import {usePopup} from "../use/popup"
 import {useForm} from "../use/form"

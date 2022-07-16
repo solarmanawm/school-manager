@@ -10,9 +10,9 @@
         </div>
     </Teleport>
 
-    <app-container>
-        <app-row>
-            <app-col
+    <app-grid-container>
+        <app-grid-row>
+            <app-grid-col
                     v-for="item in fees"
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
                     class="flex"
@@ -26,9 +26,9 @@
                         @details="details"
                         class="w-full mb-6"
                 />
-            </app-col>
-        </app-row>
-    </app-container>
+            </app-grid-col>
+        </app-grid-row>
+    </app-grid-container>
 </template>
 
 <script setup lang="ts">
@@ -40,9 +40,9 @@ import {computed, ref, watch, defineProps, defineEmits} from 'vue'
 import AppButton, {Variant} from "./AppButton.vue";
 // @ts-ignore
 import AppFeesListItem, {Views} from './FeesListItem.vue'
-import AppContainer from './AppGridContainer.vue'
-import AppRow from './AppGridRow.vue'
-import AppCol from './AppGridCol.vue'
+import AppGridContainer from './AppGridContainer.vue'
+import AppGridRow from './AppGridRow.vue'
+import AppGridCol from './AppGridCol.vue'
 import routeNames from '../router/names'
 
 interface Props {

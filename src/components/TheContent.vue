@@ -1,22 +1,22 @@
 <template>
     <div class="w-full flex-1 flex justify-center">
-        <app-container>
-            <app-row>
-                <app-col class="w-full mb-6 flex items-center justify-between">
+        <app-grid-container>
+            <app-grid-row>
+                <app-grid-col class="w-full mb-6 flex items-center justify-between">
                     <app-title :title="uiStore.title"/>
                     <div id="app-context-buttons"></div>
-                </app-col>
-            </app-row>
+                </app-grid-col>
+            </app-grid-row>
             <slot></slot>
-        </app-container>
+        </app-grid-container>
     </div>
 </template>
 
 <script setup lang="ts">
-import AppRow from './AppGridRow.vue'
-import AppCol from './AppGridCol.vue'
+import AppGridRow from './AppGridRow.vue'
+import AppGridCol from './AppGridCol.vue'
 import AppTitle from './AppTitle.vue'
-import AppContainer from './AppGridContainer.vue'
+import AppGridContainer from './AppGridContainer.vue'
 
 import {useUIStore} from "../store/ui";
 
