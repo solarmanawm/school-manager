@@ -2,8 +2,6 @@
 import {isRef, reactive, ref, Ref} from "vue";
 import {useFormValidator} from "../formValidator";
 
-type VoidFunction = () => void
-
 type Data<T> = { [key in keyof T]?: string | number | any[] }
 
 type Fields<T> = { [key in keyof T]: Ref }
@@ -12,7 +10,7 @@ type UseFormParams<T, V> = {
     initialValues?: Data<T>;
     validation?: V,
     validationMessages?: Partial<V>,
-    onValidated?: VoidFunction;
+    onValidated?: Function;
     onError?: (error: any) => void;
 }
 
