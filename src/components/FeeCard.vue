@@ -57,7 +57,7 @@ import AppButton, {Variant, Size} from './Button.vue'
 import AppCard from './Card.vue'
 
 interface Emits {
-    (event: 'edit', item: FeeServiceCreateParamsInterface): void;
+    (event: 'edit', id: string): void;
     (event: 'remove', id: string): void;
     (event: 'details', id: string): void;
 }
@@ -72,7 +72,7 @@ const props = defineProps<Props>()
 const view = ref(Views.CARD)
 const isCardView = computed(() => view.value === Views.CARD)
 const edit = () => {
-    emit('edit', props.item)
+    emit('edit', props.item.id)
 }
 const remove = () => {
     emit('remove', props.item.id)
