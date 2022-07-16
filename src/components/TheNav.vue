@@ -27,11 +27,11 @@
 </template>
 
 <script setup lang="ts">
-import routes from "../../router/routes";
-import {useAuthStore} from "../../store/auth";
-import service from "../../service";
-import routeNames from '../../router/names'
 import {useRouter} from "vue-router";
+import routes from "../router/routes";
+import {useAuthStore} from "../store/auth";
+import service from "../service";
+import routeNames from '../router/names'
 
 const router = useRouter()
 const authStore = useAuthStore()

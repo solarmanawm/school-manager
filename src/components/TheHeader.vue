@@ -13,11 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import AppRow from './Row.vue'
-import AppCol from './Col.vue'
-import AppContainer from './Container.vue'
-import AppNav from './Nav.vue'
-import AppLogo from './Logo.vue'
+import AppRow from './shared/Row.vue'
+import AppCol from './shared/Col.vue'
+import AppContainer from './shared/Container.vue'
+import AppNav from './TheNav.vue'
+import AppLogo from './TheLogo.vue'
 
 const name = 'Header'
 </script>

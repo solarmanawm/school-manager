@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import AppHeader from './components/shared/Header.vue'
-import AppContent from './components/shared/Content.vue'
-import AppFooter from './components/shared/Footer.vue'
+import AppHeader from './components/TheHeader.vue'
+import AppContent from './components/TheContent.vue'
+import AppFooter from './components/TheFooter.vue'
 </script>
