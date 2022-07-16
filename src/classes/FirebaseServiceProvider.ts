@@ -3,10 +3,6 @@ import {getAuth} from "firebase/auth"
 
 import AbstractServiceProvider from './AbstractServiceProvider'
 import FirebaseAuthService from "./FirebaseAuthService"
-import FirebaseUserService from './FirebaseUserService'
-import FirebaseStudentService from "./FirebaseStudentService"
-import FirebaseFamilyService from "./FirebaseFamilyService"
-import FirebaseFeeService from "./FirebaseFeeService";
 
 const firebaseConfig = {
     "apiKey": "AIzaSyBMyjMaCx6XzQG5WBIkeYpzXvJp0_UXyyk",
@@ -23,10 +19,6 @@ const auth = getAuth(app)
 class FirebaseServiceProvider extends AbstractServiceProvider {
     protected factory(): void {
         this.authService = new FirebaseAuthService(this, auth)
-        this.userService = new FirebaseUserService(this)
-        this.studentService = new FirebaseStudentService(this)
-        this.familyService = new FirebaseFamilyService(this)
-        this.feeService = new FirebaseFeeService(this)
     }
 }
 

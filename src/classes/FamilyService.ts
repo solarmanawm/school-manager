@@ -2,7 +2,7 @@ import {FamilyServiceCreateParamsInterface, FamilyServiceCreateResponseInterface
 import AbstractFamilyService from "./AbstractFamilyService"
 // import RequestBuilder from "./RequestBuilder";
 
-class FirebaseFamilyService extends AbstractFamilyService {
+class FamilyService extends AbstractFamilyService {
     /**
      * Create a new user
      * @param {FamilyServiceCreateParamsInterface} params
@@ -46,4 +46,4 @@ class FirebaseFamilyService extends AbstractFamilyService {
     }
 }
 
-export default FirebaseFamilyService
+export default FamilyService

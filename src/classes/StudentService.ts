@@ -2,7 +2,7 @@ import {StudentServiceCreateParamsInterface, StudentServiceCreateResponseInterfa
 import AbstractStudentService from "./AbstractStudentService"
 // import RequestBuilder from "./RequestBuilder";
 
-class FirebaseStudentService extends AbstractStudentService {
+class StudentService extends AbstractStudentService {
     /**
      * Create a new user
      * @param {StudentServiceCreateParamsInterface} params
@@ -46,4 +46,4 @@ class FirebaseStudentService extends AbstractStudentService {
     }
 }
 
-export default FirebaseStudentService
+export default StudentService

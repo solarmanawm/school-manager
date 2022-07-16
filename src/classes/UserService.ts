@@ -2,7 +2,7 @@ import {UserServiceRegisterResponseInterface, UserServiceRegisterParamsInterface
 import AbstractUserService from "./AbstractUserService"
 import RequestBuilder from "./RequestBuilder";
 
-class FirebaseUserService extends AbstractUserService {
+class UserService extends AbstractUserService {
     /**
      * Create a new user
      * @param {UserServiceRegisterParamsInterface} params
@@ -20,4 +20,4 @@ class FirebaseUserService extends AbstractUserService {
     }
 }
 
-export default FirebaseUserService
+export default UserService

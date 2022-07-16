@@ -5,7 +5,7 @@ import {Helpers} from "../helpers";
 
 import {useFeeStore} from "../store/fee";
 
-class FirebaseFeeService extends AbstractFeeService {
+class FeeService extends AbstractFeeService {
     /**
      * Create a new user
      * @param {FeeServiceCreateParamsInterface} params
@@ -79,4 +79,4 @@ class FirebaseFeeService extends AbstractFeeService {
     }
 }
 
-export default FirebaseFeeService
+export default FeeService
