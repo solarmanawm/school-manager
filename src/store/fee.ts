@@ -22,6 +22,10 @@ export const useFeeStore = defineStore('fee', {
                 ...payload,
             }
         },
+        remove(id: string) {
+            const itemIndex = this.getIndexById(id)
+            this.items.splice(itemIndex, 1);
+        },
         getById(id: string) {
             return this.items.find((item: FeeServiceCreateParamsInterface) => item.id === id)
         },

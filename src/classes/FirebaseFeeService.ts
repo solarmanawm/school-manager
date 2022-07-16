@@ -63,12 +63,19 @@ class FirebaseFeeService extends AbstractFeeService {
      * @returns Promise<StudentServiceCreateResponseInterface>
      */
     async delete(id: string): Promise<FeeServiceCreateResponseInterface> {
-        // await new RequestBuilder()
-        //     .method('post')
-        //     .url('user/new')
-        //     .data(params)
-        //     .send()
-        return Promise.resolve({} as FeeServiceCreateResponseInterface)
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data({id})
+            .mock<FeeServiceCreateParamsInterface>(true)
+            .then(({error}) => {
+                if (!error) {
+                    const feeStore = useFeeStore()
+                    feeStore.remove(id)
+                }
+
+                return Promise.resolve({} as FeeServiceCreateResponseInterface)
+            })
     }
 }
 
