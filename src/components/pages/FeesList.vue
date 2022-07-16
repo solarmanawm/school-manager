@@ -17,7 +17,7 @@
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
                     class="flex"
             >
-                <app-fee-card
+                <app-fees-list-item
                         :view="viewMode"
                         :key="item.id"
                         :item="item"
@@ -39,7 +39,7 @@ import {computed, ref, watch, defineProps, defineEmits} from 'vue'
 // @ts-ignore
 import AppButton, {Variant} from "../Button.vue";
 // @ts-ignore
-import AppFeeCard, {Views} from '../FeeCard.vue'
+import AppFeesListItem, {Views} from './FeesListItem.vue'
 import AppContainer from '../shared/Container.vue'
 import AppRow from '../shared/Row.vue'
 import AppCol from '../shared/Col.vue'

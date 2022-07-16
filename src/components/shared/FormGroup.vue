@@ -31,10 +31,5 @@ const props = withDefaults(defineProps<Props>(), {
     required: false,
     errors: [],
 })
-
-watch(() => props.errors, () => {
-
-})
-
 const name = 'FormControl'
 </script>

@@ -11,7 +11,7 @@ interface Props {
     fees: FeeServiceCreateParamsInterface[];
 }
 
-const name = 'FeesItem'
+const name = 'FeesItemDetails'
 const props = defineProps<Props>()
 const uiStore = useUIStore()
 

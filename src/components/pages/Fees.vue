@@ -158,7 +158,6 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 const feeStore = useFeeStore()
-const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
@@ -248,6 +247,7 @@ const remove = (id: string) => {
     form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
+const name = 'Fees'
 
 watch(allFieldsSelected, (isSelected: boolean) => {
     form.fields.families.value = isSelected ? families.map(({value}) => value) : []

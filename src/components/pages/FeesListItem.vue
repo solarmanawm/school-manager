@@ -49,12 +49,12 @@ export enum Views {
 </script>
 
 <script setup lang="ts">
-import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
+import {FeeServiceCreateParamsInterface} from "../../classes/AbstractFeeService";
 // @ts-ignore
 import {computed, defineEmits, defineProps, ref, watch} from "vue";
 // @ts-ignore
-import AppButton, {Variant, Size} from './Button.vue'
-import AppCard from './Card.vue'
+import AppButton, {Variant, Size} from '../Button.vue'
+import AppCard from '../Card.vue'
 
 interface Emits {
     (event: 'edit', id: string): void;
@@ -80,7 +80,7 @@ const remove = () => {
 const details = () => {
     emit('details', props.item.id)
 }
-const name = 'FeeCard'
+const name = 'FeesListItem'
 
 watch(() => props.view, (value: string) => {
     view.value = value
