@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import AppRow from './shared/Row.vue'
-import AppCol from './shared/Col.vue'
-import AppTitle from './shared/Title.vue'
-import AppContainer from './shared/Container.vue'
+import AppRow from './AppGridRow.vue'
+import AppCol from './AppGridCol.vue'
+import AppTitle from './AppTitle.vue'
+import AppContainer from './AppGridContainer.vue'
 
 import {useUIStore} from "../store/ui";
 

@@ -65,9 +65,9 @@ export enum Views {
 // @ts-ignore
 import {ref, computed, defineProps, defineEmits, watch} from 'vue'
 
-import AppCard from './Card.vue'
+import AppCard from './AppCard.vue'
 // @ts-ignore
-import AppButton, {Variant, Size} from './Button.vue'
+import AppButton, {Variant, Size} from './AppButton.vue'
 import {format} from "date-fns";
 import {ru} from 'date-fns/locale'
 

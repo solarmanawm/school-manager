@@ -52,8 +52,8 @@ export enum Views {
 // @ts-ignore
 import {computed, defineEmits, defineProps, ref, watch} from "vue";
 // @ts-ignore
-import AppButton, {Variant, Size} from './Button.vue'
-import AppCard from './Card.vue'
+import AppButton, {Variant, Size} from './AppButton.vue'
+import AppCard from './AppCard.vue'
 
 // @ts-ignore
 export interface Family {

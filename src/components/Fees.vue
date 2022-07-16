@@ -109,14 +109,14 @@
 <script setup lang="ts">
 import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
 // @ts-ignore
-import AppButton, {Variant} from "./Button.vue";
+import AppButton, {Variant} from "./AppButton.vue";
 // @ts-ignore
 import {computed, ref, watch} from "vue";
-import AppPopup from './Popup.vue'
+import AppPopup from './AppPopup.vue'
 // @ts-ignore
-import AppControl, {Type} from './Control.vue'
-import AppForm from './shared/Form.vue'
-import AppFormGroup from './shared/FormGroup.vue'
+import AppControl, {Type} from './AppControl.vue'
+import AppForm from './AppForm.vue'
+import AppFormGroup from './AppFormGroup.vue'
 import {usePopup} from "../use/popup";
 import {useMode} from "../use/mode";
 import {useForm} from "../use/form";

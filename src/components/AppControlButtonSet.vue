@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import {computed, defineProps, defineEmits} from 'vue'
 // @ts-ignore
-import AppButton, {Variant} from './Button.vue'
+import AppButton, {Variant} from './AppButton.vue'
 
 export interface Option {
     icon?: string;

@@ -77,9 +77,10 @@ export enum Type {
 // @ts-ignore
 import {computed, defineProps, defineEmits, ref, withDefaults, watch} from "vue"
 
-import AppButtonSet, {Option} from './ButtonSet.vue'
-import AppDropdown from './controls/Dropdown.vue'
-import AppDatePicker from './controls/DatePicker.vue'
+// @ts-ignore
+import AppButtonSet, {Option} from './AppControlButtonSet.vue'
+import AppDropdown from './AppControlDropdown.vue'
+import AppDatePicker from './AppControlDatePicker.vue'
 
 interface Emits {
     (e: 'update:modelValue', value: string | string[]): void;

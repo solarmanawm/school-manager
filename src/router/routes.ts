@@ -4,7 +4,7 @@ const routes: any[] = [
     {
         path: '/',
         name: routeNames.home,
-        component: () => import('../components/pages/Home.vue'),
+        component: () => import('../components/Home.vue'),
         meta: {
             requiresAuth: false,
             title: 'Home',
@@ -13,7 +13,7 @@ const routes: any[] = [
     {
         path: '/sign-in',
         name: routeNames.login,
-        component: () => import('../components/pages/Login.vue'),
+        component: () => import('../components/Login.vue'),
         meta: {
             requiresAuth: false,
             title: 'Sign In',
@@ -22,7 +22,7 @@ const routes: any[] = [
     {
         path: '/sign-up',
         name: routeNames.register,
-        component: () => import('../components/pages/Register.vue'),
+        component: () => import('../components/Register.vue'),
         meta: {
             requiresAuth: false,
             title: 'Sign Up',
@@ -31,7 +31,7 @@ const routes: any[] = [
     {
         path: '/dashboard',
         name: routeNames.dashboard,
-        component: () => import('../components/pages/Dashboard.vue'),
+        component: () => import('../components/Dashboard.vue'),
         meta: {
             requiresAuth: true,
             title: 'Dashboard',
@@ -69,7 +69,7 @@ const routes: any[] = [
     {
         path: '/students',
         name: routeNames.students,
-        component: () => import('../components/pages/Students.vue'),
+        component: () => import('../components/Students.vue'),
         meta: {
             requiresAuth: true,
             title: 'Students',
@@ -78,7 +78,7 @@ const routes: any[] = [
     {
         path: '/families',
         name: routeNames.families,
-        component: () => import('../components/pages/Families.vue'),
+        component: () => import('../components/Families.vue'),
         meta: {
             requiresAuth: true,
             title: 'Families',

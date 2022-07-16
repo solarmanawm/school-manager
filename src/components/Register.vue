@@ -105,17 +105,17 @@ import {helpers} from '@vuelidate/validators'
 import {useRouter} from "vue-router";
 
 // @ts-ignore
-import AppButton from '../Button.vue'
+import AppButton from './AppButton.vue'
 // @ts-ignore
-import AppControl from '../Control.vue'
-import AppCard from '../Card.vue'
-import AppForm from '../shared/Form.vue'
-import AppFormGroup from '../shared/FormGroup.vue'
-import AppAlert from '../Alert.vue'
+import AppControl from './AppControl.vue'
+import AppCard from './AppCard.vue'
+import AppForm from './AppForm.vue'
+import AppFormGroup from './AppFormGroup.vue'
+import AppAlert from './AppAlert.vue'
 
 import service from '../../service'
-import {useAuthStore} from "../../store/auth";
-import routeNames from "../../router/names";
+import {useAuthStore} from "../store/auth";
+import routeNames from "../router/names";
 
 const router = useRouter()
 const authStore = useAuthStore()

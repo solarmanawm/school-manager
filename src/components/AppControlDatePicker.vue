@@ -11,7 +11,7 @@
 // @ts-ignore
 import {ref, defineEmits, defineProps, watch} from "vue";
 import Datepicker from '@vuepic/vue-datepicker';
-import {Option} from "../DropdownMenu.vue";
+import {Option} from "./AppDropdownMenu.vue";
 
 interface Emits {
     (event: 'update:modelValue', value: string): void;

@@ -138,27 +138,27 @@
 // @ts-ignore
 import {computed, reactive, ref, watch} from "vue";
 
-import AppForm from '../shared/Form.vue'
-import AppFormGroup from '../shared/FormGroup.vue'
+import AppForm from './AppForm.vue'
+import AppFormGroup from './AppFormGroup.vue'
 // @ts-ignore
-import AppControl, {Type} from '../Control.vue'
+import AppControl, {Type} from './AppControl.vue'
 // @ts-ignore
-import {Variant} from "../Button.vue";
-import AppPopup from '../Popup.vue'
+import {Variant} from "./AppButton.vue";
+import AppPopup from './AppPopup.vue'
 // @ts-ignore
-import AppStudentCard, {Student, Views} from '../StudentCard.vue'
+import AppStudentCard, {Student, Views} from './StudentCard.vue'
 // @ts-ignore
-import AppButton from '../Button.vue'
-import AppContainer from '../shared/Container.vue'
-import AppRow from '../shared/Row.vue'
-import AppCol from '../shared/Col.vue'
+import AppButton from './AppButton.vue'
+import AppContainer from './AppGridContainer.vue'
+import AppRow from './AppGridRow.vue'
+import AppCol from './AppGridCol.vue'
 
-import {usePopup} from "../../use/popup"
-import {useForm} from "../../use/form"
-import {useError} from '../../use/error'
-import {StudentServiceCreateParamsInterface} from "../../classes/AbstractStudentService";
-import service from "../../service";
-import {useMode} from "../../use/mode";
+import {usePopup} from "../use/popup"
+import {useForm} from "../use/form"
+import {useError} from '../use/error'
+import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService";
+import service from "../service";
+import {useMode} from "../use/mode";
 
 enum SubmitActions {
     ADD = 'ADD',

@@ -23,7 +23,7 @@
 import {ref, defineProps, defineEmits, computed} from 'vue'
 import {onClickOutside} from "@vueuse/core";
 
-import AppDropdownMenu, {Option} from '../DropdownMenu.vue'
+import AppDropdownMenu, {Option} from './AppDropdownMenu.vue'
 
 interface Emits {
     (event: 'update:modelValue', value: string): void;

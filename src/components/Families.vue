@@ -106,27 +106,27 @@
 <script setup lang="ts">
 // @ts-ignore
 import {computed, ref} from "vue";
-import {FamilyServiceCreateParamsInterface} from '../../classes/AbstractFamilyService'
+import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
 // @ts-ignore
-import {Views} from "../FamilyCard.vue"
+import {Views} from "./FamilyCard.vue"
 // @ts-ignore
-import AppControl, {Type} from '../Control.vue'
+import AppControl, {Type} from './AppControl.vue'
 // @ts-ignore
-import AppButton, {Variant} from "../Button.vue"
-import AppPopup from '../Popup.vue'
-import AppForm from '../shared/Form.vue'
-import AppFormGroup from '../shared/FormGroup.vue'
-import AppContainer from '../shared/Container.vue'
-import AppRow from '../shared/Row.vue'
-import AppCol from '../shared/Col.vue'
+import AppButton, {Variant} from "./AppButton.vue"
+import AppPopup from './AppPopup.vue'
+import AppForm from './AppForm.vue'
+import AppFormGroup from './AppFormGroup.vue'
+import AppContainer from './AppGridContainer.vue'
+import AppRow from './AppGridRow.vue'
+import AppCol from './AppGridCol.vue'
 // @ts-ignore
-import AppFamilyCard, {Family} from '../FamilyCard.vue'
-import {useMode} from "../../use/mode"
-import {useForm} from "../../use/form"
-import {StudentServiceCreateParamsInterface} from "../../classes/AbstractStudentService"
-import {useError} from "../../use/error"
-import service from "../../service"
-import {usePopup} from "../../use/popup"
+import AppFamilyCard, {Family} from './FamilyCard.vue'
+import {useMode} from "../use/mode"
+import {useForm} from "../use/form"
+import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService"
+import {useError} from "../use/error"
+import service from "../service"
+import {usePopup} from "../use/popup"
 
 enum SubmitActions {
     ADD = 'ADD',
