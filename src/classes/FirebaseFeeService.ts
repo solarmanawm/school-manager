@@ -4,7 +4,7 @@ import RequestBuilder from "./RequestBuilder"
 
 import {useFeeStore} from "../store/fee";
 
-class FirebaseStudentService extends AbstractFeeService {
+class FirebaseFeeService extends AbstractFeeService {
     /**
      * Create a new user
      * @param {FeeServiceCreateParamsInterface} params
@@ -19,7 +19,10 @@ class FirebaseStudentService extends AbstractFeeService {
             .then(({error, item}) => {
                 if (!error) {
                     const feeStore = useFeeStore()
-                    feeStore.add(params)
+                    feeStore.add({
+                        ...params,
+                        id: (Math.random() + 1).toString(36).substring(7),
+                    })
                 }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -57,4 +60,4 @@ class FirebaseStudentService extends AbstractFeeService {
     }
 }
 
-export default FirebaseStudentService
+export default FirebaseFeeService
