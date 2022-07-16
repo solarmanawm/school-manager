@@ -176,8 +176,6 @@ const onValidated = () => {
             return service.fee.update({
                 from: {} as FeeServiceCreateParamsInterface,
                 to: form.values(),
-            }).then(() => {
-
             }).then(resolve)
         }
 
