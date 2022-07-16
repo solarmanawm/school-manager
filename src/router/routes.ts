@@ -1,20 +1,10 @@
-import Home from '../components/pages/Home.vue'
-import Login from '../components/pages/Login.vue'
-import Register from '../components/pages/Register.vue'
-import Dashboard from '../components/pages/Dashboard.vue'
-import Families from '../components/pages/Families.vue'
-import Students from '../components/pages/Students.vue'
-import Fees from '../components/pages/Fees.vue'
-import FeesList from '../components/pages/FeesList.vue'
-import FeesItem from '../components/pages/FeesItem.vue'
-
 import routeNames from './names'
 
 const routes: any[] = [
     {
         path: '/',
         name: routeNames.home,
-        component: Home,
+        component: () => import('../components/pages/Home.vue'),
         meta: {
             requiresAuth: false,
             title: 'Home',
@@ -23,7 +13,7 @@ const routes: any[] = [
     {
         path: '/sign-in',
         name: routeNames.login,
-        component: Login,
+        component: () => import('../components/pages/Login.vue'),
         meta: {
             requiresAuth: false,
             title: 'Sign In',
@@ -32,7 +22,7 @@ const routes: any[] = [
     {
         path: '/sign-up',
         name: routeNames.register,
-        component: Register,
+        component: () => import('../components/pages/Register.vue'),
         meta: {
             requiresAuth: false,
             title: 'Sign Up',
@@ -41,7 +31,7 @@ const routes: any[] = [
     {
         path: '/dashboard',
         name: routeNames.dashboard,
-        component: Dashboard,
+        component: () => import('../components/pages/Dashboard.vue'),
         meta: {
             requiresAuth: true,
             title: 'Dashboard',
@@ -49,7 +39,7 @@ const routes: any[] = [
     },
     {
         path: '/fees',
-        component: Fees,
+        component: () => import('../components/pages/Fees.vue'),
         name: routeNames.fees,
         meta: {
             requiresAuth: true,
@@ -59,7 +49,7 @@ const routes: any[] = [
             {
                 path: '',
                 name: routeNames.fees,
-                component: FeesList,
+                component: () => import('../components/pages/FeesList.vue'),
                 meta: {
                     requiresAuth: true,
                     title: 'All Fee',
@@ -68,7 +58,7 @@ const routes: any[] = [
             {
                 path: ':id',
                 name: routeNames.fee,
-                component: FeesItem,
+                component: () => import('../components/pages/FeesItemDetails.vue'),
                 meta: {
                     requiresAuth: true,
                     title: 'Single Fee',
@@ -79,7 +69,7 @@ const routes: any[] = [
     {
         path: '/students',
         name: routeNames.students,
-        component: Students,
+        component: () => import('../components/pages/Students.vue'),
         meta: {
             requiresAuth: true,
             title: 'Students',
@@ -88,7 +78,7 @@ const routes: any[] = [
     {
         path: '/families',
         name: routeNames.families,
-        component: Families,
+        component: () => import('../components/pages/Families.vue'),
         meta: {
             requiresAuth: true,
             title: 'Families',
