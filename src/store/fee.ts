@@ -15,8 +15,18 @@ export const useFeeStore = defineStore('fee', {
         add(item: FeeServiceCreateParamsInterface) {
             this.items.push(item)
         },
+        update(id: string, payload: Partial<FeeServiceCreateParamsInterface>) {
+            const itemIndex = this.getIndexById(id)
+            this.items[itemIndex] = {
+                ...this.items[itemIndex],
+                ...payload,
+            }
+        },
         getById(id: string) {
             return this.items.find((item: FeeServiceCreateParamsInterface) => item.id === id)
+        },
+        getIndexById(id: string) {
+            return this.items.findIndex((item: FeeServiceCreateParamsInterface) => item.id === id)
         },
     }
 })

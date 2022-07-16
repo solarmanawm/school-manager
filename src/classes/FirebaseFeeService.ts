@@ -1,6 +1,7 @@
-import {FeeServiceCreateResponseInterface, FeeServiceCreateParamsInterface, FeeServiceUpdateParamsInterface} from "./AbstractFeeService";
+import {FeeServiceCreateResponseInterface, FeeServiceCreateParamsInterface} from "./AbstractFeeService";
 import AbstractFeeService from "./AbstractFeeService"
 import RequestBuilder from "./RequestBuilder"
+import {Helpers} from "../helpers";
 
 import {useFeeStore} from "../store/fee";
 
@@ -16,7 +17,7 @@ class FirebaseFeeService extends AbstractFeeService {
             .url('user/new')
             .data(params)
             .mock<FeeServiceCreateParamsInterface>(true)
-            .then(({error, item}) => {
+            .then(({error}) => {
                 if (!error) {
                     const feeStore = useFeeStore()
                     feeStore.add({
@@ -31,16 +32,27 @@ class FirebaseFeeService extends AbstractFeeService {
 
     /**
      * Update a certain user
-     * @param {StudentServiceUpdateParamsInterface} params
+     * @param {Partial<FeeServiceCreateParamsInterface>} payload
      * @returns Promise<StudentServiceCreateResponseInterface>
      */
-    async update(params: FeeServiceUpdateParamsInterface): Promise<FeeServiceCreateResponseInterface> {
+    async update(payload: Partial<FeeServiceCreateParamsInterface>): Promise<FeeServiceCreateResponseInterface> {
+        const feeStore = useFeeStore()
+        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(feeStore.getById(payload.id), payload)
+
+        if (Object.keys(diff).length === 0) {
+            return Promise.resolve({} as FeeServiceCreateResponseInterface)
+        }
+
         return new RequestBuilder()
             .method('post')
             .url('user/new')
-            .data(params)
-            .mock(true)
-            .then(() => {
+            .data(diff)
+            .mock<FeeServiceCreateParamsInterface>(true)
+            .then(({error}) => {
+                if (!error) {
+                    feeStore.update(payload.id, diff)
+                }
+
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
             })
     }

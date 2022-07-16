@@ -157,7 +157,6 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
-let itemToHandleId = ''
 const feeStore = useFeeStore()
 const fees = ref<FeeServiceCreateParamsInterface[]>([])
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
@@ -168,21 +167,18 @@ const errors = ref([])
 const onError = useError(errors)
 const onValidated = () => {
     return new Promise((resolve) => {
+        const formValues = form.values()
+
         if (actionMode.is(SubmitActions.ADD)) {
-            return service.fee.create(form.values()).then(resolve)
+            return service.fee.create(formValues).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {
-            return service.fee.update({
-                from: {} as FeeServiceCreateParamsInterface,
-                to: form.values(),
-            }).then(resolve)
+            return service.fee.update(formValues).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
-            return service.fee.delete(itemToHandleId).then(() => {
-
-            }).then(resolve)
+            return service.fee.delete(formValues.id).then(resolve)
         }
     }).then(popup.close)
 }
@@ -204,6 +200,7 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
         value: '',
         description: '',
         families: [],
+        completed: false,
     },
     validation: {
         name: {
@@ -239,14 +236,16 @@ const add = () => {
 }
 const edit = (id: string) => {
     const item = feeStore.getById(id)
-    itemToHandleId = item.id
+    form.fields.id.value = item.id
     form.fields.name.value = item.name
     form.fields.value.value = item.value
+    form.fields.description.value = item.description
+    form.fields.completed.value = item.completed
     form.fields.families.value = item.families
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {
-    itemToHandleId = id
+    form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
 

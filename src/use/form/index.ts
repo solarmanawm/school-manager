@@ -2,7 +2,7 @@
 import {isRef, reactive, ref, Ref} from "vue";
 import {useFormValidator} from "../formValidator";
 
-type Data<T> = { [key in keyof T]?: string | number | any[] }
+type Data<T> = { [key in keyof T]?: string | number | any[] | boolean }
 
 type Fields<T> = { [key in keyof T]: Ref }
 

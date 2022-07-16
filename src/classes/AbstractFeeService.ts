@@ -13,14 +13,6 @@ export interface FeeServiceCreateParamsInterface {
 }
 
 /**
- * Student Service Update Params Interface
- */
-export interface FeeServiceUpdateParamsInterface {
-    from: FeeServiceCreateParamsInterface,
-    to: FeeServiceCreateParamsInterface,
-}
-
-/**
  * Student Service Create Response Interface
  */
 export interface FeeServiceCreateResponseInterface {
@@ -33,7 +25,7 @@ export interface FeeServiceCreateResponseInterface {
  */
 export interface FeeServiceInterface {
     create: (payload: FeeServiceCreateParamsInterface) => Promise<FeeServiceCreateResponseInterface>;
-    update: (payload: FeeServiceUpdateParamsInterface) => Promise<FeeServiceCreateResponseInterface>;
+    update: (payload: Partial<FeeServiceCreateParamsInterface>) => Promise<FeeServiceCreateResponseInterface>;
     delete: (id: string) => Promise<FeeServiceCreateResponseInterface>;
 }
 
@@ -53,11 +45,11 @@ abstract class AbstractFeeService extends AbstractService implements FeeServiceI
 
     /**
      * Update a certain user
-     * @param {FeeServiceUpdateParamsInterface} params
+     * @param {Partial<FeeServiceCreateParamsInterface>} payload
      * @abstract
      * @returns Promise<FeeServiceCreateResponseInterface>
      */
-    abstract update(params: FeeServiceUpdateParamsInterface): Promise<FeeServiceCreateResponseInterface>;
+    abstract update(payload: Partial<FeeServiceCreateParamsInterface>): Promise<FeeServiceCreateResponseInterface>;
 
     /**
      * Delete a certain user
