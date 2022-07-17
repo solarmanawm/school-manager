@@ -23,10 +23,13 @@ export default () => {
     });
 
     router.beforeEach((to, from) => {
+        console.log('beforeEach')
         const authStore = useAuthStore()
         const uiStore = useUIStore()
-        const {requiresAuth, title} = to.meta || {requiresAuth: false, title: ''}
-        uiStore.title = title
+        const {requiresAuth, title} = to.meta || {}
+        if (title) {
+            uiStore.title = title
+        }
         if (!authStore.isAuthenticated && requiresAuth) {
             return {
                 name: routeNames.login,

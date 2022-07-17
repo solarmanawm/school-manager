@@ -61,7 +61,6 @@ const routes: any[] = [
                 component: () => import('../components/FeesItemDetails.vue'),
                 meta: {
                     requiresAuth: true,
-                    title: 'Single Fee',
                 },
             },
         ],

@@ -11,16 +11,14 @@
             <p class="text-3xl text-blue-500 font-bold mb-1">{{ item.value }} <i class="fa-solid fa-ruble-sign"></i></p>
         </div>
         <div>
-            <p class="w-full">
+            <p class="flex justify-between">
                 <app-button
-                        class="w-full mb-2"
+                        class="flex-1 mr-2"
                         :variant="Variant.PRIMARY"
                         :size="Size.SMALL"
                         @click="details"
                 >Details
                 </app-button>
-            </p>
-            <p class="flex justify-between">
                 <app-button
                         class="flex-1 mr-1"
                         :variant="Variant.LIGHT"

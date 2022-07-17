@@ -1,10 +1,12 @@
 <template>
-    <router-view
-            :fees="feeStore.items"
-            @add="add"
-            @edit="edit"
-            @remove="remove"
-    ></router-view>
+    <router-view v-slot="{ Component }">
+        <component
+                :is="Component"
+                @edit="edit"
+                @remove="remove"
+                v-on="router.currentRoute.value.name === routeNames.fees ? { add } : {}"
+        />
+    </router-view>
 
     <Teleport to="#app-popup">
         <app-popup
@@ -122,7 +124,11 @@ import {useMode} from "../use/mode";
 import {useForm} from "../use/form";
 import {useError} from "../use/error";
 import {useFeeStore} from "../store/fee";
+import {useUIStore} from "../store/ui";
+import {onBeforeRouteLeave, onBeforeRouteUpdate, useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import service from "../service";
+import routeNames from "../router/names";
 
 const families = [
     {title: 'Family #1', value: 'id1'},
@@ -157,6 +163,9 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
+const router = useRouter()
+const route = useRoute()
+const uiStore = useUIStore()
 const feeStore = useFeeStore()
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
@@ -251,5 +260,7 @@ const name = 'Fees'
 
 watch(allFieldsSelected, (isSelected: boolean) => {
     form.fields.families.value = isSelected ? families.map(({value}) => value) : []
+})
+onBeforeRouteUpdate(() => {
 })
 </script>

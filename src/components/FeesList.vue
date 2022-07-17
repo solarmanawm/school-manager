@@ -13,7 +13,7 @@
     <app-grid-container>
         <app-grid-row>
             <app-grid-col
-                    v-for="item in fees"
+                    v-for="item in feeStore.items"
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
                     class="flex"
             >
@@ -32,7 +32,6 @@
 </template>
 
 <script setup lang="ts">
-import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
 import {useRouter} from "vue-router"
 // @ts-ignore
 import {computed, ref, watch, defineProps, defineEmits} from 'vue'
@@ -44,10 +43,7 @@ import AppGridContainer from './AppGridContainer.vue'
 import AppGridRow from './AppGridRow.vue'
 import AppGridCol from './AppGridCol.vue'
 import routeNames from '../router/names'
-
-interface Props {
-    fees: FeeServiceCreateParamsInterface[];
-}
+import {useFeeStore} from "../store/fee";
 
 interface Emits {
     (event: 'add'): void;
@@ -55,7 +51,7 @@ interface Emits {
     (event: 'remove', id: string): void;
 }
 
-const props = defineProps<Props>()
+const feeStore = useFeeStore()
 const emits = defineEmits<Emits>()
 const router = useRouter()
 const viewMode = ref(Views.CARD)
@@ -72,7 +68,7 @@ const details = (id: string) => {
     return router.push({
         name: routeNames.fee,
         params: {
-            id: id || 'qweqweqw',
+            id,
         },
     })
 }
