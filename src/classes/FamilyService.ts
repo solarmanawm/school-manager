@@ -2,6 +2,9 @@ import {FamilyServiceCreateParamsInterface, FamilyServiceCreateResponseInterface
 import AbstractFamilyService from "./AbstractFamilyService"
 import RequestBuilder from "./RequestBuilder";
 import {useFamilyStore} from "../store/family";
+import {useFeeStore} from "../store/fee";
+import {Helpers} from "../helpers";
+import {FeeServiceCreateParamsInterface, FeeServiceCreateResponseInterface} from "./AbstractFeeService";
 
 class FamilyService extends AbstractFamilyService {
     /**
@@ -30,16 +33,29 @@ class FamilyService extends AbstractFamilyService {
 
     /**
      * Update a certain user
-     * @param {FamilyServiceUpdateParamsInterface} params
+     * @param {Partial<FamilyServiceCreateParamsInterface>} payload
      * @returns Promise<FamilyServiceCreateResponseInterface>
      */
-    async update(params: FamilyServiceUpdateParamsInterface): Promise<FamilyServiceCreateResponseInterface> {
-        // await new RequestBuilder()
-        //     .method('post')
-        //     .url('user/new')
-        //     .data(params)
-        //     .send()
-        return Promise.resolve({} as FamilyServiceCreateResponseInterface)
+    async update(payload: Partial<FamilyServiceCreateParamsInterface>): Promise<FamilyServiceCreateResponseInterface> {
+        const store = useFamilyStore()
+        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(store.getById(payload.id), payload)
+
+        if (Object.keys(diff).length === 0) {
+            return Promise.resolve({} as FeeServiceCreateResponseInterface)
+        }
+
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data(diff)
+            .mock<FeeServiceCreateParamsInterface>(true)
+            .then(({error}) => {
+                if (!error) {
+                    store.update(payload.id, diff)
+                }
+
+                return Promise.resolve({} as FeeServiceCreateResponseInterface)
+            })
     }
 
     /**

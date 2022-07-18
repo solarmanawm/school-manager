@@ -5,19 +5,16 @@ import AbstractService from "./AbstractService";
  */
 export interface FamilyServiceCreateParamsInterface {
     id: string;
-    sex: string;
     name: string;
-    family: string;
-    dateOfBirth?: string;
-    fees?: string[];
+    fees: string[];
 }
 
 /**
  * Student Service Update Params Interface
  */
 export interface FamilyServiceUpdateParamsInterface {
-    from: FamilyServiceCreateParamsInterface,
-    to: FamilyServiceCreateParamsInterface,
+    error: Error;
+    item: FamilyServiceCreateResponseInterface;
 }
 
 /**
@@ -31,7 +28,7 @@ export interface FamilyServiceCreateResponseInterface {
  */
 export interface FamilyServiceInterface {
     create: (payload: FamilyServiceCreateParamsInterface) => Promise<FamilyServiceCreateResponseInterface>;
-    update: (payload: FamilyServiceUpdateParamsInterface) => Promise<FamilyServiceCreateResponseInterface>;
+    update: (payload: Partial<FamilyServiceCreateParamsInterface>) => Promise<FamilyServiceCreateResponseInterface>;
     delete: (id: string) => Promise<FamilyServiceCreateResponseInterface>;
 }
 
@@ -45,23 +42,23 @@ abstract class AbstractStudentService extends AbstractService implements FamilyS
      * Create a new student
      * @param {FamilyServiceCreateParamsInterface} params
      * @abstract
-     * @returns Promise<StudentServiceRegisterResponseInterface>
+     * @returns Promise<FamilyServiceCreateResponseInterface>
      */
     abstract create(params: FamilyServiceCreateParamsInterface): Promise<FamilyServiceCreateResponseInterface>;
 
     /**
      * Update a certain user
-     * @param {FamilyServiceUpdateParamsInterface} params
+     * @param {Partial<FamilyServiceCreateParamsInterface>} payload
      * @abstract
-     * @returns Promise<StudentServiceRegisterResponseInterface>
+     * @returns Promise<FamilyServiceCreateResponseInterface>
      */
-    abstract update(params: FamilyServiceUpdateParamsInterface): Promise<FamilyServiceCreateResponseInterface>;
+    abstract update(payload: Partial<FamilyServiceCreateParamsInterface>): Promise<FamilyServiceCreateResponseInterface>;
 
     /**
      * Delete a certain user
      * @param {string} id
      * @abstract
-     * @returns Promise<StudentServiceRegisterResponseInterface>
+     * @returns Promise<FamilyServiceCreateResponseInterface>
      */
     abstract delete(id: string): Promise<FamilyServiceCreateResponseInterface>;
 }
