@@ -43,13 +43,14 @@
                     >
                         <app-control
                                 v-model="form.fields.fees.value"
-                                class="w-full"
-                                id="fees"
                                 :type="Type.DROPDOWN"
                                 :options="[
                                         {title: 'Fee 1', value: '1'},
                                         {title: 'Fee 2', value: '2'},
                                 ]"
+                                :multiple="true"
+                                id="fees"
+                                class="w-full"
                         />
                     </app-form-group>
                 </app-form>

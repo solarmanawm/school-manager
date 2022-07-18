@@ -12,6 +12,7 @@
                 :visible="visible"
                 :current="modelValue"
                 :options="options"
+                :multiple="multiple"
                 @change="change"
                 class="absolute top-full w-full"
         />
@@ -20,19 +21,20 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref, defineProps, defineEmits, computed} from 'vue'
+import {ref, defineProps, defineEmits, computed, withDefaults} from 'vue'
 import {onClickOutside} from "@vueuse/core";
 
 import AppDropdownMenu, {Option} from './AppDropdownMenu.vue'
 
 interface Emits {
-    (event: 'update:modelValue', value: string): void;
+    (event: 'update:modelValue', value: string | string[]): void;
 }
 
 interface Props {
     error: boolean;
-    modelValue: string;
+    modelValue: string | string[];
     options: Option[];
+    multiple: boolean;
 }
 
 const emits = defineEmits<Emits>()
@@ -40,10 +42,14 @@ const props = defineProps<Props>()
 const dropdown = ref(null)
 const visible = ref()
 const title = ref()
-const change = (option: Option) => {
-    visible.value = false
-    title.value = option.title
-    emits('update:modelValue', option.value.toString())
+const change = (value: string | string[]) => {
+    if (Array.isArray(value)) {
+        title.value = value.sort().join(', ')
+    } else {
+        visible.value = false
+        title.value = value
+    }
+    emits('update:modelValue', value)
 }
 const classList = computed(() => ({
     'focus:border-blue-500': visible.value,

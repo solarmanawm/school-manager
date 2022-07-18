@@ -6,7 +6,7 @@
         <ul class="-mx-3">
             <li
                     v-for="option in opts"
-                    @click.prevent="change(option)"
+                    @click.prevent="change(option.value.toString())"
                     :class="{
                         'bg-blue-500 text-white': option.selected,
                         'hover:bg-gray-100': !option.selected,
@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref, defineProps, defineEmits, computed} from 'vue'
+import {ref, defineProps, defineEmits, computed, withDefaults} from 'vue'
 
 interface Emits {
     (event: 'change', option: Option): void;
@@ -29,27 +29,40 @@ interface Emits {
 
 export interface Option {
     title: string;
-    value: string | number;
+    value: string | number | string[] | number[];
 }
 
 interface Props {
-    visible?: boolean;
-    current?: string;
+    current: string | string[];
     options: Option[];
+    visible?: boolean;
+    multiple?: boolean;
 }
 
 const emits = defineEmits<Emits>()
-const props = defineProps<Props>()
-const current = ref(props.current || '')
+const props = withDefaults(defineProps<Props>(), {
+    multiple: false,
+})
+const current = ref(props.current)
 const opts = computed(() => {
-    return props.options.map((option) => ({
+    return props.options.map((option: Option) => ({
         ...option,
-        selected: option.value === current.value,
+        selected: props.multiple
+                ? current.value.includes(option.value.toString())
+                : option.value.toString() === current.value,
     }))
 })
-const change = (option: Option) => {
-    current.value = option.value
-    emits('change', option)
+const change = (value: string) => {
+    if (props.multiple) {
+        if (current.value.includes(value)) {
+            current.value = current.value.filter((v: string) => v !== value)
+        } else {
+            current.value.push(value)
+        }
+    } else {
+        current.value = value
+    }
+    emits('change', current.value)
 }
 const name = 'DropdownMenu'
 </script>

@@ -26,6 +26,7 @@
                 :error="error"
                 :current="value"
                 :options="options"
+                :multiple="multiple"
         />
         <app-control-date-picker
                 v-else-if="isDatePicker"
@@ -94,6 +95,7 @@ interface Props {
     modelValue: string | string[];
     variant?: string;
     options?: Option[];
+    multiple?: boolean;
 }
 
 const emit = defineEmits<Emits>()
@@ -101,6 +103,7 @@ const props = withDefaults(defineProps<Props>(), {
     type: Type.TEXT,
     placeholder: '...',
     error: false,
+    multiple: false,
 })
 const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.TEXT)
 const value = ref(props.modelValue)
