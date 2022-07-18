@@ -44,7 +44,7 @@
         <app-grid-row>
             <app-grid-col class="flex w-1/3">
                 <app-card
-                        v-if="item.description"
+                        v-if="hasDescription"
                         class="flex-1"
                 >
                     <p class="font-bold text-sm mb-3">Description:</p>
@@ -52,7 +52,10 @@
                 </app-card>
             </app-grid-col>
 
-            <app-grid-col class="flex w-2/3">
+            <app-grid-col
+                    :class="hasDescription ? 'w-2/3' : 'w-full'"
+                    class="flex"
+            >
                 <app-card
                         v-if="families.length"
                         class="flex-1"
@@ -94,6 +97,7 @@ const item = computed(() => feeStore.getById(route.params.id))
 const itemExists = computed(() => !!item.value)
 const title = computed(() => itemExists.value ? item.value.name : '')
 const families = computed(() => itemExists.value ? item.value.families : [])
+const hasDescription = computed(() => !!item.value.description)
 const updateTitle = (title: string) => {
     uiStore.title = title
 }
