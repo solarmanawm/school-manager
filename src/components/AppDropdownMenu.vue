@@ -24,7 +24,7 @@
 import {ref, defineProps, defineEmits, computed, withDefaults} from 'vue'
 
 interface Emits {
-    (event: 'change', option: Option): void;
+    (event: 'change', option: string | string[]): void;
 }
 
 export interface Option {
@@ -59,10 +59,11 @@ const change = (value: string) => {
         } else {
             current.value.push(value)
         }
+        emits('change', [...current.value])
     } else {
         current.value = value
+        emits('change', current.value)
     }
-    emits('change', current.value)
 }
 const name = 'DropdownMenu'
 </script>

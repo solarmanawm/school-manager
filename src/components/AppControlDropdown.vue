@@ -41,15 +41,14 @@ const emits = defineEmits<Emits>()
 const props = defineProps<Props>()
 const dropdown = ref(null)
 const visible = ref()
-const title = ref()
+const title = computed(() => Array.isArray(props.modelValue)
+        ? props.options.filter((option) => props.modelValue.includes(option.value.toString())).map((option) => option.title).sort().join(', ')
+        : props.modelValue)
 const change = (value: string | string[]) => {
-    if (Array.isArray(value)) {
-        title.value = value.sort().join(', ')
-    } else {
+    if (!Array.isArray(value)) {
         visible.value = false
-        title.value = value
     }
-    emits('update:modelValue', value)
+    emits('update:modelValue', [...value])
 }
 const classList = computed(() => ({
     'focus:border-blue-500': visible.value,
