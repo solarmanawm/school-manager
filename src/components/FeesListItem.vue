@@ -6,7 +6,7 @@
             }"
             class="relative flex justify-between shadow-sm hover:shadow-lg"
     >
-        <div :class="isCardView ? 'mb-6' : 'flex-1 flex items-center justify-between'">
+        <div :class="isCardView ? 'mb-6' : 'flex-1 flex items-center justify-between mr-6'">
             <p class="text-xl font-bold mb-1">{{ item.name }}</p>
             <p class="text-3xl text-blue-500 font-bold mb-1">{{ item.value }} <i class="fa-solid fa-ruble-sign"></i></p>
         </div>

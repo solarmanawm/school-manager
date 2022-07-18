@@ -7,6 +7,17 @@
                     class="whitespace-nowrap"
             >New Fee
             </app-button>
+            <app-control
+                    v-model="viewMode"
+                    class="w-full ml-2"
+                    id="sex"
+                    type="button-set"
+                    :variant="Variant.LIGHT"
+                    :options="[
+                        {icon: 'fa-solid fa-border-all', value: Views.CARD},
+                        {icon: 'fa-solid fa-list', value: Views.LIST},
+                ]"
+            />
         </div>
     </Teleport>
 
@@ -42,6 +53,8 @@ import AppFeesListItem, {Views} from './FeesListItem.vue'
 import AppGridContainer from './AppGridContainer.vue'
 import AppGridRow from './AppGridRow.vue'
 import AppGridCol from './AppGridCol.vue'
+// @ts-ignore
+import AppControl from './AppControl.vue'
 import routeNames from '../router/names'
 import {useFeeStore} from "../store/fee";
 
@@ -55,6 +68,7 @@ const feeStore = useFeeStore()
 const emits = defineEmits<Emits>()
 const router = useRouter()
 const viewMode = ref(Views.CARD)
+const filter = ref('')
 const add = () => {
     emits('add')
 }
