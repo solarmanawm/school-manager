@@ -67,11 +67,12 @@
                         </template>
                         <app-control
                                 v-model="form.fields.families.value"
-                                class="w-full"
-                                id="families"
-                                :type="Type.CHECKBOX"
-                                :error="form.errors.families.value.length > 0"
+                                :type="Type.DROPDOWN"
                                 :options="families"
+                                :multiple="true"
+                                id="families"
+                                class="w-full"
+                                :error="form.errors.families.value.length > 0"
                         />
                     </app-form-group>
                     <app-form-group
