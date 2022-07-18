@@ -52,7 +52,6 @@ const routes: any[] = [
                 component: () => import('../components/FeesList.vue'),
                 meta: {
                     requiresAuth: true,
-                    title: 'All Fee',
                 },
             },
             {
@@ -82,6 +81,24 @@ const routes: any[] = [
             requiresAuth: true,
             title: 'Families',
         },
+        children: [
+            {
+                path: '',
+                name: routeNames.families,
+                component: () => import('../components/FamiliesList.vue'),
+                meta: {
+                    requiresAuth: true,
+                },
+            },
+            {
+                path: ':id',
+                name: routeNames.family,
+                component: () => import('../components/FamiliesListItem.vue'),
+                meta: {
+                    requiresAuth: true,
+                },
+            },
+        ],
     },
 ]
 

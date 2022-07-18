@@ -23,7 +23,6 @@ export default () => {
     });
 
     router.beforeEach((to, from) => {
-        console.log('beforeEach')
         const authStore = useAuthStore()
         const uiStore = useUIStore()
         const {requiresAuth, title} = to.meta || {}

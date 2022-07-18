@@ -6,6 +6,7 @@ const routeNames: {
     register: 'REGISTER',
     dashboard: 'DASHBOARD',
     families: 'FAMILIES',
+    family: 'FAMILY',
     students: 'STUDENTS',
     fees: 'FEES',
     fee: 'FEE',
