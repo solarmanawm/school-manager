@@ -1,12 +1,26 @@
 <template>
     <div class="w-full relative z-10">
-        <input
+        <div
                 :class="classList"
-                :value="title"
                 @click="visible = !visible"
-                class="w-full control border h-10 rounded px-3 cursor-pointer relative"
-                readonly
-        />
+                class="w-full border rounded px-3 pb-2 cursor-pointer relative"
+        >
+            <template v-if="isEmpty">
+                <span class="mt-2 inline-block">{{ placeholder }}</span>
+            </template>
+            <template v-else>
+                <template v-if="isArray">
+                    <span
+                            v-for="item in title" :key="item"
+                            class="mr-2 bg-gray-100 px-2 py-1 rounded border border-gray-200 inline-block mt-2"
+                    >{{ item }}</span>
+                </template>
+                <span
+                        v-else
+                        class="mr-2 bg-gray-100 px-2 py-1 rounded border border-gray-200 inline-block mt-2"
+                >{{ title }}</span>
+            </template>
+        </div>
         <app-dropdown-menu
                 ref="dropdown"
                 :visible="visible"
@@ -41,9 +55,14 @@ const emits = defineEmits<Emits>()
 const props = defineProps<Props>()
 const dropdown = ref(null)
 const visible = ref()
-const title = computed(() => Array.isArray(props.modelValue)
-        ? props.options.filter((option) => props.modelValue.includes(option.value.toString())).map((option) => option.title).sort().join(', ')
-        : props.modelValue)
+const placeholder = computed(() => 'Please, select.')
+const isArray = computed(() => Array.isArray(props.modelValue))
+const isEmpty = computed(() => isArray.value ? props.modelValue.length === 0 : props.modelValue === '')
+const title = computed(() => isEmpty.value ?
+        placeholder.value
+        : isArray.value
+                ? props.options.filter((option) => props.modelValue.includes(option.value.toString())).map((option) => option.title).sort()
+                : props.modelValue)
 const change = (value: string | string[]) => {
     if (!Array.isArray(value)) {
         visible.value = false
@@ -54,6 +73,7 @@ const classList = computed(() => ({
     'focus:border-blue-500': visible.value,
     'border-gray-200 hover:border-gray-300': !props.error,
     'border-red-500': props.error,
+    'text-gray-300': isEmpty.value,
 }))
 const name = 'Dropdown'
 
