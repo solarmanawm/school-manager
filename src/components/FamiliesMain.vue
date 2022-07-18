@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
 // @ts-ignore
@@ -86,13 +86,12 @@ import AppPopup from './AppPopup.vue'
 import AppForm from './AppForm.vue'
 import AppFormGroup from './AppFormGroup.vue'
 // @ts-ignore
-import AppFamilyCard, {Family} from './FamilyCard.vue'
-// @ts-ignore
 import AppControl, {Type} from './AppControl.vue'
 import {useMode} from "../use/mode"
 import {useForm} from "../use/form"
 import {useError} from "../use/error"
 import {usePopup} from "../use/popup"
+import {useFamilyStore} from "../store/family";
 import service from "../service"
 import routeNames from '../router/names'
 
@@ -125,6 +124,7 @@ type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId: string = ''
+const familyStore = useFamilyStore()
 const router = useRouter()
 const errors = ref([])
 const onError = useError(errors)
@@ -135,12 +135,7 @@ const onValidated = () => {
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {
-            service.family.update({
-                from: {} as FamilyServiceCreateParamsInterface,
-                to: form.fields,
-            }).then(() => {
-                //
-            }).then(resolve)
+            service.family.update(form.values()).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
@@ -179,13 +174,15 @@ const popup = usePopup({
 const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
-const edit = (item: Family) => {
-    itemToHandleId = item.id
+const edit = (id: string) => {
+    const item = familyStore.getById(id)
+    form.fields.id.value = item.id
     form.fields.name.value = item.name
+    form.fields.fees.value = item.fees
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {
-    itemToHandleId = id
+    form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
