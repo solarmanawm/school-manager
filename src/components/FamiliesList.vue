@@ -1,13 +1,76 @@
 <template>
+    <Teleport to="#app-context-buttons">
+        <div class="flex">
+            <app-button
+                    :variant="Variant.LIGHT"
+                    @click="add"
+                    class="whitespace-nowrap mr-3"
+            >New Family
+            </app-button>
+            <app-control
+                    v-model="viewMode"
+                    class="w-full"
+                    id="sex"
+                    type="button-set"
+                    :variant="Variant.LIGHT"
+                    :options="[
+                        {icon: 'fa-solid fa-border-all', value: Views.CARD},
+                        {icon: 'fa-solid fa-list', value: Views.LIST},
+                ]"
+            />
+        </div>
+    </Teleport>
 
+    <app-grid-container>
+        <app-grid-row>
+            <app-grid-col
+                    v-for="item in familyStore.items"
+                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
+            >
+                <app-families-list-item
+                        :view="viewMode"
+                        :key="item.id"
+                        :item="item"
+                        @edit="edit"
+                        @remove="remove"
+                        class="w-full mb-6"
+                />
+            </app-grid-col>
+        </app-grid-row>
+    </app-grid-container>
 </template>
 
-<script>
-export default {
-    name: "FamiliesList"
+<script setup lang="ts">
+// @ts-ignore
+import {defineEmits, ref} from "vue";
+// @ts-ignore
+import AppButton, {Variant} from './AppButton.vue'
+// @ts-ignore
+import AppFamiliesListItem, {Views} from './FamiliesListItem.vue'
+import AppGridContainer from './AppGridContainer.vue'
+import AppGridRow from './AppGridRow.vue'
+import AppGridCol from './AppGridCol.vue'
+// @ts-ignore
+import AppControl, {Type} from './AppControl.vue'
+import {useFamilyStore} from "../store/family";
+
+interface Emits {
+    (event: 'add'): void;
+    (event: 'edit', id: string): void;
+    (event: 'remove', id: string): void;
+}
+
+const name = 'FamiliesList'
+const emits = defineEmits<Emits>()
+const familyStore = useFamilyStore()
+const viewMode = ref(Views.CARD)
+const add = () => {
+    emits('add')
+}
+const edit = (id: string) => {
+    emits('edit', id)
+}
+const remove = (id: string) => {
+    emits('remove', id)
 }
 </script>
-
-<style scoped>
-
-</style>

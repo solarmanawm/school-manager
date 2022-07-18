@@ -1,13 +1,15 @@
 <template>
-$END$
+    <p>item</p>
 </template>
 
-<script>
-export default {
-name: "FamiliesListItem"
+<script lang="ts">
+// @ts-ignore
+export enum Views {
+    CARD = 'CARD',
+    LIST = 'LIST',
 }
 </script>
 
-<style scoped>
-
-</style>
+<script setup lang="ts">
+const name = 'FamiliesListItem'
+</script>

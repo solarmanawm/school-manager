@@ -1,25 +1,12 @@
 <template>
-    <Teleport to="#app-context-buttons">
-        <div class="flex">
-            <app-button
-                    :variant="Variant.LIGHT"
-                    @click="add"
-                    class="whitespace-nowrap mr-3"
-            >New Family
-            </app-button>
-            <app-control
-                    v-model="viewMode"
-                    class="w-full"
-                    id="sex"
-                    type="button-set"
-                    :variant="Variant.LIGHT"
-                    :options="[
-                        {icon: 'fa-solid fa-border-all', value: Views.CARD},
-                        {icon: 'fa-solid fa-list', value: Views.LIST},
-                ]"
-            />
-        </div>
-    </Teleport>
+    <router-view v-slot="{ Component }">
+        <component
+                :is="Component"
+                @edit="edit"
+                @remove="remove"
+                v-on="router.currentRoute.value.name === routeNames.families ? { add } : {}"
+        />
+    </router-view>
 
     <Teleport to="#app-popup">
         <app-popup
@@ -83,50 +70,30 @@
             </template>
         </app-popup>
     </Teleport>
-
-    <app-grid-container>
-        <app-grid-row>
-            <app-grid-col
-                    v-for="item in families"
-                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
-            >
-                <app-family-card
-                        :view="viewMode"
-                        :key="item.id"
-                        :item="item"
-                        @edit="edit"
-                        @remove="remove"
-                        class="w-full mb-6"
-                />
-            </app-grid-col>
-        </app-grid-row>
-    </app-grid-container>
 </template>
 
 <script setup lang="ts">
 // @ts-ignore
 import {computed, ref} from "vue";
+import {useRouter} from "vue-router";
 import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
 // @ts-ignore
 import {Views} from "./FamilyCard.vue"
-// @ts-ignore
-import AppControl, {Type} from './AppControl.vue'
 // @ts-ignore
 import AppButton, {Variant} from "./AppButton.vue"
 import AppPopup from './AppPopup.vue'
 import AppForm from './AppForm.vue'
 import AppFormGroup from './AppFormGroup.vue'
-import AppGridContainer from './AppGridContainer.vue'
-import AppGridRow from './AppGridRow.vue'
-import AppGridCol from './AppGridCol.vue'
 // @ts-ignore
 import AppFamilyCard, {Family} from './FamilyCard.vue'
+// @ts-ignore
+import AppControl, {Type} from './AppControl.vue'
 import {useMode} from "../use/mode"
 import {useForm} from "../use/form"
-import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService"
 import {useError} from "../use/error"
-import service from "../service"
 import {usePopup} from "../use/popup"
+import service from "../service"
+import routeNames from '../router/names'
 
 enum SubmitActions {
     ADD = 'ADD',
@@ -157,6 +124,7 @@ type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId: string = ''
+const router = useRouter()
 const errors = ref([])
 const families = ref<FamilyServiceCreateParamsInterface[]>([])
 const onError = useError(errors)
@@ -170,7 +138,7 @@ const onValidated = () => {
 
         if (actionMode.is(SubmitActions.EDIT)) {
             service.family.update({
-                from: {} as StudentServiceCreateParamsInterface,
+                from: {} as FamilyServiceCreateParamsInterface,
                 to: form.fields,
             }).then(() => {
                 //
@@ -184,7 +152,6 @@ const onValidated = () => {
         }
     }).then(popup.close)
 }
-const viewMode = ref(Views.CARD)
 const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
     if (actionMode.is()) {
         popup.open()
