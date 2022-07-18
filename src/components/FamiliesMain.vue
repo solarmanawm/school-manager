@@ -127,14 +127,11 @@ type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } 
 let itemToHandleId: string = ''
 const router = useRouter()
 const errors = ref([])
-const families = ref<FamilyServiceCreateParamsInterface[]>([])
 const onError = useError(errors)
 const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
-            service.family.create(form.fields).then(() => {
-                families.value.push(form.values())
-            }).then(resolve)
+            service.family.create(form.values()).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {

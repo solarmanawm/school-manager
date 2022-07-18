@@ -1,6 +1,7 @@
 import {FamilyServiceCreateParamsInterface, FamilyServiceCreateResponseInterface, FamilyServiceUpdateParamsInterface} from "./AbstractFamilyService";
 import AbstractFamilyService from "./AbstractFamilyService"
-// import RequestBuilder from "./RequestBuilder";
+import RequestBuilder from "./RequestBuilder";
+import {useFamilyStore} from "../store/family";
 
 class FamilyService extends AbstractFamilyService {
     /**
@@ -9,12 +10,22 @@ class FamilyService extends AbstractFamilyService {
      * @returns Promise<FamilyServiceCreateResponseInterface>
      */
     async create(params: FamilyServiceCreateParamsInterface): Promise<FamilyServiceCreateResponseInterface> {
-        // await new RequestBuilder()
-        //     .method('post')
-        //     .url('user/new')
-        //     .data(params)
-        //     .send()
-        return Promise.resolve({} as FamilyServiceCreateResponseInterface)
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data(params)
+            .mock<FamilyServiceCreateParamsInterface>(true)
+            .then(({error}) => {
+                if (!error) {
+                    const store = useFamilyStore()
+                    store.add({
+                        ...params,
+                        id: (Math.random() + 1).toString(36).substring(7),
+                    })
+                }
+
+                return Promise.resolve({} as FamilyServiceCreateResponseInterface)
+            })
     }
 
     /**
