@@ -124,9 +124,7 @@ import {useMode} from "../use/mode";
 import {useForm} from "../use/form";
 import {useError} from "../use/error";
 import {useFeeStore} from "../store/fee";
-import {useUIStore} from "../store/ui";
-import {onBeforeRouteLeave, onBeforeRouteUpdate, useRouter} from "vue-router";
-import {useRoute} from "vue-router";
+import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import service from "../service";
 import routeNames from "../router/names";
 
@@ -164,8 +162,6 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 const router = useRouter()
-const route = useRoute()
-const uiStore = useUIStore()
 const feeStore = useFeeStore()
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])

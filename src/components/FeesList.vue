@@ -68,7 +68,6 @@ const feeStore = useFeeStore()
 const emits = defineEmits<Emits>()
 const router = useRouter()
 const viewMode = ref(Views.CARD)
-const filter = ref('')
 const add = () => {
     emits('add')
 }
