@@ -20,10 +20,18 @@ class FamilyService extends AbstractFamilyService {
             .then(({error}) => {
                 if (!error) {
                     const dataStore = useDataStore()
+                    const id = (Math.random() + 1).toString(36).substring(7)
                     dataStore.addFamily({
                         ...params,
-                        id: (Math.random() + 1).toString(36).substring(7),
+                        id,
                     })
+
+                    if (params.fees.length) {
+                        for (const feeId of params.fees) {
+                            const fee = dataStore.getFeeById(feeId)
+                            fee.families.push(id)
+                        }
+                    }
                 }
 
                 return Promise.resolve({} as FamilyServiceCreateResponseInterface)

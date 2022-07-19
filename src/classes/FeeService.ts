@@ -29,10 +29,7 @@ class FeeService extends AbstractFeeService {
                     if (params.families.length) {
                         for (const familyId of params.families) {
                             const family = dataStore.getFamilyById(familyId)
-
-                            if (!family.fees.includes(id)) {
-                                family.fees.push(id)
-                            }
+                            family.fees.push(id)
                         }
                     }
                 }
