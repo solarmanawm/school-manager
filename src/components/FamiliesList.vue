@@ -24,7 +24,7 @@
     <app-grid-container>
         <app-grid-row>
             <app-grid-col
-                    v-for="item in familyStore.items"
+                    v-for="item in dataStore.families"
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
             >
                 <app-families-list-item
@@ -52,7 +52,7 @@ import AppGridRow from './AppGridRow.vue'
 import AppGridCol from './AppGridCol.vue'
 // @ts-ignore
 import AppControl, {Type} from './AppControl.vue'
-import {useFamilyStore} from "../store/family";
+import {useDataStore} from "../store/data";
 
 interface Emits {
     (event: 'add'): void;
@@ -62,7 +62,7 @@ interface Emits {
 
 const name = 'FamiliesList'
 const emits = defineEmits<Emits>()
-const familyStore = useFamilyStore()
+const dataStore = useDataStore()
 const viewMode = ref(Views.CARD)
 const add = () => {
     emits('add')

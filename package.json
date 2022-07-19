@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/underscore": "^1.11.4",
     "@vuelidate/core": "^2.0.0-alpha.42",
     "@vuelidate/validators": "^2.0.0-alpha.30",
     "@vuepic/vue-datepicker": "^3.3.1",

@@ -80,7 +80,7 @@ import AppGridContainer from './AppGridContainer.vue'
 import AppGridRow from './AppGridRow.vue'
 import AppGridCol from './AppGridCol.vue'
 import {useUIStore} from "../store/ui"
-import {useFeeStore} from "../store/fee"
+import {useDataStore} from "../store/data"
 
 interface Emits {
     (event: 'edit', id: string): void;
@@ -92,8 +92,8 @@ const name = 'FeesItemDetails'
 const emits = defineEmits<Emits>()
 const route = useRoute()
 const uiStore = useUIStore()
-const feeStore = useFeeStore()
-const item = computed(() => feeStore.getById(route.params.id))
+const dataStore = useDataStore()
+const item = computed(() => dataStore.getFeeById(route.params.id))
 const itemExists = computed(() => !!item.value)
 const title = computed(() => itemExists.value ? item.value.name : '')
 const families = computed(() => itemExists.value ? item.value.families : [])

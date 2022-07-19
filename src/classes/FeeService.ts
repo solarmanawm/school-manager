@@ -3,7 +3,7 @@ import AbstractFeeService from "./AbstractFeeService"
 import RequestBuilder from "./RequestBuilder"
 import {Helpers} from "../helpers";
 
-import {useFeeStore} from "../store/fee";
+import {useDataStore} from "../store/data";
 
 class FeeService extends AbstractFeeService {
     /**
@@ -19,8 +19,8 @@ class FeeService extends AbstractFeeService {
             .mock<FeeServiceCreateParamsInterface>(true)
             .then(({error}) => {
                 if (!error) {
-                    const feeStore = useFeeStore()
-                    feeStore.add({
+                    const dataStore = useDataStore()
+                    dataStore.addFee({
                         ...params,
                         id: (Math.random() + 1).toString(36).substring(7),
                     })
@@ -36,8 +36,8 @@ class FeeService extends AbstractFeeService {
      * @returns Promise<StudentServiceCreateResponseInterface>
      */
     async update(payload: Partial<FeeServiceCreateParamsInterface>): Promise<FeeServiceCreateResponseInterface> {
-        const feeStore = useFeeStore()
-        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(feeStore.getById(payload.id), payload)
+        const dataStore = useDataStore()
+        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getFeeById(payload.id), payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -50,7 +50,7 @@ class FeeService extends AbstractFeeService {
             .mock<FeeServiceCreateParamsInterface>(true)
             .then(({error}) => {
                 if (!error) {
-                    feeStore.update(payload.id, diff)
+                    dataStore.updateFee(payload.id, diff)
                 }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -70,8 +70,8 @@ class FeeService extends AbstractFeeService {
             .mock<FeeServiceCreateParamsInterface>(true)
             .then(({error}) => {
                 if (!error) {
-                    const feeStore = useFeeStore()
-                    feeStore.remove(id)
+                    const dataStore = useDataStore()
+                    dataStore.removeFee(id)
                 }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)

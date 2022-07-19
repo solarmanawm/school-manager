@@ -24,7 +24,7 @@
     <app-grid-container>
         <app-grid-row>
             <app-grid-col
-                    v-for="item in feeStore.items"
+                    v-for="item in dataStore.fees"
                     :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
                     class="flex"
             >
@@ -56,7 +56,7 @@ import AppGridCol from './AppGridCol.vue'
 // @ts-ignore
 import AppControl from './AppControl.vue'
 import routeNames from '../router/names'
-import {useFeeStore} from "../store/fee";
+import {useDataStore} from "../store/data";
 
 interface Emits {
     (event: 'add'): void;
@@ -64,7 +64,7 @@ interface Emits {
     (event: 'remove', id: string): void;
 }
 
-const feeStore = useFeeStore()
+const dataStore = useDataStore()
 const emits = defineEmits<Emits>()
 const router = useRouter()
 const viewMode = ref(Views.CARD)

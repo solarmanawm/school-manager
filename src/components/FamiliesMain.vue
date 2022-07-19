@@ -91,7 +91,7 @@ import {useMode} from "../use/mode"
 import {useForm} from "../use/form"
 import {useError} from "../use/error"
 import {usePopup} from "../use/popup"
-import {useFamilyStore} from "../store/family";
+import {useDataStore} from "../store/data";
 import service from "../service"
 import routeNames from '../router/names'
 
@@ -124,7 +124,7 @@ type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId: string = ''
-const familyStore = useFamilyStore()
+const dataStore = useDataStore()
 const router = useRouter()
 const errors = ref([])
 const onError = useError(errors)
@@ -175,7 +175,7 @@ const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
 const edit = (id: string) => {
-    const item = familyStore.getById(id)
+    const item = dataStore.getFamilyById(id)
     form.fields.id.value = item.id
     form.fields.name.value = item.name
     form.fields.fees.value = item.fees

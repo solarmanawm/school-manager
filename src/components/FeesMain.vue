@@ -124,7 +124,7 @@ import {usePopup} from "../use/popup";
 import {useMode} from "../use/mode";
 import {useForm} from "../use/form";
 import {useError} from "../use/error";
-import {useFeeStore} from "../store/fee";
+import {useDataStore} from "../store/data";
 import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import service from "../service";
 import routeNames from "../router/names";
@@ -163,7 +163,7 @@ type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'v
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 const router = useRouter()
-const feeStore = useFeeStore()
+const dataStore = useDataStore()
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
@@ -240,7 +240,7 @@ const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
 const edit = (id: string) => {
-    const item = feeStore.getById(id)
+    const item = dataStore.getFeeById(id)
     form.fields.id.value = item.id
     form.fields.name.value = item.name
     form.fields.value.value = item.value

@@ -1,10 +1,9 @@
 import {FamilyServiceCreateParamsInterface, FamilyServiceCreateResponseInterface, FamilyServiceUpdateParamsInterface} from "./AbstractFamilyService";
 import AbstractFamilyService from "./AbstractFamilyService"
 import RequestBuilder from "./RequestBuilder";
-import {useFamilyStore} from "../store/family";
-import {useFeeStore} from "../store/fee";
 import {Helpers} from "../helpers";
 import {FeeServiceCreateParamsInterface, FeeServiceCreateResponseInterface} from "./AbstractFeeService";
+import {useDataStore} from "../store/data";
 
 class FamilyService extends AbstractFamilyService {
     /**
@@ -20,8 +19,8 @@ class FamilyService extends AbstractFamilyService {
             .mock<FamilyServiceCreateParamsInterface>(true)
             .then(({error}) => {
                 if (!error) {
-                    const store = useFamilyStore()
-                    store.add({
+                    const dataStore = useDataStore()
+                    dataStore.addFamily({
                         ...params,
                         id: (Math.random() + 1).toString(36).substring(7),
                     })
@@ -37,8 +36,8 @@ class FamilyService extends AbstractFamilyService {
      * @returns Promise<FamilyServiceCreateResponseInterface>
      */
     async update(payload: Partial<FamilyServiceCreateParamsInterface>): Promise<FamilyServiceCreateResponseInterface> {
-        const store = useFamilyStore()
-        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(store.getById(payload.id), payload)
+        const dataStore = useDataStore()
+        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getById(payload.id), payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -51,7 +50,7 @@ class FamilyService extends AbstractFamilyService {
             .mock<FeeServiceCreateParamsInterface>(true)
             .then(({error}) => {
                 if (!error) {
-                    store.update(payload.id, diff)
+                    dataStore.updateFamily(payload.id, diff)
                 }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -64,12 +63,19 @@ class FamilyService extends AbstractFamilyService {
      * @returns Promise<FamilyServiceCreateResponseInterface>
      */
     async delete(id: string): Promise<FamilyServiceCreateResponseInterface> {
-        // await new RequestBuilder()
-        //     .method('post')
-        //     .url('user/new')
-        //     .data(params)
-        //     .send()
-        return Promise.resolve({} as FamilyServiceCreateResponseInterface)
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data({id})
+            .mock<FamilyServiceCreateParamsInterface>(true)
+            .then(({error}) => {
+                if (!error) {
+                    const dataStore = useDataStore()
+                    dataStore.removeFamily(id)
+                }
+
+                return Promise.resolve({} as FeeServiceCreateResponseInterface)
+            })
     }
 }
 
