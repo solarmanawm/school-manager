@@ -52,11 +52,10 @@
                         />
                     </app-form-group>
                     <app-form-group
+                            v-if="hasAnyFamilies"
                             class="w-full"
                             label="Families"
                             target="families"
-                            :required="true"
-                            :errors="form.errors.families.value"
                     >
                         <template #context>
                             <a
@@ -72,7 +71,6 @@
                                 :multiple="true"
                                 id="families"
                                 class="w-full"
-                                :error="form.errors.families.value.length > 0"
                         />
                     </app-form-group>
                     <app-form-group
@@ -111,6 +109,7 @@
 
 <script setup lang="ts">
 import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
+import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
 // @ts-ignore
 import AppButton, {Variant} from "./AppButton.vue";
 // @ts-ignore
@@ -125,14 +124,9 @@ import {useMode} from "../use/mode";
 import {useForm} from "../use/form";
 import {useError} from "../use/error";
 import {useDataStore} from "../store/data";
-import {onBeforeRouteUpdate, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import service from "../service";
 import routeNames from "../router/names";
-
-const families = [
-    {title: 'Family #1', value: 'id1'},
-    {title: 'Family #2', value: 'id2'},
-];
 
 enum SubmitActions {
     ADD = 'ADD',
@@ -152,24 +146,34 @@ enum PopupSubmitButtonText {
     REMOVE = 'Remove',
 }
 
+interface Option {
+    title: string;
+    value: string;
+}
+
 interface SubmitActionsInterface {
     ADD: string;
     EDIT: string;
     REMOVE: string;
 }
 
-type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'value' | 'description' | 'families'>;
+type FeeValidationKeys = keyof Pick<FeeServiceCreateParamsInterface, 'name' | 'value' | 'description'>;
 
 type FeeValidation = { [key in FeeValidationKeys]: { [key: string]: any } }
 
 const router = useRouter()
 const dataStore = useDataStore()
-const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
-const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
-const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const allFieldsSelected = ref(false)
 const errors = ref([])
 const onError = useError(errors)
+const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
+const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
+const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
+const families = computed(() => dataStore.families.map((item: FamilyServiceCreateParamsInterface) => ({
+    value: item.id,
+    title: item.name,
+})))
+const hasAnyFamilies = computed(() => dataStore.families.length > 0)
 const onValidated = () => {
     return new Promise((resolve) => {
         const formValues = form.values()
@@ -216,10 +220,6 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
             integer: true,
         },
         description: {},
-        families: {
-            required: true,
-            minLength: 1,
-        },
     },
     validationMessages: {
         name: {
@@ -227,10 +227,6 @@ const form = useForm<FeeServiceCreateParamsInterface, FeeValidation>({
         },
         value: {
             required: 'You need to define a fee amount.',
-        },
-        families: {
-            required: 'You need to select at least one item.',
-            minLength: 'You need to select at least one item.',
         },
     },
     onValidated,
@@ -256,6 +252,6 @@ const remove = (id: string) => {
 const name = 'Fees'
 
 watch(allFieldsSelected, (isSelected: boolean) => {
-    form.fields.families.value = isSelected ? families.map(({value}) => value) : []
+    form.fields.families.value = isSelected ? families.value.map((item: Option) => item.value) : []
 })
 </script>

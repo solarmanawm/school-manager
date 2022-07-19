@@ -36,10 +36,10 @@
                         />
                     </app-form-group>
                     <app-form-group
+                            v-if="hasAnyFees"
                             class="w-full"
                             label="Fees"
                             target="fees"
-                            :required="true"
                     >
                         <template #context>
                             <a
@@ -82,6 +82,7 @@
 import {computed, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
+import {FeeServiceCreateParamsInterface} from '../classes/AbstractFeeService'
 // @ts-ignore
 import {Views} from "./FamilyCard.vue"
 // @ts-ignore
@@ -117,6 +118,11 @@ enum PopupSubmitButtonText {
     REMOVE = 'Remove',
 }
 
+interface Option {
+    title: string;
+    value: string;
+}
+
 interface SubmitActionsInterface {
     ADD: string;
     EDIT: string;
@@ -128,16 +134,18 @@ type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId: string = ''
-const fees = [
-    {title: 'Fee 1', value: '1'},
-    {title: 'Fee 2', value: '2'},
-]
 const dataStore = useDataStore()
 const router = useRouter()
 const errors = ref([])
 const onError = useError(errors)
 const allFieldsSelected = ref(false)
+const selectedFeesLength = computed(() => form.fields.fees.value.length)
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
+const fees = computed(() => dataStore.fees.map((item: FeeServiceCreateParamsInterface) => ({
+    value: item.id,
+    title: item.name,
+})))
+const hasAnyFees = computed(() => dataStore.fees.length > 0)
 const onValidated = () => {
     return new Promise((resolve) => {
         const formValues = form.values()
@@ -200,6 +208,9 @@ const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.va
 const name = 'Families'
 
 watch(allFieldsSelected, (isSelected: boolean) => {
-    form.fields.fees.value = isSelected ? fees.map(({value}) => value) : []
+    form.fields.fees.value = isSelected ? fees.value.map((item: Option) => item.value) : []
+})
+watch(selectedFeesLength, (length: number) => {
+    allFieldsSelected.value = length === fees.value.length
 })
 </script>

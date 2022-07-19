@@ -37,7 +37,7 @@ class FamilyService extends AbstractFamilyService {
      */
     async update(payload: Partial<FamilyServiceCreateParamsInterface>): Promise<FamilyServiceCreateResponseInterface> {
         const dataStore = useDataStore()
-        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getById(payload.id), payload)
+        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getFamilyById(payload.id), payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as FeeServiceCreateResponseInterface)
