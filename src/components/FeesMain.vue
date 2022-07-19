@@ -258,6 +258,4 @@ const name = 'Fees'
 watch(allFieldsSelected, (isSelected: boolean) => {
     form.fields.families.value = isSelected ? families.map(({value}) => value) : []
 })
-onBeforeRouteUpdate(() => {
-})
 </script>

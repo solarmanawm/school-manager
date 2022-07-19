@@ -41,13 +41,17 @@
                             target="fees"
                             :required="true"
                     >
+                        <template #context>
+                            <a
+                                    href="#"
+                                    @click.prevent="allFieldsSelected = !allFieldsSelected"
+                                    class="text-blue-500 hover:text-blue-700 underline decoration-dashed hover:no-underline"
+                            >{{ selectAllText }}</a>
+                        </template>
                         <app-control
                                 v-model="form.fields.fees.value"
                                 :type="Type.DROPDOWN"
-                                :options="[
-                                        {title: 'Fee 1', value: '1'},
-                                        {title: 'Fee 2', value: '2'},
-                                ]"
+                                :options="fees"
                                 :multiple="true"
                                 id="fees"
                                 class="w-full"
@@ -124,10 +128,16 @@ type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId: string = ''
+const fees = [
+    {title: 'Fee 1', value: '1'},
+    {title: 'Fee 2', value: '2'},
+]
 const dataStore = useDataStore()
 const router = useRouter()
 const errors = ref([])
 const onError = useError(errors)
+const allFieldsSelected = ref(false)
+const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const onValidated = () => {
     return new Promise((resolve) => {
         if (actionMode.is(SubmitActions.ADD)) {
@@ -188,4 +198,8 @@ const remove = (id: string) => {
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const name = 'Families'
+
+watch(allFieldsSelected, (isSelected: boolean) => {
+    form.fields.fees.value = isSelected ? fees.map(({value}) => value) : []
+})
 </script>
