@@ -18,19 +18,21 @@ class FamilyService extends AbstractFamilyService {
             .data(params)
             .mock<FamilyServiceCreateParamsInterface>(true)
             .then(({error}) => {
-                if (!error) {
-                    const dataStore = useDataStore()
-                    const id = (Math.random() + 1).toString(36).substring(7)
-                    dataStore.addFamily({
-                        ...params,
-                        id,
-                    })
+                if (error) {
+                    throw error
+                }
 
-                    if (params.fees.length) {
-                        for (const feeId of params.fees) {
-                            const fee = dataStore.getFeeById(feeId)
-                            fee.families.push(id)
-                        }
+                const dataStore = useDataStore()
+                const id = (Math.random() + 1).toString(36).substring(7)
+                dataStore.addFamily({
+                    ...params,
+                    id,
+                })
+
+                if (params.fees.length) {
+                    for (const feeId of params.fees) {
+                        const fee = dataStore.getFeeById(feeId)
+                        fee.families.push(id)
                     }
                 }
 
@@ -57,9 +59,11 @@ class FamilyService extends AbstractFamilyService {
             .data(diff)
             .mock<FeeServiceCreateParamsInterface>(true)
             .then(({error}) => {
-                if (!error) {
-                    dataStore.updateFamily(payload.id, diff)
+                if (error) {
+                    throw error
                 }
+
+                dataStore.updateFamily(payload.id, diff)
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
             })
@@ -77,10 +81,12 @@ class FamilyService extends AbstractFamilyService {
             .data({id})
             .mock<FamilyServiceCreateParamsInterface>(true)
             .then(({error}) => {
-                if (!error) {
-                    const dataStore = useDataStore()
-                    dataStore.removeFamily(id)
+                if (error) {
+                    throw error
                 }
+
+                const dataStore = useDataStore()
+                dataStore.removeFamily(id)
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
             })
