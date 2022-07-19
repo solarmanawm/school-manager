@@ -84,8 +84,6 @@ import {useRouter} from "vue-router";
 import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
 import {FeeServiceCreateParamsInterface} from '../classes/AbstractFeeService'
 // @ts-ignore
-import {Views} from "./FamilyCard.vue"
-// @ts-ignore
 import AppButton, {Variant} from "./AppButton.vue"
 import AppPopup from './AppPopup.vue'
 import AppForm from './AppForm.vue'
