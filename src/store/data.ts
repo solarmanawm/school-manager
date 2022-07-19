@@ -7,17 +7,19 @@ type State = {
     families: FamilyServiceCreateParamsInterface[];
 }
 
+type Id = {id: string}
+
 type Source = FeeServiceCreateParamsInterface | FamilyServiceCreateParamsInterface
 
-const getItemById = (source: Source[], id: string) => {
-    return source.find((item: Source) => item.id === id)
+function getItemById<T extends Id>(source: T[], id: string) {
+    return source.find((item: T) => item.id === id)
 }
 
-const getItemIndexById = (source: Source[], id: string) => {
-    return source.findIndex((item: Source) => item.id === id)
+function getItemIndexById<T extends Id>(source: T[], id: string) {
+    return source.findIndex((item: T) => item.id === id)
 }
 
-const updateItem = (source: Source[], id: string, payload: Partial<Source>) => {
+function updateItem<T extends Id>(source: T[], id: string, payload: Partial<T>) {
     const itemIndex = getItemIndexById(source, id)
     source[itemIndex] = {
         ...source[itemIndex],
@@ -25,7 +27,7 @@ const updateItem = (source: Source[], id: string, payload: Partial<Source>) => {
     }
 }
 
-const removeItem = (source: Source[], id: string) => {
+function removeItem<T extends Id>(source: T[], id: string) {
     const itemIndex = getItemIndexById(source, id)
     source.splice(itemIndex, 1);
 }
@@ -43,33 +45,33 @@ export const useDataStore = defineStore('data', {
             this.fees.push(item)
         },
         updateFee(id: string, payload: FeeServiceCreateParamsInterface) {
-            updateItem(this.fees, id, payload)
+            updateItem<FeeServiceCreateParamsInterface>(this.fees, id, payload)
         },
         removeFee(id: string) {
-            removeItem(this.fees, id)
+            removeItem<FeeServiceCreateParamsInterface>(this.fees, id)
         },
         getFeeById(id: string) {
-            return getItemById(this.fees, id)
+            return getItemById<FeeServiceCreateParamsInterface>(this.fees, id)
         },
         // getFeeIndexById(id: string) {
-        //     return getItemIndexById(this.fees, id)
+        //     return getItemIndexById<FeeServiceCreateParamsInterface>(this.fees, id)
         // },
 
         /* Families */
-        addFamily(item: FeeServiceCreateParamsInterface) {
+        addFamily(item: FamilyServiceCreateParamsInterface) {
             this.families.push(item)
         },
-        updateFamily(id: string, payload: FeeServiceCreateParamsInterface) {
-            updateItem(this.families, id, payload)
+        updateFamily(id: string, payload: FamilyServiceCreateParamsInterface) {
+            updateItem<FamilyServiceCreateParamsInterface>(this.families, id, payload)
         },
         removeFamily(id: string) {
-            removeItem(this.families, id)
+            removeItem<FamilyServiceCreateParamsInterface>(this.families, id)
         },
         getFamilyById(id: string) {
-            return getItemById(this.families, id)
+            return getItemById<FamilyServiceCreateParamsInterface>(this.families, id)
         },
         // getFamilyIndexById(id: string) {
-        //     return getItemIndexById(this.families, id)
+        //     return getItemIndexById<FamilyServiceCreateParamsInterface>(this.families, id)
         // },
     }
 })

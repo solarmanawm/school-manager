@@ -20,10 +20,21 @@ class FeeService extends AbstractFeeService {
             .then(({error}) => {
                 if (!error) {
                     const dataStore = useDataStore()
+                    const id = (Math.random() + 1).toString(36).substring(7)
                     dataStore.addFee({
                         ...params,
-                        id: (Math.random() + 1).toString(36).substring(7),
+                        id,
                     })
+
+                    if (params.families.length) {
+                        for (const familyId of params.families) {
+                            const family = dataStore.getFamilyById(familyId)
+
+                            if (!family.fees.includes(id)) {
+                                family.fees.push(id)
+                            }
+                        }
+                    }
                 }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
