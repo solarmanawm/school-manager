@@ -47,7 +47,7 @@ class FamilyService extends AbstractFamilyService {
      */
     async update(payload: Partial<FamilyServiceCreateParamsInterface>): Promise<FamilyServiceCreateResponseInterface> {
         const dataStore = useDataStore()
-        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getFamilyById(payload.id), payload)
+        const diff = Helpers.difference<FamilyServiceCreateParamsInterface>(dataStore.getFamilyById(payload.id), payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -57,13 +57,35 @@ class FamilyService extends AbstractFamilyService {
             .method('post')
             .url('user/new')
             .data(diff)
-            .mock<FeeServiceCreateParamsInterface>(true)
+            .mock<FamilyServiceCreateParamsInterface>(true)
             .then(({error}) => {
                 if (error) {
                     throw error
                 }
 
-                dataStore.updateFamily(payload.id, diff)
+                const {id} = payload
+                const {fees} = diff
+                dataStore.updateFamily(id, diff)
+
+                if (fees) {
+                    const feesToRemoveFamily = dataStore.fees.filter((family: FeeServiceCreateParamsInterface) => {
+                        return !fees.includes(family.id)
+                    })
+
+                    for (const fee of feesToRemoveFamily) {
+                        fee.families = fee.families.filter((family: string) => family !== id)
+                    }
+
+                    const feesToAddFamily = dataStore.fees.filter((family: FeeServiceCreateParamsInterface) => {
+                        return fees.includes(family.id)
+                    })
+
+                    for (const fee of feesToAddFamily) {
+                        if (!fee.families.includes(id)) {
+                            fee.families.push(id)
+                        }
+                    }
+                }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
             })

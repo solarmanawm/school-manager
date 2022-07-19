@@ -1,4 +1,5 @@
 import {FeeServiceCreateResponseInterface, FeeServiceCreateParamsInterface} from "./AbstractFeeService";
+import {FamilyServiceCreateParamsInterface} from "./AbstractFamilyService";
 import AbstractFeeService from "./AbstractFeeService"
 import RequestBuilder from "./RequestBuilder"
 import {Helpers} from "../helpers";
@@ -63,7 +64,29 @@ class FeeService extends AbstractFeeService {
                     throw error
                 }
 
-                dataStore.updateFee(payload.id, diff)
+                const {id} = payload
+                const {families} = diff
+                dataStore.updateFee(id, diff)
+
+                if (families) {
+                    const familiesToRemoveFee = dataStore.families.filter((family: FamilyServiceCreateParamsInterface) => {
+                        return !families.includes(family.id)
+                    })
+
+                    for (const familyToRemoveFee of familiesToRemoveFee) {
+                        familyToRemoveFee.fees = familyToRemoveFee.fees.filter((fee: string) => fee !== id)
+                    }
+
+                    const familiesToAddFee = dataStore.families.filter((family: FamilyServiceCreateParamsInterface) => {
+                        return families.includes(family.id)
+                    })
+
+                    for (const familyToAddFee of familiesToAddFee) {
+                        if (!familyToAddFee.fees.includes(id)) {
+                            familyToAddFee.fees.push(id)
+                        }
+                    }
+                }
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
             })
