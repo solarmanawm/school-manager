@@ -140,18 +140,18 @@ const allFieldsSelected = ref(false)
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const onValidated = () => {
     return new Promise((resolve) => {
+        const formValues = form.values()
+
         if (actionMode.is(SubmitActions.ADD)) {
-            service.family.create(form.values()).then(resolve)
+            service.family.create(formValues).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {
-            service.family.update(form.values()).then(resolve)
+            service.family.update(formValues).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
-            service.family.delete(itemToHandleId).then(() => {
-                //
-            }).then(resolve)
+            service.family.delete(formValues.id).then(resolve)
         }
     }).then(popup.close)
 }
