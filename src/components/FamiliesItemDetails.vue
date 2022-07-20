@@ -79,7 +79,7 @@ import {useDataStore} from "../store/data"
 interface Emits {
     (event: 'edit', id: string): void;
     (event: 'remove', id: string): void;
-    (event: 'income'): void;
+    (event: 'income', id: string): void;
 }
 
 const name = 'FamiliesItemDetails'
@@ -104,7 +104,7 @@ const remove = () => {
     updateTitle(item.value.name)
 }
 const income = () => {
-    emits('income')
+    emits('income', item.value.id)
 }
 
 if (itemExists.value) {

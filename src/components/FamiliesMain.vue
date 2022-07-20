@@ -208,7 +208,7 @@ const onValidated = () => {
 }
 const onIncomeValidated = () => {
     return new Promise((resolve) => {
-        service.family.income(+incomeForm.values().amount).then(resolve)
+        service.family.income(form.values().id, +incomeForm.values().amount).then(resolve)
     }).then(incomePopup.close)
 }
 const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
@@ -270,7 +270,8 @@ const remove = (id: string) => {
     form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
-const income = () => {
+const income = (id: string) => {
+    form.fields.id.value = id
     incomePopup.open()
 }
 const manageFees = () => {
