@@ -103,7 +103,7 @@
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
-                            @click="popup.close()"
+                            @click="incomePopup.close()"
                             :variant="Variant.SECONDARY"
                     >Cancel
                     </app-button>
