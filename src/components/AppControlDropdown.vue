@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref, defineProps, defineEmits, computed, withDefaults} from 'vue'
+import {ref, defineProps, defineEmits, computed, withDefaults, watch} from 'vue'
 import {onClickOutside} from "@vueuse/core";
 
 import AppDropdownMenu, {Option} from './AppDropdownMenu.vue'
@@ -56,18 +56,21 @@ const props = defineProps<Props>()
 const dropdown = ref(null)
 const visible = ref()
 const placeholder = computed(() => 'Please, select.')
-const isArray = computed(() => Array.isArray(props.modelValue))
-const isEmpty = computed(() => isArray.value ? props.modelValue.length === 0 : props.modelValue === '')
+const isArray = Array.isArray(props.modelValue)
+const isEmpty = computed(() => isArray ? props.modelValue.length === 0 : props.modelValue === '')
 const title = computed(() => isEmpty.value ?
         placeholder.value
-        : isArray.value
+        : isArray
                 ? props.options.filter((option) => props.modelValue.includes(option.value.toString())).map((option) => option.title).sort()
-                : props.modelValue)
+                : props.options.filter((option) => option.value === props.modelValue).map((option) => option.title).shift()
+)
 const change = (value: string | string[]) => {
-    if (!Array.isArray(value)) {
+    if (isArray) {
+        emits('update:modelValue', [...value])
+    } else {
         visible.value = false
+        emits('update:modelValue', value)
     }
-    emits('update:modelValue', [...value])
 }
 const classList = computed(() => ({
     'focus:border-blue-500': visible.value,
@@ -81,13 +84,3 @@ onClickOutside(dropdown, () => {
     visible.value = false
 })
 </script>
-
-<style lang="css" scoped>
-.control {
-    outline: none;
-}
-
-.control:focus {
-    outline: none;
-}
-</style>

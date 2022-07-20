@@ -56,10 +56,11 @@ const change = (value: string) => {
     if (props.multiple) {
         if (current.value.includes(value)) {
             current.value = current.value.filter((v: string) => v !== value)
+            emits('change', current.value)
         } else {
             current.value.push(value)
+            emits('change', [...current.value])
         }
-        emits('change', [...current.value])
     } else {
         current.value = value
         emits('change', current.value)
