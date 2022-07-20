@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 // @ts-ignore
-import {ref, defineProps, defineEmits, computed, withDefaults} from 'vue'
+import {ref, defineProps, defineEmits, computed, withDefaults, watch} from 'vue'
 
 interface Emits {
     (event: 'change', option: string | string[]): void;
@@ -67,4 +67,8 @@ const change = (value: string) => {
     }
 }
 const name = 'DropdownMenu'
+
+watch(() => props.current, (value: string | string[]) => {
+    current.value = value
+})
 </script>
