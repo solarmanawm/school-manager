@@ -1,25 +1,13 @@
 <template>
-    <Teleport to="#app-context-buttons">
-        <div class="flex">
-            <app-button
-                    :variant="Variant.LIGHT"
-                    @click="add"
-                    class="whitespace-nowrap mr-3"
-            >New Student
-            </app-button>
-            <app-control
-                    v-model="viewMode"
-                    class="w-full"
-                    id="sex"
-                    type="button-set"
-                    :variant="Variant.LIGHT"
-                    :options="[
-                        {icon: 'fa-solid fa-border-all', value: Views.CARD},
-                        {icon: 'fa-solid fa-list', value: Views.LIST},
-                ]"
-            />
-        </div>
-    </Teleport>
+    <router-view v-slot="{ Component }">
+        <component
+                :is="Component"
+                :has-families="hasFamilies"
+                @edit="edit"
+                @remove="remove"
+                v-on="router.currentRoute.value.name === routeNames.students ? { add } : {}"
+        />
+    </router-view>
 
     <Teleport to="#app-popup">
         <app-popup
@@ -35,6 +23,7 @@
                         class="mb-0"
                 >
                     <app-form-group
+                            v-if="hasFamilies"
                             class="w-full"
                             label="Family"
                             target="family"
@@ -47,10 +36,7 @@
                                 id="family"
                                 :type="Type.DROPDOWN"
                                 :error="form.errors.family.value.length > 0"
-                                :options="[
-                                        {title: 'Family #1', value: '1'},
-                                        {title: 'Family #2', value: '2'},
-                                ]"
+                                :options="families"
                         />
                     </app-form-group>
                     <app-form-group
@@ -114,51 +100,32 @@
             </template>
         </app-popup>
     </Teleport>
-
-    <app-grid-container>
-        <app-grid-row>
-            <app-grid-col
-                    v-for="item in students"
-                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
-            >
-                <app-student-card
-                        :view="viewMode"
-                        :key="item.id"
-                        :item="item"
-                        @edit="edit"
-                        @remove="remove"
-                        class="w-full mb-6"
-                />
-            </app-grid-col>
-        </app-grid-row>
-    </app-grid-container>
 </template>
 
 <script setup lang="ts">
 // @ts-ignore
 import {computed, reactive, ref, watch} from "vue";
-
+import {useRouter} from "vue-router";
 import AppForm from './AppForm.vue'
 import AppFormGroup from './AppFormGroup.vue'
 // @ts-ignore
 import AppControl, {Type} from './AppControl.vue'
 // @ts-ignore
-import {Variant} from "./AppButton.vue";
 import AppPopup from './AppPopup.vue'
 // @ts-ignore
 import AppStudentCard, {Student, Views} from './StudentCard.vue'
 // @ts-ignore
-import AppButton from './AppButton.vue'
-import AppGridContainer from './AppGridContainer.vue'
-import AppGridRow from './AppGridRow.vue'
-import AppGridCol from './AppGridCol.vue'
+import AppButton, {Variant} from './AppButton.vue'
 
+import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService";
 import {usePopup} from "../use/popup"
 import {useForm} from "../use/form"
 import {useError} from '../use/error'
-import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService";
-import service from "../service";
 import {useMode} from "../use/mode";
+import service from "../service";
+import routeNames from '../router/names'
+import {FamilyServiceCreateParamsInterface} from "../classes/AbstractFamilyService";
+import {useDataStore} from "../store/data";
 
 enum SubmitActions {
     ADD = 'ADD',
@@ -191,32 +158,30 @@ type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any 
 let itemToHandleId: string = ''
 const errors = ref([])
 const onError = useError(errors)
+const router = useRouter()
+const dataStore = useDataStore()
+const hasFamilies = computed(() => dataStore.families.length > 0)
 const onValidated = () => {
     return new Promise((resolve) => {
+        const formValues = form.values()
+
         if (actionMode.is(SubmitActions.ADD)) {
-            service.student.create(form.fields).then(() => {
-                students.value.push(form.values())
-            }).then(resolve)
+            service.student.create(formValues).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.EDIT)) {
-            service.student.update({
-                from: {} as StudentServiceCreateParamsInterface,
-                to: form.fields,
-            }).then(() => {
-                //
-            }).then(resolve)
+            service.student.update(formValues).then(resolve)
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
-            service.student.delete(itemToHandleId).then(() => {
-                //
-            }).then(resolve)
+            service.student.delete(formValues.id).then(resolve)
         }
     }).then(popup.close)
 }
-const students = ref<StudentServiceCreateParamsInterface[]>([])
-const viewMode = ref(Views.CARD)
+const families = computed(() => dataStore.families.map((item: FamilyServiceCreateParamsInterface) => ({
+    value: item.id,
+    title: item.name,
+})))
 const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
     if (actionMode.is()) {
         popup.open()
