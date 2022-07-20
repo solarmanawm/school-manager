@@ -28,9 +28,10 @@
         </div>
     </Teleport>
 
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between">
         <div class="flex flex-col item-start">
-            <p class="text-gray-300 text-sm mb-2">ID: {{ item.id }}</p>
+            <p class="text-gray-300 text-sm mb-2 mb-6">ID: {{ item.id }}</p>
+            <p class="mb-6 text-blue-500 font-bold text-4xl">Income: {{ item.income }} <i class="fa-solid fa-ruble-sign"></i></p>
         </div>
     </div>
 
