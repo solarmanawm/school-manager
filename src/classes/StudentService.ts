@@ -1,4 +1,4 @@
-import {StudentServiceCreateParamsInterface, StudentServiceCreateResponseInterface, StudentServiceUpdateParamsInterface} from "./AbstractStudentService";
+import {StudentServiceCreateParamsInterface, StudentServiceCreateResponseInterface} from "./AbstractStudentService";
 import AbstractStudentService from "./AbstractStudentService"
 // import RequestBuilder from "./RequestBuilder";
 
@@ -19,10 +19,10 @@ class StudentService extends AbstractStudentService {
 
     /**
      * Update a certain user
-     * @param {StudentServiceUpdateParamsInterface} params
+     * @param {Partial<StudentServiceCreateParamsInterface>} params
      * @returns Promise<StudentServiceCreateResponseInterface>
      */
-    async update(params: StudentServiceUpdateParamsInterface): Promise<StudentServiceCreateResponseInterface> {
+    async update(params: Partial<StudentServiceCreateParamsInterface>): Promise<StudentServiceCreateResponseInterface> {
         // await new RequestBuilder()
         //     .method('post')
         //     .url('user/new')
