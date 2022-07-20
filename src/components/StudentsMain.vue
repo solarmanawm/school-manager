@@ -57,9 +57,11 @@
                             class="w-full"
                             label="Date of birth"
                             target="dateOfBirth"
+                            :errors="form.errors.dateOfBirth.value"
                     >
                         <app-control
                                 v-model="form.fields.dateOfBirth.value"
+                                :error="form.errors.dateOfBirth.value.length > 0"
                                 :type="Type.DATE_PICKER"
                                 class="w-full"
                                 id="dateOfBirth"
@@ -148,7 +150,7 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
-type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'name' | 'family'>;
+type StudentValidationKeys = keyof Pick<StudentServiceCreateParamsInterface, 'name' | 'family' | 'dateOfBirth'>;
 
 type StudentValidation = { [key in StudentValidationKeys]: { [key: string]: any } }
 
@@ -197,6 +199,9 @@ const form = useForm<StudentServiceCreateParamsInterface, StudentValidation>({
             required: true,
         },
         family: {
+            required: true,
+        },
+        dateOfBirth: {
             required: true,
         },
     },

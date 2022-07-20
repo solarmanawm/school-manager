@@ -35,7 +35,7 @@ const format = (date: Date) => {
 const name = 'DatePicker'
 
 watch(date, (value: Date) => {
-    emits('update:modelValue', value.toString())
+    emits('update:modelValue', (value || '').toString())
 })
 </script>
 
