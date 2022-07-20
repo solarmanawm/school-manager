@@ -1,15 +1,15 @@
 import {defineStore} from "pinia";
 import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
 import {FamilyServiceCreateParamsInterface} from "../classes/AbstractFamilyService";
+import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService";
 
 type State = {
     fees: FeeServiceCreateParamsInterface[];
     families: FamilyServiceCreateParamsInterface[];
+    students: StudentServiceCreateParamsInterface[];
 }
 
 type Id = {id: string}
-
-type Source = FeeServiceCreateParamsInterface | FamilyServiceCreateParamsInterface
 
 function getItemById<T extends Id>(source: T[], id: string) {
     return source.find((item: T) => item.id === id)
@@ -37,6 +37,7 @@ export const useDataStore = defineStore('data', {
         return {
             fees: [],
             families: [],
+            students: [],
         } as State
     },
     actions: {
@@ -72,6 +73,23 @@ export const useDataStore = defineStore('data', {
         },
         // getFamilyIndexById(id: string) {
         //     return getItemIndexById<FamilyServiceCreateParamsInterface>(this.families, id)
+        // },
+
+        /* Students */
+        addStudent(item: StudentServiceCreateParamsInterface) {
+            this.students.push(item)
+        },
+        updateStudent(id: string, payload: StudentServiceCreateParamsInterface) {
+            updateItem<StudentServiceCreateParamsInterface>(this.students, id, payload)
+        },
+        removeStudent(id: string) {
+            removeItem<StudentServiceCreateParamsInterface>(this.students, id)
+        },
+        getStudentById(id: string) {
+            return getItemById<StudentServiceCreateParamsInterface>(this.students, id)
+        },
+        // getStudentIndexById(id: string) {
+        //     return getItemIndexById<FamilyServiceCreateParamsInterface>(this.students, id)
         // },
     }
 })
