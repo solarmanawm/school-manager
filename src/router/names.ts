@@ -8,6 +8,7 @@ const routeNames: {
     families: 'FAMILIES',
     family: 'FAMILY',
     students: 'STUDENTS',
+    student: 'STUDENT',
     fees: 'FEES',
     fee: 'FEE',
 }

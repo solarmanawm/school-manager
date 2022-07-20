@@ -72,6 +72,24 @@ const routes: any[] = [
             requiresAuth: true,
             title: 'Students',
         },
+        children: [
+            {
+                path: '',
+                name: routeNames.students,
+                component: () => import('../components/StudentsList.vue'),
+                meta: {
+                    requiresAuth: true,
+                },
+            },
+            {
+                path: ':id',
+                name: routeNames.student,
+                component: () => import('../components/StudentsItemDetails.vue'),
+                meta: {
+                    requiresAuth: true,
+                },
+            },
+        ],
     },
     {
         path: '/families',
