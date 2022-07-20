@@ -31,7 +31,7 @@ export interface FamilyServiceInterface {
     create: (payload: FamilyServiceCreateParamsInterface) => Promise<FamilyServiceCreateResponseInterface>;
     update: (payload: Partial<FamilyServiceCreateParamsInterface>) => Promise<FamilyServiceCreateResponseInterface>;
     delete: (id: string) => Promise<FamilyServiceCreateResponseInterface>;
-    income: (amount: number) => Promise<void>;
+    income: (id: string, amount: number) => Promise<void>;
 }
 
 /**
@@ -66,11 +66,12 @@ abstract class AbstractStudentService extends AbstractService implements FamilyS
 
     /**
      * Add an income amount.
+     * @param {string} id
      * @param {number} amount
      * @abstract
      * @returns Promise<void>
      */
-    abstract income(amount: number): Promise<void>;
+    abstract income(id: string, amount: number): Promise<void>;
 }
 
 export default AbstractStudentService

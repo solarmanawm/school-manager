@@ -120,12 +120,27 @@ class FamilyService extends AbstractFamilyService {
 
     /**
      * Add an income amount.
+     * @param {string} id
      * @param {number} amount
      * @returns Promise<void>
      */
-    income(amount: number): Promise<void> {
-        console.log('adding income...')
-        return Promise.resolve()
+    income(id: string, amount: number): Promise<void> {
+        return new RequestBuilder()
+            .method('post')
+            .url('user/new')
+            .data({id})
+            .mock<FamilyServiceCreateParamsInterface>(true)
+            .then(({error}) => {
+                if (error) {
+                    throw error
+                }
+
+                const dataStore = useDataStore()
+                const family = dataStore.getFamilyById(id)
+                family.income += amount
+
+                return Promise.resolve()
+            })
     }
 }
 
