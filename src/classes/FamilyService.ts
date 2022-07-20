@@ -1,4 +1,8 @@
-import {FamilyServiceCreateParamsInterface, FamilyServiceCreateResponseInterface, FamilyServiceUpdateParamsInterface} from "./AbstractFamilyService";
+import {
+    FamilyServiceCreateParamsInterface,
+    FamilyServiceCreateResponseInterface,
+    FamilyServiceUpdateParamsInterface
+} from "./AbstractFamilyService";
 import AbstractFamilyService from "./AbstractFamilyService"
 import RequestBuilder from "./RequestBuilder";
 import {Helpers} from "../helpers";
@@ -112,6 +116,16 @@ class FamilyService extends AbstractFamilyService {
 
                 return Promise.resolve({} as FeeServiceCreateResponseInterface)
             })
+    }
+
+    /**
+     * Add an income amount.
+     * @param {number} amount
+     * @returns Promise<void>
+     */
+    income(amount: number): Promise<void> {
+        console.log('adding income...')
+        return Promise.resolve()
     }
 }
 
