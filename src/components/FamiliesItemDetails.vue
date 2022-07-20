@@ -12,11 +12,18 @@
             >Edit
             </app-button>
             <app-button
-                    class="flex-1 ml-1"
+                    class="flex-1 mr-1 ml-1"
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="remove"
             >Remove
+            </app-button>
+            <app-button
+                    class="flex-1 ml-1 whitespace-nowrap"
+                    :variant="Variant.PRIMARY"
+                    :size="Size.SMALL"
+                    @click="income"
+            >Add income
             </app-button>
         </div>
     </Teleport>
@@ -70,8 +77,8 @@ import {useDataStore} from "../store/data"
 
 interface Emits {
     (event: 'edit', id: string): void;
-
     (event: 'remove', id: string): void;
+    (event: 'income'): void;
 }
 
 const name = 'FamiliesItemDetails'
@@ -94,6 +101,9 @@ const edit = () => {
 const remove = () => {
     emits('remove', item.value.id)
     updateTitle(item.value.name)
+}
+const income = () => {
+    emits('income')
 }
 
 if (itemExists.value) {
