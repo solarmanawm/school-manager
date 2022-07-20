@@ -60,7 +60,7 @@
                         <template #context>
                             <a
                                     href="#"
-                                    @click.prevent="allFieldsSelected = !allFieldsSelected"
+                                    @click.prevent="manageFees"
                                     class="text-blue-500 hover:text-blue-700 underline decoration-dashed hover:no-underline"
                             >{{ selectAllText }}</a>
                         </template>
@@ -166,6 +166,7 @@ const dataStore = useDataStore()
 const allFieldsSelected = ref(false)
 const errors = ref([])
 const onError = useError(errors)
+const selectedFeesLength = computed(() => form.fields.families.value.length)
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
@@ -249,9 +250,12 @@ const remove = (id: string) => {
     form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
+const manageFees = () => {
+    form.fields.families.value = allFieldsSelected.value ? [] : families.value.map((item: Option) => item.value)
+}
 const name = 'Fees'
 
-watch(allFieldsSelected, (isSelected: boolean) => {
-    form.fields.families.value = isSelected ? families.value.map((item: Option) => item.value) : []
+watch(selectedFeesLength, (length: number) => {
+    allFieldsSelected.value = length === families.value.length
 })
 </script>

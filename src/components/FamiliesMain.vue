@@ -44,7 +44,7 @@
                         <template #context>
                             <a
                                     href="#"
-                                    @click.prevent="allFieldsSelected = !allFieldsSelected"
+                                    @click.prevent="manageFees"
                                     class="text-blue-500 hover:text-blue-700 underline decoration-dashed hover:no-underline"
                             >{{ selectAllText }}</a>
                         </template>
@@ -201,13 +201,13 @@ const remove = (id: string) => {
     form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
+const manageFees = () => {
+    form.fields.fees.value = allFieldsSelected.value ? [] : fees.value.map((item: Option) => item.value)
+}
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const name = 'Families'
 
-watch(allFieldsSelected, (isSelected: boolean) => {
-    form.fields.fees.value = isSelected ? fees.value.map((item: Option) => item.value) : []
-})
 watch(selectedFeesLength, (length: number) => {
     allFieldsSelected.value = length === fees.value.length
 })
