@@ -113,19 +113,16 @@ import AppControl, {Type} from './AppControl.vue'
 // @ts-ignore
 import AppPopup from './AppPopup.vue'
 // @ts-ignore
-import AppStudentCard, {Student, Views} from './StudentCard.vue'
-// @ts-ignore
 import AppButton, {Variant} from './AppButton.vue'
-
 import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService";
+import {FamilyServiceCreateParamsInterface} from "../classes/AbstractFamilyService";
 import {usePopup} from "../use/popup"
 import {useForm} from "../use/form"
 import {useError} from '../use/error'
 import {useMode} from "../use/mode";
+import {useDataStore} from "../store/data";
 import service from "../service";
 import routeNames from '../router/names'
-import {FamilyServiceCreateParamsInterface} from "../classes/AbstractFamilyService";
-import {useDataStore} from "../store/data";
 
 enum SubmitActions {
     ADD = 'ADD',
@@ -160,7 +157,11 @@ const errors = ref([])
 const onError = useError(errors)
 const router = useRouter()
 const dataStore = useDataStore()
-const hasFamilies = computed(() => dataStore.families.length > 0)
+const families = computed(() => dataStore.families.map((item: FamilyServiceCreateParamsInterface) => ({
+    value: item.id,
+    title: item.name,
+})))
+const hasFamilies = computed(() => families.value.length > 0)
 const onValidated = () => {
     return new Promise((resolve) => {
         const formValues = form.values()
@@ -178,10 +179,6 @@ const onValidated = () => {
         }
     }).then(popup.close)
 }
-const families = computed(() => dataStore.families.map((item: FamilyServiceCreateParamsInterface) => ({
-    value: item.id,
-    title: item.name,
-})))
 const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
     if (actionMode.is()) {
         popup.open()
@@ -218,8 +215,9 @@ const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.va
 const add = () => {
     actionMode.set(SubmitActions.ADD)
 }
-const edit = (item: Student) => {
-    itemToHandleId = item.id
+const edit = (id: string) => {
+    const item = dataStore.getStudentById(id)
+    form.fields.id.value = item.id
     form.fields.name.value = item.name
     form.fields.sex.value = item.sex
     form.fields.dateOfBirth.value = item.dateOfBirth
