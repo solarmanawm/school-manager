@@ -34,6 +34,7 @@
                         :item="item"
                         @edit="edit"
                         @remove="remove"
+                        @details="details"
                         class="w-full mb-6"
                 />
             </app-grid-col>
@@ -86,7 +87,7 @@ const remove = (id: string) => {
 }
 const details = (id: string) => {
     return router.push({
-        name: routeNames.fee,
+        name: routeNames.student,
         params: {
             id,
         },

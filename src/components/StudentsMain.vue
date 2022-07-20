@@ -2,9 +2,9 @@
     <router-view v-slot="{ Component }">
         <component
                 :is="Component"
-                :has-families="hasFamilies"
                 @edit="edit"
                 @remove="remove"
+                v-bind="router.currentRoute.value.name === routeNames.students ? { hasFamilies } : {}"
                 v-on="router.currentRoute.value.name === routeNames.students ? { add } : {}"
         />
     </router-view>
