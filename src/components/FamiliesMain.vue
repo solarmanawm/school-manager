@@ -4,7 +4,7 @@
                 :is="Component"
                 @edit="edit"
                 @remove="remove"
-                v-on="router.currentRoute.value.name === routeNames.families ? { add } : {}"
+                v-on="events"
         />
     </router-view>
 
@@ -75,6 +75,43 @@
             </template>
         </app-popup>
     </Teleport>
+
+    <Teleport to="#app-popup">
+        <app-popup v-model:visible="incomePopup.visible.value">
+            <template v-slot:title>Add Income</template>
+            <template v-slot:content>
+                <app-form
+                        @submit.prevent=""
+                        class="mb-0"
+                >
+                    <app-form-group
+                            class="w-full"
+                            label="Name"
+                            target="Name"
+                            :required="true"
+                            :errors="incomeForm.errors.amount.value"
+                    >
+                        <app-control
+                                v-model="incomeForm.fields.amount.value"
+                                :error="incomeForm.errors.amount.value.length > 0"
+                                class="w-full"
+                                id="name"
+                        />
+                    </app-form-group>
+                </app-form>
+            </template>
+            <template v-slot:footer>
+                <div class="w-full flex items-center justify-between">
+                    <app-button
+                            @click="popup.close()"
+                            :variant="Variant.SECONDARY"
+                    >Cancel
+                    </app-button>
+                    <app-button @click="incomeForm.submit()">Add</app-button>
+                </div>
+            </template>
+        </app-popup>
+    </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -127,9 +164,17 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
+interface Income {
+    amount: string;
+}
+
 type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name'>;
 
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
+
+type IncomeValidationKeys = keyof Pick<Income, 'amount'>;
+
+type IncomeValidation = { [key in IncomeValidationKeys]: { [key: string]: any } }
 
 let itemToHandleId: string = ''
 const dataStore = useDataStore()
@@ -161,6 +206,11 @@ const onValidated = () => {
         }
     }).then(popup.close)
 }
+const onIncomeValidated = () => {
+    return new Promise((resolve) => {
+        service.family.income(+incomeForm.values().amount).then(resolve)
+    }).then(incomePopup.close)
+}
 const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
     if (actionMode.is()) {
         popup.open()
@@ -180,11 +230,29 @@ const form = useForm<FamilyServiceCreateParamsInterface, FamilyValidation>({
     onValidated,
     onError,
 })
+const incomeForm = useForm<Income, IncomeValidation>({
+    initialValues: {
+        amount: '',
+    },
+    validation: {
+        amount: {
+            required: true,
+            integer: true,
+        },
+    },
+    onValidated: onIncomeValidated,
+    onError,
+})
 const popup = usePopup({
     onClose: () => {
         itemToHandleId = ''
         actionMode.reset()
         form.reset()
+    },
+})
+const incomePopup = usePopup({
+    onClose: () => {
+        incomeForm.reset()
     },
 })
 const add = () => {
@@ -201,11 +269,29 @@ const remove = (id: string) => {
     form.fields.id.value = id
     actionMode.set(SubmitActions.REMOVE)
 }
+const income = () => {
+    incomePopup.open()
+}
 const manageFees = () => {
     form.fields.fees.value = allFieldsSelected.value ? [] : fees.value.map((item: Option) => item.value)
 }
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
+const events = computed(() => {
+    const obj: {
+        add?: () => void;
+        income?: () => void;
+    } = {}
+
+    if (router.currentRoute.value.name === routeNames.families) {
+        obj.add = add
+    }
+
+    if (router.currentRoute.value.name === routeNames.family) {
+        obj.income = income
+    }
+    return obj
+})
 const name = 'Families'
 
 watch(selectedFeesLength, (length: number) => {
