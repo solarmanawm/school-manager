@@ -93,7 +93,7 @@ const routes: any[] = [
             {
                 path: ':id',
                 name: routeNames.family,
-                component: () => import('../components/FamiliesListItem.vue'),
+                component: () => import('../components/FamiliesItemDetails.vue'),
                 meta: {
                     requiresAuth: true,
                 },

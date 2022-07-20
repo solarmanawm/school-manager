@@ -33,6 +33,7 @@
                         :item="item"
                         @edit="edit"
                         @remove="remove"
+                        @details="details"
                         class="w-full mb-6"
                 />
             </app-grid-col>
@@ -43,6 +44,7 @@
 <script setup lang="ts">
 // @ts-ignore
 import {defineEmits, ref} from "vue";
+import {useRouter} from "vue-router";
 // @ts-ignore
 import AppButton, {Variant} from './AppButton.vue'
 // @ts-ignore
@@ -53,6 +55,7 @@ import AppGridCol from './AppGridCol.vue'
 // @ts-ignore
 import AppControl, {Type} from './AppControl.vue'
 import {useDataStore} from "../store/data";
+import routeNames from "../router/names";
 
 interface Emits {
     (event: 'add'): void;
@@ -63,6 +66,7 @@ interface Emits {
 const name = 'FamiliesList'
 const emits = defineEmits<Emits>()
 const dataStore = useDataStore()
+const router = useRouter()
 const viewMode = ref(Views.CARD)
 const add = () => {
     emits('add')
@@ -72,5 +76,13 @@ const edit = (id: string) => {
 }
 const remove = (id: string) => {
     emits('remove', id)
+}
+const details = (id: string) => {
+    return router.push({
+        name: routeNames.family,
+        params: {
+            id,
+        },
+    })
 }
 </script>

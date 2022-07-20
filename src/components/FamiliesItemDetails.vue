@@ -18,25 +18,12 @@
                     @click="remove"
             >Remove
             </app-button>
-            <app-button
-                    v-if="!item.completed"
-                    class="flex-1 ml-2"
-                    :variant="Variant.PRIMARY"
-                    :size="Size.SMALL"
-                    @click="complete"
-            ><i class="fa-solid fa-check mr-1"></i> Complete
-            </app-button>
         </div>
     </Teleport>
 
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mb-6">
         <div class="flex flex-col item-start">
             <p class="text-gray-300 text-sm mb-2">ID: {{ item.id }}</p>
-            <p class="mb-6 text-blue-500 font-bold text-4xl">{{ item.value }} <i class="fa-solid fa-ruble-sign"></i></p>
-        </div>
-
-        <div class="flex flex-col items-end">
-            <p class="font-bold text-sm flex items-center">Status: <span class="ml-2 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center"><i :class="item.completed ? 'fa-solid fa-check' : 'fa-solid fa-chart-line'"></i></span></p>
         </div>
     </div>
 
@@ -57,11 +44,11 @@
                     class="flex"
             >
                 <app-card
-                        v-if="families.length"
+                        v-if="fees.length"
                         class="flex-1"
                 >
-                    <p class="font-bold text-sm mb-3">Families:</p>
-                    <p>{{ families }}</p>
+                    <p class="font-bold text-sm mb-3">Fees:</p>
+                    <p>{{ fees }}</p>
                 </app-card>
             </app-grid-col>
         </app-grid-row>
@@ -87,15 +74,15 @@ interface Emits {
     (event: 'remove', id: string): void;
 }
 
-const name = 'FeesItemDetails'
+const name = 'FamiliesItemDetails'
 const emits = defineEmits<Emits>()
 const route = useRoute()
 const uiStore = useUIStore()
 const dataStore = useDataStore()
-const item = computed(() => dataStore.getFeeById(route.params.id))
+const item = computed(() => dataStore.getFamilyById(route.params.id))
 const itemExists = computed(() => !!item.value)
 const title = computed(() => itemExists.value ? item.value.name : '')
-const families = computed(() => itemExists.value ? item.value.families : [])
+const fees = computed(() => itemExists.value ? item.value.fees : [])
 const hasDescription = computed(() => !!item.value.description)
 const updateTitle = (title: string) => {
     uiStore.title = title
@@ -108,7 +95,6 @@ const remove = () => {
     emits('remove', item.value.id)
     updateTitle(item.value.name)
 }
-const complete = () => {}
 
 if (itemExists.value) {
     updateTitle(item.value.name)
