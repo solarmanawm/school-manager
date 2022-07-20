@@ -86,8 +86,8 @@
                 >
                     <app-form-group
                             class="w-full"
-                            label="Name"
-                            target="Name"
+                            label="Amount"
+                            target="amount"
                             :required="true"
                             :errors="incomeForm.errors.amount.value"
                     >
@@ -95,7 +95,7 @@
                                 v-model="incomeForm.fields.amount.value"
                                 :error="incomeForm.errors.amount.value.length > 0"
                                 class="w-full"
-                                id="name"
+                                id="amount"
                         />
                     </app-form-group>
                 </app-form>
