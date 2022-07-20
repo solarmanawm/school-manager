@@ -6,6 +6,7 @@ import AbstractService from "./AbstractService";
 export interface FamilyServiceCreateParamsInterface {
     id: string;
     name: string;
+    income: number;
     fees: string[];
 }
 

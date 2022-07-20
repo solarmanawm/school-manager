@@ -220,6 +220,7 @@ const form = useForm<FamilyServiceCreateParamsInterface, FamilyValidation>({
     initialValues: {
         id: '',
         name: '',
+        income: 0,
         fees: [],
     },
     validation: {
