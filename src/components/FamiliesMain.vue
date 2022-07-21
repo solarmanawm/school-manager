@@ -81,9 +81,8 @@
                             :variant="Variant.SECONDARY"
                     >Cancel
                     </app-button>
-                    <app-button
-                            @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
-                    >{{ popupSubmitButtonText }}
+                    <app-button @click="form.submit(!actionMode.is(SubmitActions.REMOVE))">
+                        {{ popupSubmitButtonText }}
                     </app-button>
                 </div>
             </template>
@@ -123,7 +122,9 @@
                             :variant="Variant.SECONDARY"
                     >Cancel
                     </app-button>
-                    <app-button @click="incomeForm.submit()">{{ incomePopupSubmitButtonText }}</app-button>
+                    <app-button @click="incomeForm.submit(!incomeActionMode.is(IncomeActions.RESET))">
+                        {{ incomePopupSubmitButtonText }}
+                    </app-button>
                 </div>
             </template>
         </app-popup>
@@ -326,7 +327,13 @@ const incomePopupTitle = computed(() => IncomePopupTitle[incomeActionMode.value(
 const incomePopupSubmitButtonText = computed(() => IncomePopupSubmitButtonText[incomeActionMode.value() as keyof typeof IncomePopupSubmitButtonText])
 const onIncomeValidated = () => {
     return new Promise((resolve) => {
-        service.family.income(form.values().id, +incomeForm.values().amount).then(resolve)
+        if (incomeActionMode.is(IncomeActions.ADD)) {
+            service.family.income(form.values().id, +incomeForm.values().amount).then(resolve)
+        }
+
+        if (incomeActionMode.is(IncomeActions.RESET)) {
+            service.family.resetIncome(form.values().id).then(resolve)
+        }
     }).then(incomePopup.close)
 }
 const incomeForm = useForm<Income, IncomeValidation>({
