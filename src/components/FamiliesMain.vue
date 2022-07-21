@@ -62,7 +62,6 @@
                             label="Description"
                             target="description"
                             :errors="form.errors.description.value"
-                            :required="true"
                     >
                         <app-control
                                 v-model="form.fields.description.value"
@@ -243,12 +242,12 @@ const form = useForm<FamilyInterface, FamilyValidation>({
             required: true,
         },
         description: {
-            custom: (value: string) => value.includes('cool'),
+            pattern: (value: string) => value === '' || /^[\u0401\u0451\u0410-\u044fa-z0-9,.\s]+$/i.test(value),
         },
     },
     validationMessages: {
         description: {
-            custom: 'Custom validation message...',
+            pattern: 'Description should contain alphabetic characters and digits only.',
         },
     },
     onValidated,
