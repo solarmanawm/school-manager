@@ -18,13 +18,6 @@
                     @click="remove"
             >Remove
             </app-button>
-            <app-button
-                    class="flex-1 ml-1 whitespace-nowrap"
-                    :variant="Variant.PRIMARY"
-                    :size="Size.SMALL"
-                    @click="income"
-            >Add income
-            </app-button>
         </div>
     </Teleport>
 
@@ -32,6 +25,23 @@
         <div class="flex flex-col item-start">
             <p class="text-gray-300 text-sm mb-2 mb-6">ID: {{ item.id }}</p>
             <p class="mb-6 text-blue-500 font-bold text-4xl">Income: {{ item.income }} <i class="fa-solid fa-ruble-sign"></i></p>
+        </div>
+
+        <div class="flex">
+            <app-button
+                    class="flex-1 ml-1 whitespace-nowrap"
+                    :variant="Variant.PRIMARY"
+                    :size="Size.SMALL"
+                    @click="income"
+            >Add income
+            </app-button>
+            <app-button
+                    class="flex-1 ml-1 whitespace-nowrap"
+                    :variant="Variant.DANGER"
+                    :size="Size.SMALL"
+                    @click="resetIncome"
+            >Reset income
+            </app-button>
         </div>
     </div>
 
@@ -85,6 +95,7 @@ interface Emits {
     (event: 'edit', id: string): void;
     (event: 'remove', id: string): void;
     (event: 'income', id: string): void;
+    (event: 'reset-income', id: string): void;
 }
 
 const name = 'FamiliesItemDetails'
@@ -111,6 +122,9 @@ const remove = () => {
 }
 const income = () => {
     emits('income', item.value.id)
+}
+const resetIncome = () => {
+    emits('reset-income', item.value.id)
 }
 
 if (itemExists.value) {

@@ -2,8 +2,8 @@
     <router-view v-slot="{ Component }">
         <component
                 :is="Component"
-                @edit="edit"
-                @remove="remove"
+                @edit="family.edit"
+                @remove="family.remove"
                 v-on="events"
         />
     </router-view>
@@ -92,9 +92,10 @@
 
     <Teleport to="#app-popup">
         <app-popup v-model:visible="incomePopup.visible.value">
-            <template v-slot:title>Add Income</template>
+            <template v-slot:title>{{ incomePopupTitle }}</template>
             <template v-slot:content>
                 <app-form
+                        v-if="incomeActionMode.is(IncomeActions.ADD)"
                         @submit.prevent=""
                         class="mb-0"
                 >
@@ -113,6 +114,7 @@
                         />
                     </app-form-group>
                 </app-form>
+                <p v-else class="text-center">Are you sure you want to reset this family's income?</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
@@ -121,7 +123,7 @@
                             :variant="Variant.SECONDARY"
                     >Cancel
                     </app-button>
-                    <app-button @click="incomeForm.submit()">Add</app-button>
+                    <app-button @click="incomeForm.submit()">{{ incomePopupSubmitButtonText }}</app-button>
                 </div>
             </template>
         </app-popup>
@@ -155,16 +157,31 @@ enum SubmitActions {
     REMOVE = 'REMOVE',
 }
 
+enum IncomeActions {
+    ADD = 'ADD',
+    RESET = 'RESET',
+}
+
 enum PopupTitle {
     ADD = 'Create a new family',
     EDIT = 'Edit the family',
     REMOVE = 'Remove the family',
 }
 
+enum IncomePopupTitle {
+    ADD = 'Add an income',
+    RESET = 'Reset this income',
+}
+
 enum PopupSubmitButtonText {
     ADD = 'Create',
     EDIT = 'Save',
     REMOVE = 'Remove',
+}
+
+enum IncomePopupSubmitButtonText {
+    ADD = 'Add',
+    RESET = 'Reset',
 }
 
 interface Option {
@@ -178,19 +195,21 @@ interface SubmitActionsInterface {
     REMOVE: string;
 }
 
+interface IncomeActionsInterface {
+    ADD: string;
+    RESET: string;
+}
+
 interface Income {
     amount: string;
 }
 
 type FamilyValidationKeys = keyof Pick<FamilyInterface, 'name' | 'description'>;
-
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
-
 type IncomeValidationKeys = keyof Pick<Income, 'amount'>;
-
 type IncomeValidation = { [key in IncomeValidationKeys]: { [key: string]: any } }
 
-let itemToHandleId: string = ''
+const name = 'Families'
 const dataStore = useDataStore()
 const router = useRouter()
 const errors = ref([])
@@ -203,6 +222,33 @@ const fees = computed(() => dataStore.fees.map((item: FeeServiceCreateParamsInte
     title: item.name,
 })))
 const hasAnyFees = computed(() => dataStore.fees.length > 0)
+const manageFees = () => {
+    form.fields.fees.value = allFieldsSelected.value ? [] : fees.value.map((item: Option) => item.value)
+}
+const events = computed(() => {
+    const obj: {
+        add?: () => void;
+        income?: (id: string) => void;
+        resetIncome?: (id: string) => void;
+    } = {}
+
+    if (router.currentRoute.value.name === routeNames.families) {
+        obj.add = family.add
+    }
+
+    if (router.currentRoute.value.name === routeNames.family) {
+        obj.income = income.add
+        obj.resetIncome = income.reset
+    }
+    return obj
+})
+
+/**
+ * Family form
+ */
+
+const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
+const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const onValidated = () => {
     return new Promise((resolve) => {
         const formValues = form.values()
@@ -220,16 +266,6 @@ const onValidated = () => {
         }
     }).then(popup.close)
 }
-const onIncomeValidated = () => {
-    return new Promise((resolve) => {
-        service.family.income(form.values().id, +incomeForm.values().amount).then(resolve)
-    }).then(incomePopup.close)
-}
-const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
-    if (actionMode.is()) {
-        popup.open()
-    }
-})
 const form = useForm<FamilyInterface, FamilyValidation>({
     initialValues: {
         id: '',
@@ -253,6 +289,46 @@ const form = useForm<FamilyInterface, FamilyValidation>({
     onValidated,
     onError,
 })
+const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
+    if (actionMode.is()) {
+        popup.open()
+    }
+})
+const popup = usePopup({
+    onClose: () => {
+        actionMode.reset()
+        form.reset()
+    },
+})
+const family = {
+    add: () => {
+        actionMode.set(SubmitActions.ADD)
+    },
+    edit: (id: string) => {
+        const item = dataStore.getFamilyById(id)
+        form.fields.id.value = item.id
+        form.fields.name.value = item.name
+        form.fields.description.value = item.description
+        form.fields.fees.value = item.fees
+        actionMode.set(SubmitActions.EDIT)
+    },
+    remove: (id: string) => {
+        form.fields.id.value = id
+        actionMode.set(SubmitActions.REMOVE)
+    },
+}
+
+/**
+ * Income form
+ */
+
+const incomePopupTitle = computed(() => IncomePopupTitle[incomeActionMode.value() as keyof typeof IncomePopupTitle])
+const incomePopupSubmitButtonText = computed(() => IncomePopupSubmitButtonText[incomeActionMode.value() as keyof typeof IncomePopupSubmitButtonText])
+const onIncomeValidated = () => {
+    return new Promise((resolve) => {
+        service.family.income(form.values().id, +incomeForm.values().amount).then(resolve)
+    }).then(incomePopup.close)
+}
 const incomeForm = useForm<Income, IncomeValidation>({
     initialValues: {
         amount: '',
@@ -266,58 +342,28 @@ const incomeForm = useForm<Income, IncomeValidation>({
     onValidated: onIncomeValidated,
     onError,
 })
-const popup = usePopup({
-    onClose: () => {
-        itemToHandleId = ''
-        actionMode.reset()
-        form.reset()
-    },
+const incomeActionMode = useMode<IncomeActionsInterface>(IncomeActions, () => {
+    if (incomeActionMode.is()) {
+        incomePopup.open()
+    }
 })
 const incomePopup = usePopup({
     onClose: () => {
+        incomeActionMode.reset()
+        form.reset()
         incomeForm.reset()
     },
 })
-const add = () => {
-    actionMode.set(SubmitActions.ADD)
-}
-const edit = (id: string) => {
-    const item = dataStore.getFamilyById(id)
-    form.fields.id.value = item.id
-    form.fields.name.value = item.name
-    form.fields.description.value = item.description
-    form.fields.fees.value = item.fees
-    actionMode.set(SubmitActions.EDIT)
-}
-const remove = (id: string) => {
-    form.fields.id.value = id
-    actionMode.set(SubmitActions.REMOVE)
-}
-const income = (id: string) => {
-    form.fields.id.value = id
-    incomePopup.open()
-}
-const manageFees = () => {
-    form.fields.fees.value = allFieldsSelected.value ? [] : fees.value.map((item: Option) => item.value)
-}
-const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
-const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
-const events = computed(() => {
-    const obj: {
-        add?: () => void;
-        income?: (id: string) => void;
-    } = {}
-
-    if (router.currentRoute.value.name === routeNames.families) {
-        obj.add = add
+const income = {
+    add: (id: string) => {
+        form.fields.id.value = id
+        incomeActionMode.set(IncomeActions.ADD)
+    },
+    reset: (id: string) => {
+        form.fields.id.value = id
+        incomeActionMode.set(IncomeActions.RESET)
     }
-
-    if (router.currentRoute.value.name === routeNames.family) {
-        obj.income = income
-    }
-    return obj
-})
-const name = 'Families'
+}
 
 watch(selectedFeesLength, (length: number) => {
     allFieldsSelected.value = length === fees.value.length
