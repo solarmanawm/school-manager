@@ -44,6 +44,7 @@ export enum Variant {
     PRIMARY = 'primary',
     LIGHT = 'light',
     SECONDARY = 'secondary',
+    DANGER = 'danger',
 }
 </script>
 
@@ -91,6 +92,10 @@ const classList = computed(() => ({
     // Light
     'bg-gray-100 text-gray-600 hover:bg-gray-300': variant.value === Variant.LIGHT && !props.outline,
     'bg-transparent border border-gray-500 text-gray-500 hover:border-gray-700 text-blue-700': variant.value === Variant.LIGHT && props.outline,
+
+    // Danger
+    'bg-red-500 text-white hover:bg-red-700': variant.value === Variant.DANGER && !props.outline,
+    'bg-transparent border border-red-500 text-red-500 hover:border-red-700 text-red-700': variant.value === Variant.DANGER && props.outline,
 }))
 
 watch(() => props.variant, (value: string) => {
