@@ -243,7 +243,12 @@ const form = useForm<FamilyInterface, FamilyValidation>({
             required: true,
         },
         description: {
-            required: true,
+            custom: (value: string) => value.includes('cool'),
+        },
+    },
+    validationMessages: {
+        description: {
+            custom: 'Custom validation message...',
         },
     },
     onValidated,
