@@ -118,7 +118,7 @@
 // @ts-ignore
 import {computed, ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
+import {FamilyInterface} from '../classes/AbstractFamilyService'
 import {FeeServiceCreateParamsInterface} from '../classes/AbstractFeeService'
 // @ts-ignore
 import AppButton, {Variant} from "./AppButton.vue"
@@ -168,7 +168,7 @@ interface Income {
     amount: string;
 }
 
-type FamilyValidationKeys = keyof Pick<FamilyServiceCreateParamsInterface, 'name'>;
+type FamilyValidationKeys = keyof Pick<FamilyInterface, 'name'>;
 
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
@@ -216,11 +216,10 @@ const actionMode = useMode<SubmitActionsInterface>(SubmitActions, () => {
         popup.open()
     }
 })
-const form = useForm<FamilyServiceCreateParamsInterface, FamilyValidation>({
+const form = useForm<FamilyInterface, FamilyValidation>({
     initialValues: {
         id: '',
         name: '',
-        income: 0,
         fees: [],
     },
     validation: {
@@ -282,7 +281,7 @@ const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.va
 const events = computed(() => {
     const obj: {
         add?: () => void;
-        income?: () => void;
+        income?: (id: string) => void;
     } = {}
 
     if (router.currentRoute.value.name === routeNames.families) {

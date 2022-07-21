@@ -1,7 +1,7 @@
 import AbstractService from "./AbstractService";
 
 /**
- * Student Service Create Params Interface
+ * Fee Service Create Params Interface
  */
 export interface FeeServiceCreateParamsInterface {
     id: string;
@@ -13,7 +13,7 @@ export interface FeeServiceCreateParamsInterface {
 }
 
 /**
- * Student Service Create Response Interface
+ * Fee Service Create Response Interface
  */
 export interface FeeServiceCreateResponseInterface {
     error: Error;
@@ -21,7 +21,7 @@ export interface FeeServiceCreateResponseInterface {
 }
 
 /**
- * Student Service Interface
+ * Fee Service Interface
  */
 export interface FeeServiceInterface {
     create: (payload: FeeServiceCreateParamsInterface) => Promise<FeeServiceCreateResponseInterface>;
@@ -30,13 +30,13 @@ export interface FeeServiceInterface {
 }
 
 /**
- * Abstract Student Service Class
+ * Abstract Fee Service Class
  * @extends AbstractService
  * @implements FeeServiceInterface
  */
 abstract class AbstractFeeService extends AbstractService implements FeeServiceInterface {
     /**
-     * Create a new student
+     * Create a new Fee
      * @param {FeeServiceCreateParamsInterface} params
      * @abstract
      * @returns Promise<FeeServiceCreateResponseInterface>

@@ -109,7 +109,7 @@
 
 <script setup lang="ts">
 import {FeeServiceCreateParamsInterface} from "../classes/AbstractFeeService";
-import {FamilyServiceCreateParamsInterface} from '../classes/AbstractFamilyService'
+import {FamilyInterface} from '../classes/AbstractFamilyService'
 // @ts-ignore
 import AppButton, {Variant} from "./AppButton.vue";
 // @ts-ignore
@@ -170,7 +170,7 @@ const selectedFeesLength = computed(() => form.fields.families.value.length)
 const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
-const families = computed(() => dataStore.families.map((item: FamilyServiceCreateParamsInterface) => ({
+const families = computed(() => dataStore.families.map((item: FamilyInterface) => ({
     value: item.id,
     title: item.name,
 })))

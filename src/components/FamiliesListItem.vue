@@ -48,14 +48,14 @@ export enum Views {
 <script setup lang="ts">
 // @ts-ignore
 import {computed, defineEmits, defineProps, ref, watch} from 'vue'
-import {FamilyServiceCreateParamsInterface} from "../classes/AbstractFamilyService"
+import {FamilyInterface} from "../classes/AbstractFamilyService"
 // @ts-ignore
 import AppButton, {Variant, Size} from "./AppButton.vue"
 import AppCard from './AppCard.vue'
 
 interface Props {
     view: string;
-    item: FamilyServiceCreateParamsInterface,
+    item: FamilyInterface,
 }
 
 interface Emits {

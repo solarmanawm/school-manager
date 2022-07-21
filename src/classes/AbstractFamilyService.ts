@@ -1,7 +1,7 @@
 import AbstractService from "./AbstractService";
 
 /**
- * Student Service Create Params Interface
+ * Family Service Create Params Interface
  */
 export interface FamilyServiceCreateParamsInterface {
     id: string;
@@ -11,7 +11,12 @@ export interface FamilyServiceCreateParamsInterface {
 }
 
 /**
- * Student Service Update Params Interface
+ * Family Item Interface
+ */
+export type FamilyInterface = Pick<FamilyServiceCreateParamsInterface, 'id' | 'name' | 'fees'>
+
+/**
+ * Family Service Update Params Interface
  */
 export interface FamilyServiceUpdateParamsInterface {
     error: Error;
@@ -19,13 +24,13 @@ export interface FamilyServiceUpdateParamsInterface {
 }
 
 /**
- * Student Service Create Response Interface
+ * Family Service Create Response Interface
  */
 export interface FamilyServiceCreateResponseInterface {
 }
 
 /**
- * Student Service Interface
+ * Family Service Interface
  */
 export interface FamilyServiceInterface {
     create: (payload: FamilyServiceCreateParamsInterface) => Promise<FamilyServiceCreateResponseInterface>;
@@ -35,13 +40,13 @@ export interface FamilyServiceInterface {
 }
 
 /**
- * Abstract Student Service Class
+ * Abstract Family Service Class
  * @extends AbstractService
  * @implements FamilyServiceInterface
  */
-abstract class AbstractStudentService extends AbstractService implements FamilyServiceInterface {
+abstract class AbstractFamilyService extends AbstractService implements FamilyServiceInterface {
     /**
-     * Create a new student
+     * Create a new Family
      * @param {FamilyServiceCreateParamsInterface} params
      * @abstract
      * @returns Promise<FamilyServiceCreateResponseInterface>
@@ -74,4 +79,4 @@ abstract class AbstractStudentService extends AbstractService implements FamilyS
     abstract income(id: string, amount: number): Promise<void>;
 }
 
-export default AbstractStudentService
+export default AbstractFamilyService

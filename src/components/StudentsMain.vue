@@ -117,7 +117,7 @@ import AppPopup from './AppPopup.vue'
 // @ts-ignore
 import AppButton, {Variant} from './AppButton.vue'
 import {StudentServiceCreateParamsInterface} from "../classes/AbstractStudentService";
-import {FamilyServiceCreateParamsInterface} from "../classes/AbstractFamilyService";
+import {FamilyInterface} from "../classes/AbstractFamilyService";
 import {usePopup} from "../use/popup"
 import {useForm} from "../use/form"
 import {useError} from '../use/error'
@@ -159,7 +159,7 @@ const errors = ref([])
 const onError = useError(errors)
 const router = useRouter()
 const dataStore = useDataStore()
-const families = computed(() => dataStore.families.map((item: FamilyServiceCreateParamsInterface) => ({
+const families = computed(() => dataStore.families.map((item: FamilyInterface) => ({
     value: item.id,
     title: item.name,
 })))
