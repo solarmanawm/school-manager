@@ -7,21 +7,15 @@ export interface FamilyServiceCreateParamsInterface {
     id: string;
     name: string;
     income: number;
+    createdAt: string;
+    description: string;
     fees: string[];
 }
 
 /**
  * Family Item Interface
  */
-export type FamilyInterface = Pick<FamilyServiceCreateParamsInterface, 'id' | 'name' | 'fees'>
-
-/**
- * Family Service Update Params Interface
- */
-export interface FamilyServiceUpdateParamsInterface {
-    error: Error;
-    item: FamilyServiceCreateResponseInterface;
-}
+export type FamilyInterface = Pick<FamilyServiceCreateParamsInterface, 'id' | 'name' | 'fees' | 'description'>
 
 /**
  * Family Service Create Response Interface
@@ -33,8 +27,8 @@ export interface FamilyServiceCreateResponseInterface {
  * Family Service Interface
  */
 export interface FamilyServiceInterface {
-    create: (payload: FamilyServiceCreateParamsInterface) => Promise<FamilyServiceCreateResponseInterface>;
-    update: (payload: Partial<FamilyServiceCreateParamsInterface>) => Promise<FamilyServiceCreateResponseInterface>;
+    create: (payload: FamilyInterface) => Promise<FamilyServiceCreateResponseInterface>;
+    update: (payload: Partial<FamilyInterface>) => Promise<FamilyServiceCreateResponseInterface>;
     delete: (id: string) => Promise<FamilyServiceCreateResponseInterface>;
     income: (id: string, amount: number) => Promise<void>;
 }
@@ -47,19 +41,19 @@ export interface FamilyServiceInterface {
 abstract class AbstractFamilyService extends AbstractService implements FamilyServiceInterface {
     /**
      * Create a new Family
-     * @param {FamilyServiceCreateParamsInterface} params
+     * @param {FamilyInterface} params
      * @abstract
      * @returns Promise<FamilyServiceCreateResponseInterface>
      */
-    abstract create(params: FamilyServiceCreateParamsInterface): Promise<FamilyServiceCreateResponseInterface>;
+    abstract create(params: FamilyInterface): Promise<FamilyServiceCreateResponseInterface>;
 
     /**
      * Update a certain user
-     * @param {Partial<FamilyServiceCreateParamsInterface>} payload
+     * @param {Partial<FamilyInterface>} payload
      * @abstract
      * @returns Promise<FamilyServiceCreateResponseInterface>
      */
-    abstract update(payload: Partial<FamilyServiceCreateParamsInterface>): Promise<FamilyServiceCreateResponseInterface>;
+    abstract update(payload: Partial<FamilyInterface>): Promise<FamilyServiceCreateResponseInterface>;
 
     /**
      * Delete a certain user

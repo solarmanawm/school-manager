@@ -57,6 +57,21 @@
                                 class="w-full"
                         />
                     </app-form-group>
+                    <app-form-group
+                            class="w-full"
+                            label="Description"
+                            target="description"
+                            :errors="form.errors.description.value"
+                            :required="true"
+                    >
+                        <app-control
+                                v-model="form.fields.description.value"
+                                class="w-full"
+                                id="description"
+                                :type="Type.TEXTAREA"
+                                :error="form.errors.description.value.length > 0"
+                        />
+                    </app-form-group>
                 </app-form>
                 <p v-else class="text-center">Are you sure you want to remove this family?</p>
             </template>
@@ -168,7 +183,7 @@ interface Income {
     amount: string;
 }
 
-type FamilyValidationKeys = keyof Pick<FamilyInterface, 'name'>;
+type FamilyValidationKeys = keyof Pick<FamilyInterface, 'name' | 'description'>;
 
 type FamilyValidation = { [key in FamilyValidationKeys]: { [key: string]: any } }
 
@@ -220,10 +235,14 @@ const form = useForm<FamilyInterface, FamilyValidation>({
     initialValues: {
         id: '',
         name: '',
+        description: '',
         fees: [],
     },
     validation: {
         name: {
+            required: true,
+        },
+        description: {
             required: true,
         },
     },
@@ -262,6 +281,7 @@ const edit = (id: string) => {
     const item = dataStore.getFamilyById(id)
     form.fields.id.value = item.id
     form.fields.name.value = item.name
+    form.fields.description.value = item.description
     form.fields.fees.value = item.fees
     actionMode.set(SubmitActions.EDIT)
 }

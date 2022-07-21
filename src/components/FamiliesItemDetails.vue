@@ -37,24 +37,29 @@
 
     <app-grid-container>
         <app-grid-row>
-            <app-grid-col class="flex w-1/3">
-                <app-card
-                        v-if="hasDescription"
-                        class="flex-1"
-                >
+            <app-grid-col
+                    v-if="hasDescription"
+                    :class="{
+                        'w-1/3': hasFees,
+                        'w-full': !hasFees,
+                    }"
+                    class="flex"
+            >
+                <app-card class="flex-1">
                     <p class="font-bold text-sm mb-3">Description:</p>
                     <p>{{ item.description }}</p>
                 </app-card>
             </app-grid-col>
 
             <app-grid-col
-                    :class="hasDescription ? 'w-2/3' : 'w-full'"
+                    v-if="hasFees"
+                    :class="{
+                        'w-2/3': hasDescription,
+                        'w-full': !hasDescription,
+                    }"
                     class="flex"
             >
-                <app-card
-                        v-if="fees.length"
-                        class="flex-1"
-                >
+                <app-card class="flex-1">
                     <p class="font-bold text-sm mb-3">Fees:</p>
                     <p>{{ fees }}</p>
                 </app-card>
@@ -92,6 +97,7 @@ const itemExists = computed(() => !!item.value)
 const title = computed(() => itemExists.value ? item.value.name : '')
 const fees = computed(() => itemExists.value ? item.value.fees : [])
 const hasDescription = computed(() => !!item.value.description)
+const hasFees = computed(() => fees.value.length > 0)
 const updateTitle = (title: string) => {
     uiStore.title = title
 }
