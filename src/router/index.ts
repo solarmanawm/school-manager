@@ -7,6 +7,10 @@ import {useDataStore} from "../store/data";
 import routes from './routes'
 import routeNames from "./names";
 
+const isItemExists = (data: { [key: string]: any }) => (method: string, id: string) => {
+    return !!data[method](id)
+}
+
 export default () => {
     /**
      * @type {Router}
@@ -27,6 +31,7 @@ export default () => {
         const authStore = useAuthStore()
         const uiStore = useUIStore()
         const dataStore = useDataStore()
+        const isExist = isItemExists(dataStore);
         const {requiresAuth, title} = to.meta || {}
 
         if (title) {
@@ -39,10 +44,22 @@ export default () => {
             }
         }
 
-        if (to.name === routeNames.family) {
-            const family = dataStore.getFamilyById(to.params.id)
+        if (to.name && [routeNames.family, routeNames.student, routeNames.fee].includes(to.name.toString())) {
+            const method = (() => {
+                if (to.name === routeNames.family) {
+                    return 'getFamilyById'
+                }
 
-            if (!family) {
+                if (to.name === routeNames.student) {
+                    return 'getStudentById'
+                }
+
+                if (to.name === routeNames.fee) {
+                    return 'getFeeById'
+                }
+            })()
+
+            if (!isExist(method!.toString(), to.params.id.toString())) {
                 return {
                     name: routeNames.dashboard,
                 }
