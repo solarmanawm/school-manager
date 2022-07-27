@@ -27,6 +27,7 @@ export default () => {
         });
     });
 
+
     router.beforeEach((to, from) => {
         const authStore = useAuthStore()
         const uiStore = useUIStore()
