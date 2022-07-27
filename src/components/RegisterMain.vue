@@ -195,7 +195,7 @@ const submit = () => {
     }) => {
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve()
+                resolve(undefined)
             }, 1000)
         }).then(() => {
             authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)

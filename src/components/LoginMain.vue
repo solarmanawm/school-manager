@@ -132,7 +132,7 @@ const submit = () => {
         alert.message = 'You\'ve successfully signed in into your account.'
         return new Promise((resolve) => {
             setTimeout(() => {
-                resolve()
+                resolve(undefined)
             }, 1000)
         }).then(() => {
             authStore.updateAuthState(true, userInfo.accessToken, userInfo.refreshToken)

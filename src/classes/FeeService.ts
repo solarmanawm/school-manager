@@ -33,7 +33,9 @@ class FeeService extends AbstractFeeService {
                 if (params.families.length) {
                     for (const familyId of params.families) {
                         const family = dataStore.getFamilyById(familyId)
-                        family.fees.push(id)
+                        if (family) {
+                            family.fees.push(id)
+                        }
                     }
                 }
 
@@ -48,7 +50,7 @@ class FeeService extends AbstractFeeService {
      */
     async update(payload: Partial<FeeServiceCreateParamsInterface>): Promise<FeeServiceCreateResponseInterface> {
         const dataStore = useDataStore()
-        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getFeeById(payload.id), payload)
+        const diff = Helpers.difference<FeeServiceCreateParamsInterface>(dataStore.getFeeById(payload.id as string) as FeeServiceCreateParamsInterface, payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -66,7 +68,7 @@ class FeeService extends AbstractFeeService {
 
                 const {id} = payload
                 const {families} = diff
-                dataStore.updateFee(id, diff)
+                dataStore.updateFee(id as string, diff)
 
                 if (families) {
                     const familiesToRemoveFee = dataStore.families.filter((family: FamilyServiceCreateParamsInterface) => {
@@ -82,8 +84,8 @@ class FeeService extends AbstractFeeService {
                     })
 
                     for (const familyToAddFee of familiesToAddFee) {
-                        if (!familyToAddFee.fees.includes(id)) {
-                            familyToAddFee.fees.push(id)
+                        if (!familyToAddFee.fees.includes(id as string)) {
+                            familyToAddFee.fees.push(id as string)
                         }
                     }
                 }

@@ -92,26 +92,26 @@ const emits = defineEmits<Emits>()
 const route = useRoute()
 const uiStore = useUIStore()
 const dataStore = useDataStore()
-const item = computed(() => dataStore.getFeeById(route.params.id))
+const item = computed(() => dataStore.getFeeById(route.params.id as string))
 const itemExists = computed(() => !!item.value)
-const title = computed(() => itemExists.value ? item.value.name : '')
-const families = computed(() => itemExists.value ? item.value.families : [])
-const hasDescription = computed(() => !!item.value.description)
+const title = computed(() => itemExists.value ? item.value!.name : '')
+const families = computed(() => itemExists.value ? item.value!.families : [])
+const hasDescription = computed(() => !!item.value!.description)
 const updateTitle = (title: string) => {
     uiStore.title = title
 }
 const edit = () => {
-    emits('edit', item.value.id)
-    updateTitle(item.value.name)
+    emits('edit', item.value!.id)
+    updateTitle(item.value!.name)
 }
 const remove = () => {
-    emits('remove', item.value.id)
-    updateTitle(item.value.name)
+    emits('remove', item.value!.id)
+    updateTitle(item.value!.name)
 }
 const complete = () => {}
 
 if (itemExists.value) {
-    updateTitle(item.value.name)
+    updateTitle(item.value!.name)
 }
 watch(title, (value: string) => {
     if (value) {

@@ -1,6 +1,6 @@
 // @ts-ignore
 import {computed, ComputedRef, ref, Ref} from "vue";
-import useVuelidate, {ErrorObject, ValidationRule} from "@vuelidate/core"
+import useVuelidate, {ErrorObject, ValidationArgs, ValidationRule} from "@vuelidate/core"
 import { helpers } from '@vuelidate/validators'
 import * as validators from "@vuelidate/validators"
 
@@ -47,7 +47,7 @@ export function useFormValidator<T>(fields: Fields, validation: T, validationMes
 
         return acc
     }, {})
-    const validator = useVuelidate(validationObj, fields)
+    const validator = useVuelidate(validationObj, fields as any)
     const errors = validationKeys.reduce((acc: {[key in keyof T]?: ComputedRef<ErrorObject[]>}, key) => {
         acc[key as keyof T] = computed(() => validator.value[key] ? validator.value[key].$errors : [])
         return acc

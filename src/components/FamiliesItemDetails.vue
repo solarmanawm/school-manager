@@ -76,11 +76,11 @@
                             <p class="font-bold text-sm mb-3">Fees:</p>
                             <div
                                     v-for="fee of fees"
-                                    :key="fee.id"
+                                    :key="fee ? fee.id : 'NO_VALUE'"
                                     class="mt-3 first:mt-0 bg-gray-100 rounded-md px-4 py-2 border border-gray-200"
                             >
-                                <p class="text-sm font-bold capitalize mb-1">{{ fee.name }}</p>
-                                <p class="font-bold text-blue-500">{{ fee.value }} <i class="fa-solid fa-ruble-sign"></i></p>
+                                <p class="text-sm font-bold capitalize mb-1">{{ fee ? fee.name : 'NO_VALUE' }}</p>
+                                <p class="font-bold text-blue-500">{{ fee ? fee.value : 'NO_VALUE' }} <i class="fa-solid fa-ruble-sign"></i></p>
                             </div>
                         </app-grid-col>
                         <app-grid-col
@@ -181,44 +181,46 @@ const route = useRoute()
 const uiStore = useUIStore()
 const dataStore = useDataStore()
 const {id} = route.params
-const item = computed(() => dataStore.getFamilyById(id))
-const title = computed(() => item.value.name)
-const feesLength = computed(() => item.value.fees.length)
-const fees = computed(() => item.value.fees.map((feeId: string) => {
+const item = computed(() => dataStore.getFamilyById(id as string))
+const title = computed(() => item.value!.name)
+const feesLength = computed(() => item.value!.fees.length)
+const fees = computed(() => item.value!.fees.map((feeId: string) => {
     const fee = dataStore.getFeeById(feeId)
 
-    return {
+    return fee ? {
         id: fee.id,
         name: fee.name,
         value: fee.value,
-    }
+    } : null
 }))
 const totalFees = computed(() => {
     let total = 0
 
     for (let i = 0; i < feesLength.value; i++) {
-        total += +fees.value[i].value
+        if (fees.value[i]) {
+            total += +fees.value[i]!.value
+        }
     }
 
     return total
 })
-const chartData = computed(() => ([totalFees.value - +item.value.income, +item.value.income]))
-const hasDescription = computed(() => !!item.value.description)
+const chartData = computed(() => ([totalFees.value - +item.value!.income, +item.value!.income]))
+const hasDescription = computed(() => !!item.value!.description)
 const hasFees = computed(() => feesLength.value > 0)
 const updateTitle = (title: string) => {
     uiStore.title = title
 }
 const edit = () => {
-    emits('edit', item.value.id)
+    emits('edit', item.value!.id)
 }
 const remove = () => {
-    emits('remove', item.value.id)
+    emits('remove', item.value!.id)
 }
 const income = () => {
-    emits('income', item.value.id)
+    emits('income', item.value!.id)
 }
 const resetIncome = () => {
-    emits('reset-income', item.value.id)
+    emits('reset-income', item.value!.id)
 }
 const createChart = () => {
     new Promise<HTMLCanvasElement>((resolve) => {
@@ -256,7 +258,7 @@ updateTitle(title.value)
 watch(title, (value: string) => {
     updateTitle(value)
 })
-watch(() => item.value.income, (value: number) => {
+watch(() => item.value!.income, (value: number) => {
     if (chart) {
         chart.data.datasets[0].data[0] = totalFees.value - value
         chart.data.datasets[0].data[1] = value
@@ -265,8 +267,8 @@ watch(() => item.value.income, (value: number) => {
 })
 watch(feesLength, () => {
     if (chart) {
-        chart.data.datasets[0].data[0] = totalFees.value - item.value.income
-        chart.data.datasets[0].data[1] = item.value.income
+        chart.data.datasets[0].data[0] = totalFees.value - item.value!.income
+        chart.data.datasets[0].data[1] = item.value!.income
         chart.update()
     }
 })

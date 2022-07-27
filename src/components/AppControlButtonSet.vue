@@ -33,7 +33,7 @@ interface Emits {
 
 interface Props {
     variant?: string;
-    modelValue: string;
+    modelValue: string | string[];
     options: Option[];
 }
 
@@ -42,7 +42,7 @@ const props = defineProps<Props>()
 const opts = computed(() => {
     return props.options.map((option) => ({
         ...option,
-        variant: props.modelValue === option.value ? Variant.PRIMARY : props.variant || Variant.SECONDARY,
+        variant: props.modelValue.toString() === option.value ? Variant.PRIMARY : props.variant || Variant.SECONDARY,
     }))
 })
 const change = (value: string) => {

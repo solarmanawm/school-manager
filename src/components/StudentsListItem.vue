@@ -80,6 +80,6 @@ const details = () => {
 }
 
 watch(() => props.view, (value: string) => {
-    view.value = value
+    view.value = value as Views
 })
 </script>

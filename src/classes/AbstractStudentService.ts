@@ -8,6 +8,7 @@ export interface StudentServiceCreateParamsInterface {
     sex: string;
     name: string;
     family: string;
+    description: string;
     dateOfBirth?: string;
 }
 

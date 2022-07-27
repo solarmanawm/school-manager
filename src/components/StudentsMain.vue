@@ -222,11 +222,15 @@ const add = () => {
 }
 const edit = (id: string) => {
     const item = dataStore.getStudentById(id)
-    form.fields.id.value = item.id
-    form.fields.name.value = item.name
-    form.fields.sex.value = item.sex
-    form.fields.dateOfBirth.value = item.dateOfBirth
-    form.fields.family.value = item.family
+
+    if (item) {
+        form.fields.id.value = item.id
+        form.fields.name.value = item.name
+        form.fields.sex.value = item.sex
+        form.fields.dateOfBirth!.value = item.dateOfBirth
+        form.fields.family.value = item.family
+    }
+
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {

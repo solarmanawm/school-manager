@@ -11,11 +11,11 @@ type State = {
 
 type Id = {id: string}
 
-function getItemById<T extends Id>(source: T[], id: string) {
+function getItemById<T extends Id>(source: T[], id: string): T | undefined {
     return source.find((item: T) => item.id === id)
 }
 
-function getItemIndexById<T extends Id>(source: T[], id: string) {
+function getItemIndexById<T extends Id>(source: T[], id: string): number {
     return source.findIndex((item: T) => item.id === id)
 }
 
@@ -45,7 +45,7 @@ export const useDataStore = defineStore('data', {
         addFee(item: FeeServiceCreateParamsInterface) {
             this.fees.push(item)
         },
-        updateFee(id: string, payload: FeeServiceCreateParamsInterface) {
+        updateFee(id: string, payload: Partial<FeeServiceCreateParamsInterface>) {
             updateItem<FeeServiceCreateParamsInterface>(this.fees, id, payload)
         },
         removeFee(id: string) {
@@ -62,7 +62,7 @@ export const useDataStore = defineStore('data', {
         addFamily(item: FamilyServiceCreateParamsInterface) {
             this.families.push(item)
         },
-        updateFamily(id: string, payload: FamilyServiceCreateParamsInterface) {
+        updateFamily(id: string, payload: Partial<FamilyServiceCreateParamsInterface>) {
             updateItem<FamilyServiceCreateParamsInterface>(this.families, id, payload)
         },
         removeFamily(id: string) {
@@ -79,7 +79,7 @@ export const useDataStore = defineStore('data', {
         addStudent(item: StudentServiceCreateParamsInterface) {
             this.students.push(item)
         },
-        updateStudent(id: string, payload: StudentServiceCreateParamsInterface) {
+        updateStudent(id: string, payload: Partial<StudentServiceCreateParamsInterface>) {
             updateItem<StudentServiceCreateParamsInterface>(this.students, id, payload)
         },
         removeStudent(id: string) {

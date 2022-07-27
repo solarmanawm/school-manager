@@ -39,7 +39,7 @@ class StudentService extends AbstractStudentService {
      */
     async update(payload: Partial<StudentServiceCreateParamsInterface>): Promise<StudentServiceCreateResponseInterface> {
         const dataStore = useDataStore()
-        const diff = Helpers.difference<StudentServiceCreateParamsInterface>(dataStore.getStudentById(payload.id), payload)
+        const diff = Helpers.difference<StudentServiceCreateParamsInterface>(dataStore.getStudentById(payload.id as string) as StudentServiceCreateParamsInterface, payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as StudentServiceCreateResponseInterface)
@@ -57,7 +57,7 @@ class StudentService extends AbstractStudentService {
 
                 const {id} = payload
                 const {family} = diff
-                dataStore.updateStudent(id, diff)
+                dataStore.updateStudent(id as string, diff)
 
                 if (family) {
                     //...

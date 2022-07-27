@@ -17,7 +17,7 @@
                 v-else-if="isButtonSet"
                 v-model="value"
                 :variant="variant"
-                :options="options"
+                :options="options ? options : []"
                 @change="update"
         />
         <app-control-dropdown
@@ -25,7 +25,7 @@
                 v-model="value"
                 :error="error"
                 :current="value"
-                :options="options"
+                :options="options ? options : []"
                 :multiple="multiple"
         />
         <app-control-date-picker
@@ -44,6 +44,7 @@
                 class="control w-full py-2"
         />
         <template v-else-if="isCheckbox">
+            <!--
             <label
                     v-for="option in options"
                     class="first:mt-0 mt-1"
@@ -56,6 +57,7 @@
                 />
                 {{ option.title }}
             </label>
+            -->
         </template>
     </div>
 </template>
@@ -105,7 +107,7 @@ const props = withDefaults(defineProps<Props>(), {
     error: false,
     multiple: false,
 })
-const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.TEXT)
+const type = ref(Object.values(Type).map((s) => s.toString()).includes(props.type) ? props.type : Type.TEXT)
 const value = ref(props.modelValue)
 const isInput = computed(() => type.value === Type.TEXT || type.value === Type.EMAIL || type.value === Type.PASSWORD)
 const isDropdown = computed(() => type.value === Type.DROPDOWN)
@@ -130,7 +132,7 @@ const update = () => {
 }
 
 watch(value, update)
-watch(() => props.modelValue, (newValue: string) => {
+watch(() => props.modelValue, (newValue: string | string[]) => {
     value.value = newValue
 })
 </script>

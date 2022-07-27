@@ -54,7 +54,7 @@ import {defineProps, withDefaults, ref, computed, watch} from "vue";
 
 interface Props {
     loading?: boolean;
-    type?: string;
+    type?: "reset" | "submit" | "button";
     variant?: string;
     size?: string;
     outline?: boolean;
@@ -67,9 +67,9 @@ const props = withDefaults(defineProps<Props>(), {
     outline: false,
     loading: false,
 })
-const type = ref(Object.values(Type).includes(props.type) ? props.type : Type.BUTTON)
-const variant = ref(Object.values(Variant).includes(props.variant) ? props.variant : Variant.PRIMARY)
-const size = ref(Object.values(Size).includes(props.size) ? props.size : Size.NORMAL)
+const type = ref(Object.values(Type).map((s) => s.toString()).includes(props.type) ? props.type : Type.BUTTON)
+const variant = ref(Object.values(Variant).map((s) => s.toString()).includes(props.variant) ? props.variant : Variant.PRIMARY)
+const size = ref(Object.values(Size).map((s) => s.toString()).includes(props.size) ? props.size : Size.NORMAL)
 const name = 'Button'
 const classList = computed(() => ({
     // Small

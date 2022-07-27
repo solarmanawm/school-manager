@@ -1,6 +1,7 @@
 // @ts-ignore
-import {isRef, reactive, ref, Ref} from "vue";
+import {isRef, reactive, ref, Ref, ComputedRef, computed} from "vue";
 import {useFormValidator} from "../formValidator";
+import {ErrorObject} from "@vuelidate/core";
 
 type Data<T> = { [key in keyof T]?: string | number | any[] | boolean }
 
@@ -33,8 +34,8 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
         return acc
     }, {} as Fields<T>)
     const validationKeys = validation ? Object.keys(validation) : []
-    const errorsPlaceholder = validationKeys.reduce((acc: {[key in keyof V]?: string[]}, key: string) => {
-        acc[key as keyof V] = []
+    const errorsPlaceholder = validationKeys.reduce((acc: {[key in keyof V]?: ComputedRef<ErrorObject[]>}, key: string) => {
+        acc[key as keyof V] = computed(() => ([] as ErrorObject[]))
         return acc
     }, {})
     const validator = validation ? useFormValidator<V>(fields, validation, validationMessages) : null
@@ -51,7 +52,7 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
         }).then((validated) => {
             return new Promise((resolve, reject) => {
                     return validated
-                        ? resolve()
+                        ? resolve(undefined)
                         : reject(new FormValidationError('Form is invalid.'))
                 }
             )
@@ -86,7 +87,7 @@ export function useForm<T, V>(params: UseFormParams<T, V>) {
         return Object.keys(fields).reduce((acc, current: string) => {
             acc[current as keyof Fields<T>] = fields[current as keyof Fields<T>].value
             return acc
-        }, {} as Fields<T>)
+        }, {} as T)
     }
 
     return {

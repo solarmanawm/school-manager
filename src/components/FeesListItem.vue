@@ -67,8 +67,8 @@ interface Props {
 
 const emit = defineEmits<Emits>()
 const props = defineProps<Props>()
-const view = ref(Views.CARD)
-const isCardView = computed(() => view.value === Views.CARD)
+const view = ref(Views.CARD.toString())
+const isCardView = computed(() => view.value === Views.CARD.toString())
 const edit = () => {
     emit('edit', props.item.id)
 }
@@ -81,6 +81,6 @@ const details = () => {
 const name = 'FeesListItem'
 
 watch(() => props.view, (value: string) => {
-    view.value = value
+    view.value = value as Views
 })
 </script>

@@ -35,7 +35,10 @@ class FamilyService extends AbstractFamilyService {
                 if (params.fees.length) {
                     for (const feeId of params.fees) {
                         const fee = dataStore.getFeeById(feeId)
-                        fee.families.push(id)
+
+                        if (fee) {
+                            fee.families.push(id)
+                        }
                     }
                 }
 
@@ -50,7 +53,7 @@ class FamilyService extends AbstractFamilyService {
      */
     async update(payload: Partial<FamilyInterface>): Promise<FamilyServiceCreateResponseInterface> {
         const dataStore = useDataStore()
-        const diff = Helpers.difference<FamilyInterface>(dataStore.getFamilyById(payload.id), payload)
+        const diff = Helpers.difference<FamilyInterface>(dataStore.getFamilyById(payload.id as string) as FamilyInterface, payload)
 
         if (Object.keys(diff).length === 0) {
             return Promise.resolve({} as FeeServiceCreateResponseInterface)
@@ -68,7 +71,7 @@ class FamilyService extends AbstractFamilyService {
 
                 const {id} = payload
                 const {fees} = diff
-                dataStore.updateFamily(id, diff)
+                dataStore.updateFamily(id as string, diff)
 
                 if (fees) {
                     const feesToRemoveFamily = dataStore.fees.filter((family: FeeServiceCreateParamsInterface) => {
@@ -84,8 +87,8 @@ class FamilyService extends AbstractFamilyService {
                     })
 
                     for (const fee of feesToAddFamily) {
-                        if (!fee.families.includes(id)) {
-                            fee.families.push(id)
+                        if (!fee.families.includes(id as string)) {
+                            fee.families.push(id as string)
                         }
                     }
                 }
@@ -136,7 +139,10 @@ class FamilyService extends AbstractFamilyService {
 
                 const dataStore = useDataStore()
                 const family = dataStore.getFamilyById(id)
-                family.income += amount
+
+                if (family) {
+                    family.income += amount
+                }
 
                 return Promise.resolve()
             })
@@ -160,7 +166,10 @@ class FamilyService extends AbstractFamilyService {
 
                 const dataStore = useDataStore()
                 const family = dataStore.getFamilyById(id)
-                family.income = 0
+
+                if (family) {
+                    family.income = 0
+                }
 
                 return Promise.resolve()
             })

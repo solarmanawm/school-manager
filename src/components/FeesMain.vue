@@ -238,12 +238,16 @@ const add = () => {
 }
 const edit = (id: string) => {
     const item = dataStore.getFeeById(id)
-    form.fields.id.value = item.id
-    form.fields.name.value = item.name
-    form.fields.value.value = item.value
-    form.fields.description.value = item.description
-    form.fields.completed.value = item.completed
-    form.fields.families.value = item.families
+
+    if (item) {
+        form.fields.id.value = item.id
+        form.fields.name.value = item.name
+        form.fields.value.value = item.value
+        form.fields.description.value = item.description
+        form.fields.completed.value = item.completed
+        form.fields.families.value = item.families
+    }
+
     actionMode.set(SubmitActions.EDIT)
 }
 const remove = (id: string) => {

@@ -253,6 +253,7 @@ const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.va
 const onValidated = () => {
     return new Promise((resolve) => {
         const formValues = form.values()
+        const {id} = formValues
 
         if (actionMode.is(SubmitActions.ADD)) {
             service.family.create(formValues).then(resolve)
@@ -263,7 +264,7 @@ const onValidated = () => {
         }
 
         if (actionMode.is(SubmitActions.REMOVE)) {
-            service.family.delete(formValues.id).then(resolve)
+            service.family.delete(id.toString()).then(resolve)
         }
     }).then(popup.close)
 }
@@ -307,10 +308,14 @@ const family = {
     },
     edit: (id: string) => {
         const item = dataStore.getFamilyById(id)
-        form.fields.id.value = item.id
-        form.fields.name.value = item.name
-        form.fields.description.value = item.description
-        form.fields.fees.value = item.fees
+
+        if (item) {
+            form.fields.id.value = item.id
+            form.fields.name.value = item.name
+            form.fields.description.value = item.description
+            form.fields.fees.value = item.fees
+        }
+
         actionMode.set(SubmitActions.EDIT)
     },
     remove: (id: string) => {
@@ -327,12 +332,15 @@ const incomePopupTitle = computed(() => IncomePopupTitle[incomeActionMode.value(
 const incomePopupSubmitButtonText = computed(() => IncomePopupSubmitButtonText[incomeActionMode.value() as keyof typeof IncomePopupSubmitButtonText])
 const onIncomeValidated = () => {
     return new Promise((resolve) => {
+        const {id} = form.values()
+        const {amount} = incomeForm.values()
+
         if (incomeActionMode.is(IncomeActions.ADD)) {
-            service.family.income(form.values().id, +incomeForm.values().amount).then(resolve)
+            service.family.income(id as unknown as string, +amount).then(resolve)
         }
 
         if (incomeActionMode.is(IncomeActions.RESET)) {
-            service.family.resetIncome(form.values().id).then(resolve)
+            service.family.resetIncome(id as unknown as string).then(resolve)
         }
     }).then(incomePopup.close)
 }

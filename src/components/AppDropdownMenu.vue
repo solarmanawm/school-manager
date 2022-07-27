@@ -19,17 +19,19 @@
     </div>
 </template>
 
+<script lang="ts">
+export interface Option {
+    title: string;
+    value: string | number | string[] | number[];
+}
+</script>
+
 <script setup lang="ts">
 // @ts-ignore
 import {ref, defineProps, defineEmits, computed, withDefaults, watch} from 'vue'
 
 interface Emits {
     (event: 'change', option: string | string[]): void;
-}
-
-export interface Option {
-    title: string;
-    value: string | number | string[] | number[];
 }
 
 interface Props {
@@ -53,7 +55,7 @@ const opts = computed(() => {
     }))
 })
 const change = (value: string) => {
-    if (props.multiple) {
+    if (props.multiple && Array.isArray(current.value)) {
         if (current.value.includes(value)) {
             current.value = current.value.filter((v: string) => v !== value)
             emits('change', current.value)

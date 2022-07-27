@@ -11,7 +11,6 @@
 // @ts-ignore
 import {ref, defineEmits, defineProps, watch} from "vue";
 import Datepicker from '@vuepic/vue-datepicker';
-import {Option} from "./AppDropdownMenu.vue";
 
 interface Emits {
     (event: 'update:modelValue', value: string): void;
@@ -19,12 +18,12 @@ interface Emits {
 
 interface Props {
     error: boolean;
-    modelValue: string;
+    modelValue: string | string[];
 }
 
 const emits = defineEmits<Emits>()
 const props = defineProps<Props>()
-const date = ref(props.modelValue)
+const date = ref(props.modelValue.toString())
 const format = (date: Date) => {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -34,8 +33,8 @@ const format = (date: Date) => {
 }
 const name = 'DatePicker'
 
-watch(date, (value: Date) => {
-    emits('update:modelValue', (value || '').toString())
+watch(date, (value: string) => {
+    emits('update:modelValue', value.toString())
 })
 </script>
 

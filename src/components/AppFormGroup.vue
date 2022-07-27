@@ -29,7 +29,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     required: false,
-    errors: [],
+    errors: () => ([]),
 })
 const name = 'FormControl'
 </script>

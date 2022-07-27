@@ -61,8 +61,16 @@ const slots = useSlots()
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 const popupRef = ref(null)
-const titleHasContent = computed(() => slots.title().length)
-const footerHasContent = computed(() => slots.footer().length)
+const titleHasContent = computed(() => {
+    const title = slots.title!()
+
+    return title ? title.length : 0
+})
+const footerHasContent = computed(() => {
+    const footer = slots.footer!()
+
+    return footer ? footer.length : 0
+})
 const close = () => {
     emit('update:visible', false)
 }

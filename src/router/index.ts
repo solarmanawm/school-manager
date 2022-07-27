@@ -36,7 +36,7 @@ export default () => {
         const {requiresAuth, title} = to.meta || {}
 
         if (title) {
-            uiStore.title = title
+            uiStore.title = title as string
         }
 
         if (!authStore.isAuthenticated && requiresAuth) {
