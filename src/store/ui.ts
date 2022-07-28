@@ -7,3 +7,5 @@ export const useUIStore = defineStore('ui', {
         }
     },
 })
+
+export default useUIStore

@@ -93,3 +93,5 @@ export const useDataStore = defineStore('data', {
         // },
     }
 })
+
+export default useDataStore

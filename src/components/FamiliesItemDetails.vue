@@ -80,7 +80,8 @@
                                     class="mt-3 first:mt-0 bg-gray-100 rounded-md px-4 py-2 border border-gray-200"
                             >
                                 <p class="text-sm font-bold capitalize mb-1">{{ fee ? fee.name : 'NO_VALUE' }}</p>
-                                <p class="font-bold text-blue-500">{{ fee ? fee.value : 'NO_VALUE' }} <i class="fa-solid fa-ruble-sign"></i></p>
+                                <p class="font-bold text-blue-500">{{ fee ? fee.value : 'NO_VALUE' }} <i
+                                        class="fa-solid fa-ruble-sign"></i></p>
                             </div>
                         </app-grid-col>
                         <app-grid-col
@@ -100,45 +101,16 @@
 
 
 <script setup lang="ts">
-import {
-    Chart,
-    ArcElement,
-    LineElement,
-    BarElement,
-    PointElement,
-    BarController,
-    BubbleController,
-    DoughnutController,
-    LineController,
-    PieController,
-    PolarAreaController,
-    RadarController,
-    ScatterController,
-    CategoryScale,
-    LinearScale,
-    LogarithmicScale,
-    RadialLinearScale,
-    TimeScale,
-    TimeSeriesScale,
-    Decimation,
-    Filler,
-    Legend,
-    Title,
-    Tooltip,
-    SubTitle
-} from 'chart.js';
-
-// @ts-ignore
+import {Chart} from 'chart.js';
 import {computed, defineEmits, onMounted, watch} from 'vue'
 import {useRoute} from "vue-router"
-// @ts-ignore
 import AppButton, {Variant, Size} from './AppButton.vue'
 import AppCard from './AppCard.vue'
 import AppGridContainer from './AppGridContainer.vue'
 import AppGridRow from './AppGridRow.vue'
 import AppGridCol from './AppGridCol.vue'
-import {useUIStore} from "../store/ui"
-import {useDataStore} from "../store/data"
+import useUIStore from "../store/ui"
+import useDataStore from "../store/data"
 
 interface Emits {
     (event: 'edit', id: string): void;
@@ -147,34 +119,7 @@ interface Emits {
     (event: 'reset-income', id: string): void;
 }
 
-Chart.register(
-        ArcElement,
-        LineElement,
-        BarElement,
-        PointElement,
-        BarController,
-        BubbleController,
-        DoughnutController,
-        LineController,
-        PieController,
-        PolarAreaController,
-        RadarController,
-        ScatterController,
-        CategoryScale,
-        LinearScale,
-        LogarithmicScale,
-        RadialLinearScale,
-        TimeScale,
-        TimeSeriesScale,
-        Decimation,
-        Filler,
-        Legend,
-        Title,
-        Tooltip,
-        SubTitle
-);
-
-let chart: Chart<"doughnut", number[], string> | null = null
+let chart: any = null
 const name = 'FamiliesItemDetails'
 const emits = defineEmits<Emits>()
 const route = useRoute()
@@ -247,7 +192,6 @@ const createChart = () => {
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
                     ],
-                    hoverOffset: 4
                 }]
             },
         })
@@ -260,15 +204,15 @@ watch(title, (value: string) => {
 })
 watch(() => item.value!.income, (value: number) => {
     if (chart) {
-        chart.data.datasets[0].data[0] = totalFees.value - value
-        chart.data.datasets[0].data[1] = value
+        chart.data.datasets![0].data![0] = totalFees.value - value
+        chart.data.datasets![0].data![1] = value
         chart.update()
     }
 })
 watch(feesLength, () => {
     if (chart) {
-        chart.data.datasets[0].data[0] = totalFees.value - item.value!.income
-        chart.data.datasets[0].data[1] = item.value!.income
+        chart.data.datasets![0].data![0] = totalFees.value - item.value!.income
+        chart.data.datasets![0].data![1] = item.value!.income
         chart.update()
     }
 })
