@@ -1,7 +1,7 @@
 import Express, {RequestHandler, ErrorRequestHandler} from "express";
 
-import config from '../../../config';
 import middlewares from "../middlewares";
+import config from '../../../config'
 
 /**
  * Server Interface

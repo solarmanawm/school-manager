@@ -7,13 +7,13 @@ import AbstractDatabase from './AbstractDatabase'
 import FirebaseAuthService from './FirebaseAuthService'
 import FirebaseUserService from "./FirebaseUserService";
 
-const serviceAccount = require('../../../phonebook-2213e-firebase-adminsdk-czkv7-876c1bdd4a.json');
-const firebaseConfig = require('../../../firebase-config.json');
+import config from '../../../config'
+
 const auth = getAuth(firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount),
+    credential: firebaseAdmin.credential.cert(config.serviceAccount),
     databaseURL: 'https://phonebook-2213e-default-rtdb.europe-west1.firebasedatabase.app'
 }));
-const firestore = getFirestore(initializeApp(firebaseConfig));
+const firestore = getFirestore(initializeApp(config.firebaseConfig));
 
 /**
  * Firebase Database Class

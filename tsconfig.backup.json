@@ -16,7 +16,7 @@
             "dom"
         ],
         "declaration": true,
-        "skipLibCheck": true,
+        "skipLibCheck": true
     },
     "include": [
         "src/**/*.ts",

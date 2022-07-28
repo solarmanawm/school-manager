@@ -1,0 +1,1 @@
+import{_ as a,d as e}from"./index.93ca6e21.js";const o=e({__name:"DashboardMain",setup(r){return(n,s)=>null}});var _=a(o,[["__file","/home/dmitry/PhpstormProjects/school-manager-web/src/frontend/components/DashboardMain.vue"]]);export{_ as default};

@@ -25,5 +25,6 @@ dist-ssr
 yarn.lock
 .vscode/
 
-firebase-config.json
-phonebook-2213e-firebase-adminsdk-czkv7-876c1bdd4a.json
+./firebase-config.json
+./phonebook-2213e-firebase-adminsdk-czkv7-876c1bdd4a.json
+lib

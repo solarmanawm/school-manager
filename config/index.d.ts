@@ -15,5 +15,7 @@ declare const config: {
     api: {
         version: number;
     };
+    serviceAccount: any;
+    firebaseConfig: any;
 };
 export default config;
