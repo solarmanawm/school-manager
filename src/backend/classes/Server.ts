@@ -29,7 +29,7 @@ class Server implements ServerInterface {
 
         this.registerMiddleware(config.morgan)
         this.registerMiddleware(config.cors)
-        this.registerMiddleware(config.helmet)
+        // this.registerMiddleware(config.helmet)
         this.registerMiddleware(Express.json())
         this.registerMiddleware(Express.static(config.path.public))
     }
@@ -78,8 +78,7 @@ class Server implements ServerInterface {
             res.send('pong');
         });
         this.express.get('/', (req, res) => {
-            console.log('public path: ', `${config.path.public}/index.html`)
-            res.sendFile(`${config.path.public}/index.html`);
+            res.set("Content-Security-Policy", "script-src 'self' *.googleapis.com").sendFile(`${config.path.public}/index.html`);
         });
         const expressApp = this.express.listen(config.port, () => {
             global.console.log(`Listen the server on port #${config.port}...`);
