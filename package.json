@@ -9,11 +9,12 @@
         "frontend:preview": "vite preview",
         "backend:type-check": "tsc --noEmit",
         "backend:type-check:watch": "npm run backend:type-check -- --watch",
-        "backend:build": "rimraf ./dist && rimraf ./lib && npm run backend:build:types && npm run backend:build:js",
+        "backend:build": "rimraf ./dist && rimraf ./lib && npm run backend:build:types && npm run backend:build:js && npm run backend:build:config",
         "backend:build:types": "tsc --emitDeclarationOnly",
-        "backend:build:js": "babel --plugins @babel/plugin-transform-typescript src/backend --out-dir dist/backend --extensions \".ts,.tsx\" --source-maps inline",
-        "backend:dev": "npx nodemon ./src/backend/index.ts",
-        "build": "npm run backend:build && npm run frontend:build && node dist/backend/index.js"
+        "backend:build:js": "babel --plugins @babel/plugin-transform-typescript src/backend --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
+        "backend:build:config": "babel --plugins @babel/plugin-transform-typescript config --out-dir dist/config --extensions \".ts,.tsx\" --source-maps inline",
+        "backend:dev": "NODE_ENV=development npx nodemon ./src/backend/index.ts",
+        "build": "npm run backend:build && npm run frontend:build && node dist/index.js"
     },
     "dependencies": {
         "@types/chart.js": "^2.9.37",

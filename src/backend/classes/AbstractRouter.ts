@@ -1,6 +1,7 @@
+import '../aliases'
 import Express, {Router} from 'express';
 import {ControllerInterface} from './Controller'
-import config from '../../../config';
+import config from '@config/index'
 
 /**
  * Router interface

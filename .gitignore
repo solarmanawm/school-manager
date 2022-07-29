@@ -24,7 +24,9 @@ dist-ssr
 *.sw?
 yarn.lock
 .vscode/
+public/assets
 
 ./firebase-config.json
 ./phonebook-2213e-firebase-adminsdk-czkv7-876c1bdd4a.json
 lib
+firebase

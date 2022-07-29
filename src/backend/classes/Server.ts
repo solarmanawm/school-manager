@@ -1,7 +1,8 @@
+import '../aliases'
 import Express, {RequestHandler, ErrorRequestHandler} from "express";
 
 import middlewares from "../middlewares";
-import config from '../../../config'
+import config from '@config/index'
 
 /**
  * Server Interface

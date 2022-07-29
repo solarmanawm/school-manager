@@ -1,3 +1,4 @@
+import '../aliases';
 import AbstractDatabase from './AbstractDatabase';
 /**
  * Firebase Database Class

@@ -1,3 +1,4 @@
+import '../aliases';
 import Express from "express";
 /**
  * Server Interface

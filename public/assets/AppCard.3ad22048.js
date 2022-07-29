@@ -1,1 +1,0 @@
-import{d as o,o as r,c as s,C as t}from"./index.1e5e80b3.js";const a={class:"w-full border border-gray-200 p-8 rounded"},p=o({__name:"AppCard",setup(n){return(e,d)=>(r(),s("div",a,[t(e.$slots,"default")]))}});export{p as _};

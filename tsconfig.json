@@ -17,6 +17,11 @@
         ],
         "declaration": true,
         "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@config/*": ["config/*"],
+            "@firebaseConfig/*": ["firebase/*"]
+        }
     },
     "include": [
         "src/**/*.ts",
