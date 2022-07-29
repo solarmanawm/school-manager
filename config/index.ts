@@ -9,7 +9,7 @@ const config = {
     cors,
     morgan,
     helmet: helmet(),
-    port: IS_DEV ? 3001 : 8080,
+    port: IS_DEV ? 3001 : process.env.PORT,
     path: {
         public: path.resolve(__dirname, '../public'),
     },
