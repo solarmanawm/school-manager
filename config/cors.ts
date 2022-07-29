@@ -1,5 +1,7 @@
 import cors, {CorsOptions} from 'cors';
 
-const options: CorsOptions = {};
+const options: CorsOptions = {
+
+};
 
 export default cors(options);

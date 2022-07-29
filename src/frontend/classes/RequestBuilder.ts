@@ -26,7 +26,6 @@ class RequestBuilder<T> implements RequestBuilderInterface {
         headers: {},
         data: {},
     }
-    private baseUrl: string = 'http://localhost:3001/api/v1/'
 
     method(method: string): RequestBuilder<T> {
         this.requestConfig.method = method
@@ -34,7 +33,7 @@ class RequestBuilder<T> implements RequestBuilderInterface {
     }
 
     url(url: string): RequestBuilder<T> {
-        this.requestConfig.url = this.baseUrl + url
+        this.requestConfig.url = url
         return this
     }
 
@@ -57,6 +56,8 @@ class RequestBuilder<T> implements RequestBuilderInterface {
         if (this.requestConfig.method === '' || this.requestConfig.url === '') {
             throw new Error('[RequestBuilder] No method or url defined.')
         }
+
+        console.log(this.requestConfig)
 
         return axios(this.requestConfig as AxiosRequestConfig)
     }

@@ -4,8 +4,10 @@ import {Router} from 'vue-router'
 // import {useAuthStore} from '../store/auth'
 // import routeNames from "../router/names";
 
+const url = process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : ''
+
 const config: AxiosRequestConfig = {
-    baseURL: `http://localhost:3001/api/v1`,
+    baseURL: `${url}/api/v1`,
     headers: {
         'X-Requested-With': 'XMLHttpRequest'
     },
