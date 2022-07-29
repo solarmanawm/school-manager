@@ -101,7 +101,7 @@
 
 
 <script setup lang="ts">
-import {Chart} from 'chart.js';
+import {Chart, registerables} from 'chart.js';
 import {computed, defineEmits, onMounted, watch} from 'vue'
 import {useRoute} from "vue-router"
 import AppButton, {Variant, Size} from './AppButton.vue'
@@ -178,6 +178,7 @@ const createChart = () => {
             }
         }, 200)
     }).then((ctx) => {
+        Chart.register(...registerables)
         chart = new Chart(ctx.getContext('2d')!, {
             type: 'doughnut',
             data: {
