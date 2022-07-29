@@ -77,6 +77,10 @@ class Server implements ServerInterface {
         this.express.get('/ping', (req, res) => {
             res.send('pong');
         });
+        this.express.get('/', (req, res) => {
+            console.log('public path: ', `${config.path.public}/index.html`)
+            res.sendFile(`${config.path.public}/index.html`);
+        });
         const expressApp = this.express.listen(config.port, () => {
             global.console.log(`Listen the server on port #${config.port}...`);
         });

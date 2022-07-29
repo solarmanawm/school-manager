@@ -11,7 +11,7 @@ const config = {
     helmet: helmet(),
     port: IS_DEV ? 3001 : process.env.PORT,
     path: {
-        public: path.resolve(__dirname, '../public'),
+        public: path.resolve(__dirname, IS_DEV ? '../public' : '../../public'),
     },
     api: {
         version: 1,
