@@ -16,22 +16,6 @@
             "dom"
         ],
         "declaration": true,
-        "skipLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "@config/*": ["config/*"],
-            "@firebaseConfig/*": ["firebase/*"]
-        }
-    },
-    "include": [
-        "src/**/*.ts",
-        "src/**/*.d.ts",
-        "src/**/*.tsx",
-        "src/**/*.vue"
-    ],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+        "skipLibCheck": true
+    }
 }

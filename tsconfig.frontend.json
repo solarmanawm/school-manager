@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig",
+    "include": [
+        "src/frontend/**/*.ts",
+        "src/frontend/**/*.d.ts",
+        "src/frontend/**/*.tsx",
+        "src/frontend/**/*.vue"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
+}

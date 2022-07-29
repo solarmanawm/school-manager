@@ -1,0 +1,19 @@
+{
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@config/*": [
+                "config/*"
+            ],
+            "@firebaseConfig/*": [
+                "firebase/*"
+            ]
+        }
+    },
+    "include": [
+        "config/*.ts",
+        "src/backend/*.ts",
+        "src/backend/*.d.ts"
+    ]
+}

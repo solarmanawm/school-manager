@@ -5,15 +5,17 @@
     "license": "MIT",
     "scripts": {
         "frontend:dev": "vite",
-        "frontend:build": "vue-tsc --noEmit && vite build --mode staging --emptyOutDir",
+        "frontend:build": "vue-tsc -p tsconfig.frontend.json --noEmit && vite build --mode staging --emptyOutDir",
         "frontend:preview": "vite preview",
-        "backend:type-check": "tsc --noEmit",
+
+        "backend:type-check": "tsc -p tsconfig.backend.json --noEmit",
         "backend:type-check:watch": "npm run backend:type-check -- --watch",
         "backend:build": "rimraf ./dist && rimraf ./lib && npm run backend:build:types && npm run backend:build:js && npm run backend:build:config",
-        "backend:build:types": "tsc --emitDeclarationOnly",
+        "backend:build:types": "tsc -p tsconfig.backend.json --emitDeclarationOnly",
         "backend:build:js": "babel --plugins @babel/plugin-transform-typescript src/backend --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
         "backend:build:config": "babel --plugins @babel/plugin-transform-typescript config --out-dir dist/config --extensions \".ts,.tsx\" --source-maps inline",
         "backend:dev": "NODE_ENV=development npx nodemon ./src/backend/index.ts",
+
         "build": "npm run backend:build && npm run frontend:build && node dist/index.js"
     },
     "dependencies": {
