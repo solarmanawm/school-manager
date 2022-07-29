@@ -9,8 +9,5 @@ export default defineConfig({
     root: path.join(__dirname, "src/frontend"),
     build: {
         outDir: '../../public'
-    },
-    define: {
-        APP_ROOT: path.dirname(__filename),
     }
 })

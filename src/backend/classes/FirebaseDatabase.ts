@@ -48,7 +48,7 @@ const {serviceAccount, firebaseConfig} = (() => {
 
 const auth = getAuth(firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(serviceAccount as firebaseAdmin.ServiceAccount),
-    databaseURL: 'https://phonebook-2213e-default-rtdb.europe-west1.firebasedatabase.app'
+    databaseURL: firebaseConfig.databaseURL
 }));
 const firestore = getFirestore(initializeApp(firebaseConfig));
 
