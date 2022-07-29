@@ -57,8 +57,6 @@ class RequestBuilder<T> implements RequestBuilderInterface {
             throw new Error('[RequestBuilder] No method or url defined.')
         }
 
-        console.log(this.requestConfig)
-
         return axios(this.requestConfig as AxiosRequestConfig)
     }
 

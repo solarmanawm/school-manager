@@ -29,7 +29,7 @@ class Server implements ServerInterface {
 
         this.registerMiddleware(config.morgan)
         this.registerMiddleware(config.cors)
-        // this.registerMiddleware(config.helmet)
+        this.registerMiddleware(config.helmet)
         this.registerMiddleware(Express.json())
         this.registerMiddleware(Express.static(config.path.public))
     }
