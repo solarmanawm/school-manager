@@ -7,7 +7,7 @@ const routes: any[] = [
         component: () => import('../components/HomeMain.vue'),
         meta: {
             requiresAuth: false,
-            title: 'Home',
+            title: 'home',
         },
     },
     {
@@ -16,7 +16,7 @@ const routes: any[] = [
         component: () => import('../components/LoginMain.vue'),
         meta: {
             requiresAuth: false,
-            title: 'Sign In',
+            title: 'login',
         },
     },
     {
@@ -25,7 +25,7 @@ const routes: any[] = [
         component: () => import('../components/RegisterMain.vue'),
         meta: {
             requiresAuth: false,
-            title: 'Sign Up',
+            title: 'register',
         },
     },
     {
@@ -34,7 +34,7 @@ const routes: any[] = [
         component: () => import('../components/DashboardMain.vue'),
         meta: {
             requiresAuth: true,
-            title: 'Dashboard',
+            title: 'dashboard',
         },
     },
     {
@@ -43,7 +43,7 @@ const routes: any[] = [
         name: routeNames.fees,
         meta: {
             requiresAuth: true,
-            title: 'Fees',
+            title: 'fees',
         },
         children: [
             {
@@ -70,7 +70,7 @@ const routes: any[] = [
         component: () => import('../components/StudentsMain.vue'),
         meta: {
             requiresAuth: true,
-            title: 'Students',
+            title: 'students',
         },
         children: [
             {
@@ -97,7 +97,7 @@ const routes: any[] = [
         component: () => import('../components/FamiliesMain.vue'),
         meta: {
             requiresAuth: true,
-            title: 'Families',
+            title: 'families',
         },
         children: [
             {

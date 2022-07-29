@@ -4,9 +4,8 @@
             <app-button
                     :variant="Variant.LIGHT"
                     @click="add"
-                    class="whitespace-nowrap mr-3"
-            >New Family
-            </app-button>
+                    class="whitespace-nowrap mr-3 capitalize"
+            >{{ $t('family.new') }}</app-button>
             <app-control
                     v-model="viewMode"
                     class="w-full"

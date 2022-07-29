@@ -4,9 +4,8 @@
             <app-button
                     :variant="Variant.LIGHT"
                     @click="add"
-                    class="whitespace-nowrap"
-            >New Fee
-            </app-button>
+                    class="whitespace-nowrap capitalize"
+            >{{ $t('fee.new') }}</app-button>
             <app-control
                     v-model="viewMode"
                     class="w-full ml-2"

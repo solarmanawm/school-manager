@@ -1,8 +1,8 @@
 <template>
     <p
             v-if="title"
-            class="text-xl font-bold"
-    >{{ title }}</p>
+            class="text-xl font-bold capitalize"
+    >{{ $t(`title.${title}`) }}</p>
 </template>
 
 <script setup lang="ts">

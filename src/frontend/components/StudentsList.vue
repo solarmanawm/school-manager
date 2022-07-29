@@ -5,9 +5,8 @@
                     v-if="hasFamilies"
                     :variant="Variant.LIGHT"
                     @click="add"
-                    class="whitespace-nowrap mr-3"
-            >New Student
-            </app-button>
+                    class="whitespace-nowrap mr-3 capitalize"
+            >{{ $t('student.new') }}</app-button>
             <app-control
                     v-model="viewMode"
                     class="w-full"

@@ -1,16 +1,16 @@
 const routeNames: {
     [key: string]: string;
 } = {
-    home: 'HOME',
-    login: 'LOGIN',
-    register: 'REGISTER',
-    dashboard: 'DASHBOARD',
-    families: 'FAMILIES',
-    family: 'FAMILY',
-    students: 'STUDENTS',
-    student: 'STUDENT',
-    fees: 'FEES',
-    fee: 'FEE',
+    home: 'home',
+    login: 'login',
+    register: 'register',
+    dashboard: 'dashboard',
+    families: 'families',
+    family: 'family',
+    students: 'students',
+    student: 'student',
+    fees: 'fees',
+    fee: 'fee',
 }
 
 export default routeNames

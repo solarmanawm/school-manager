@@ -5,12 +5,12 @@
     >
         <li
                 v-for="route of authRoutes"
-                class="first:ml-0 ml-3"
+                class="first:ml-0 ml-3 capitalize"
         >
-            <router-link :to="route.path">{{ route.name }}</router-link>
+            <router-link :to="route.path">{{ $t(`nav.${route.name}`) }}</router-link>
         </li>
-        <li class="ml-3">
-            <a href="#" @click.prevent="logout">LOGOUT</a>
+        <li class="ml-3 capitalize">
+            <a href="#" @click.prevent="logout">{{ $t(`nav.logout`) }}</a>
         </li>
     </ul>
     <ul
