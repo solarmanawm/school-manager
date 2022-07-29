@@ -16,7 +16,8 @@
         "backend:build:config": "babel --plugins @babel/plugin-transform-typescript config --out-dir dist/config --extensions \".ts,.tsx\" --source-maps inline",
         "backend:dev": "NODE_ENV=development npx nodemon ./src/backend/index.ts",
 
-        "build": "npm run backend:build && npm run frontend:build && node dist/index.js"
+        "build": "npm run backend:build && npm run frontend:build",
+        "start": "node dist/index.js"
     },
     "dependencies": {
         "@types/chart.js": "^2.9.37",
