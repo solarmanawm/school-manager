@@ -2,12 +2,14 @@
     <div class="w-full flex-1 flex justify-center">
         <app-grid-container>
             <app-grid-row>
-                <app-grid-col class="w-full mb-6 flex items-center justify-between">
+                <app-grid-col class="w-full mb-6 flex-col md:flex-row flex items-center justify-between">
                     <app-title :title="uiStore.title"/>
-                    <div id="app-context-buttons"></div>
+                    <div id="app-context-buttons" class="w-full md:w-auto mt-4 md:mt-0 flex flex-col md:flex-row"></div>
                 </app-grid-col>
             </app-grid-row>
-            <slot></slot>
+            <app-grid-row>
+                <slot></slot>
+            </app-grid-row>
         </app-grid-container>
     </div>
 </template>

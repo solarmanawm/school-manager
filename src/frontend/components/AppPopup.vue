@@ -25,7 +25,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="w-full border border-gray-200 p-8 rounded bg-white">
+            <div class="w-full border border-gray-200 p-6 md:p-8 rounded bg-white">
                 <h3
                         v-if="titleHasContent"
                         class="font-bold pb-6 mb-6 border-b text-xl capitalize border-b-gray-200"

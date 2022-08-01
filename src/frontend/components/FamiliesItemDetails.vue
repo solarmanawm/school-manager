@@ -1,52 +1,56 @@
 <template>
     <Teleport to="#app-context-buttons">
-        <div class="flex">
-            <app-button
-                    class="flex-1 mr-1"
-                    :variant="Variant.LIGHT"
-                    :size="Size.SMALL"
-                    @click="edit"
-            >{{ $t('button.edit') }}
-            </app-button>
-            <app-button
-                    class="flex-1 mr-1 ml-1"
-                    :variant="Variant.LIGHT"
-                    :size="Size.SMALL"
-                    @click="remove"
-            >{{ $t('button.remove') }}
-            </app-button>
-            <app-button
-                    class="flex-1 mr-1 ml-1 whitespace-nowrap"
-                    :variant="Variant.PRIMARY"
-                    :size="Size.SMALL"
-                    @click="income"
-            >{{ $t('family.incomePopup.title.add') }}
-            </app-button>
-            <app-button
-                    class="flex-1 ml-1 whitespace-nowrap"
-                    :variant="Variant.DANGER"
-                    :size="Size.SMALL"
-                    @click="resetIncome"
-            >{{ $t('family.incomePopup.title.reset') }}
-            </app-button>
-        </div>
+        <app-button
+                class="mt-2 md:mt-0 md:mr-1"
+                :variant="Variant.LIGHT"
+                :size="Size.SMALL"
+                @click="edit"
+        >{{ $t('button.edit') }}
+        </app-button>
+        <app-button
+                class="mt-2 md:mt-0 md:mr-1 md:ml-1"
+                :variant="Variant.LIGHT"
+                :size="Size.SMALL"
+                @click="remove"
+        >{{ $t('button.remove') }}
+        </app-button>
+        <app-button
+                class="mt-2 md:mt-0 md:mr-1 md:ml-1 whitespace-nowrap"
+                :variant="Variant.PRIMARY"
+                :size="Size.SMALL"
+                @click="income"
+        >{{ $t('family.incomePopup.title.add') }}
+        </app-button>
+        <app-button
+                class="mt-2 md:mt-0 md:ml-1 whitespace-nowrap"
+                :variant="Variant.DANGER"
+                :size="Size.SMALL"
+                @click="resetIncome"
+        >{{ $t('family.incomePopup.title.reset') }}
+        </app-button>
     </Teleport>
 
-    <div class="flex items-center justify-between">
-        <div class="flex flex-col item-start">
-            <p class="text-gray-300 text-sm mb-2 mb-6">ID: {{ item.id }}</p>
-            <p class="mb-6 text-blue-500 font-bold text-3xl capitalize">
-                {{ $t('family.income') }}: {{ item.income }} <i class="fa-solid fa-ruble-sign"></i>
-            </p>
-        </div>
-    </div>
+    <app-grid-container>
+        <app-grid-row>
+            <app-grid-col>
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col item-start">
+                        <p class="text-gray-300 text-sm mb-2 mb-6">ID: {{ item.id }}</p>
+                        <p class="mb-6 text-blue-500 font-bold text-3xl capitalize">
+                            {{ $t('family.income') }}: {{ item.income }} <i class="fa-solid fa-ruble-sign"></i>
+                        </p>
+                    </div>
+                </div>
+            </app-grid-col>
+        </app-grid-row>
+    </app-grid-container>
 
     <app-grid-container>
         <app-grid-row>
             <app-grid-col
                     v-if="hasDescription"
                     :class="{
-                        'w-1/3': hasFees,
+                        'w-full md:w-1/3': hasFees,
                         'w-full': !hasFees,
                     }"
                     class="flex"
@@ -60,7 +64,7 @@
             <app-grid-col
                     v-if="hasFees"
                     :class="{
-                        'w-2/3': hasDescription,
+                        'w-full md:w-2/3 mt-6 md:mt-0': hasDescription,
                         'w-full': !hasDescription,
                     }"
                     class="flex"
@@ -69,8 +73,8 @@
                     <app-grid-row>
                         <app-grid-col
                                 :class="{
-                                    'w-1/2': hasDescription,
-                                    'w-2/3': !hasDescription,
+                                    'w-full md:w-1/2 order-2 md:order-1': hasDescription,
+                                    'w-full md:w-2/3': !hasDescription,
                                 }"
                         >
                             <p class="font-bold text-sm mb-3 capitalize">{{ $t('family.popup.content.fees') }}:</p>
@@ -86,8 +90,8 @@
                         </app-grid-col>
                         <app-grid-col
                                 :class="{
-                                    'w-1/2': hasDescription,
-                                    'w-1/3': !hasDescription,
+                                    'w-full md:w-1/2 order-1 md:order-2': hasDescription,
+                                    'w-full md:w-1/3': !hasDescription,
                                 }"
                         >
                             <canvas id="myChart" width="400" height="400"></canvas>
@@ -114,8 +118,11 @@ import useDataStore from "../store/data"
 
 interface Emits {
     (event: 'edit', id: string): void;
+
     (event: 'remove', id: string): void;
+
     (event: 'income', id: string): void;
+
     (event: 'reset-income', id: string): void;
 }
 

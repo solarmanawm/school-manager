@@ -1,30 +1,30 @@
 <template>
     <Teleport to="#app-context-buttons">
-        <div class="flex">
-            <app-button
-                    :variant="Variant.LIGHT"
-                    @click="add"
-                    class="whitespace-nowrap mr-3 capitalize"
-            >{{ $t('family.new') }}</app-button>
-            <app-control
-                    v-model="viewMode"
-                    class="w-full"
-                    id="sex"
-                    type="button-set"
-                    :variant="Variant.LIGHT"
-                    :options="[
+        <app-button
+                :variant="Variant.LIGHT"
+                @click="add"
+                class="whitespace-nowrap mr-3 capitalize"
+        >{{ $t('family.new') }}
+        </app-button>
+        <app-control
+                v-if="mdAndLarger"
+                v-model="viewMode"
+                class="w-full"
+                id="sex"
+                type="button-set"
+                :variant="Variant.LIGHT"
+                :options="[
                         {icon: 'fa-solid fa-border-all', value: Views.CARD},
                         {icon: 'fa-solid fa-list', value: Views.LIST},
                 ]"
-            />
-        </div>
+        />
     </Teleport>
 
     <app-grid-container>
         <app-grid-row>
             <app-grid-col
                     v-for="item in dataStore.families"
-                    :class="viewMode === Views.CARD ? 'w-1/2' : 'w-full'"
+                    :class="viewMode === Views.CARD ? 'w-full md:w-1/2' : 'w-full'"
             >
                 <app-families-list-item
                         :view="viewMode"
@@ -44,6 +44,7 @@
 // @ts-ignore
 import {defineEmits, ref} from "vue";
 import {useRouter} from "vue-router";
+import {breakpointsTailwind, useBreakpoints} from '@vueuse/core'
 // @ts-ignore
 import AppButton, {Variant} from './AppButton.vue'
 // @ts-ignore
@@ -58,7 +59,9 @@ import routeNames from "../router/names";
 
 interface Emits {
     (event: 'add'): void;
+
     (event: 'edit', id: string): void;
+
     (event: 'remove', id: string): void;
 }
 
@@ -67,6 +70,8 @@ const emits = defineEmits<Emits>()
 const dataStore = useDataStore()
 const router = useRouter()
 const viewMode = ref(Views.CARD)
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const mdAndLarger = breakpoints.greater('md')
 const add = () => {
     emits('add')
 }
