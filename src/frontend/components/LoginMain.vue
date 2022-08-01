@@ -9,8 +9,8 @@
             <app-form @submit.prevent="submit()">
                 <app-form-group
                         class="w-full"
-                        label="Username"
                         for="username"
+                        :label="$t('common.username')"
                         :required="true"
                         :errors="loginValidator.username.$errors"
                 >
@@ -23,8 +23,8 @@
                 </app-form-group>
                 <app-form-group
                         class="w-full"
-                        label="Password"
                         for="password"
+                        :label="$t('common.password')"
                         :required="true"
                         :errors="loginValidator.password.$errors"
                 >
@@ -41,7 +41,7 @@
                             :loading="loading"
                             type="submit"
                             class="w-full"
-                    >Sign In
+                    >{{ $t('common.signIn') }}
                     </app-button>
                 </app-form-group>
             </app-form>

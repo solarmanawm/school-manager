@@ -6,28 +6,28 @@
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="edit"
-            >Edit
+            >{{ $t('button.edit') }}
             </app-button>
             <app-button
                     class="flex-1 mr-1 ml-1"
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="remove"
-            >Remove
+            >{{ $t('button.remove') }}
             </app-button>
             <app-button
                     class="flex-1 mr-1 ml-1 whitespace-nowrap"
                     :variant="Variant.PRIMARY"
                     :size="Size.SMALL"
                     @click="income"
-            >Add income
+            >{{ $t('family.incomePopup.title.add') }}
             </app-button>
             <app-button
                     class="flex-1 ml-1 whitespace-nowrap"
                     :variant="Variant.DANGER"
                     :size="Size.SMALL"
                     @click="resetIncome"
-            >Reset income
+            >{{ $t('family.incomePopup.title.reset') }}
             </app-button>
         </div>
     </Teleport>
@@ -35,8 +35,8 @@
     <div class="flex items-center justify-between">
         <div class="flex flex-col item-start">
             <p class="text-gray-300 text-sm mb-2 mb-6">ID: {{ item.id }}</p>
-            <p class="mb-6 text-blue-500 font-bold text-3xl">
-                Income: {{ item.income }} <i class="fa-solid fa-ruble-sign"></i>
+            <p class="mb-6 text-blue-500 font-bold text-3xl capitalize">
+                {{ $t('family.income') }}: {{ item.income }} <i class="fa-solid fa-ruble-sign"></i>
             </p>
         </div>
     </div>
@@ -52,7 +52,7 @@
                     class="flex"
             >
                 <app-card class="flex-1">
-                    <p class="font-bold text-sm mb-3">Description:</p>
+                    <p class="font-bold text-sm mb-3 capitalize">{{ $t('common.description') }}:</p>
                     <p>{{ item.description }}</p>
                 </app-card>
             </app-grid-col>
@@ -73,7 +73,7 @@
                                     'w-2/3': !hasDescription,
                                 }"
                         >
-                            <p class="font-bold text-sm mb-3">Fees:</p>
+                            <p class="font-bold text-sm mb-3 capitalize">{{ $t('family.popup.content.fees') }}:</p>
                             <div
                                     v-for="fee of fees"
                                     :key="fee ? fee.id : 'NO_VALUE'"

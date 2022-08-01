@@ -21,7 +21,7 @@
                 v-for="route of nonAuthRoutes"
                 class="first:ml-0 ml-3"
         >
-            <router-link :to="route.path">{{ route.name }}</router-link>
+            <router-link :to="route.path">{{ $t(`nav.${route.name}`) }}</router-link>
         </li>
     </ul>
 </template>

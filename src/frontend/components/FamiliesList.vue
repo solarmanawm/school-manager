@@ -24,7 +24,7 @@
         <app-grid-row>
             <app-grid-col
                     v-for="item in dataStore.families"
-                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
+                    :class="viewMode === Views.CARD ? 'w-1/2' : 'w-full'"
             >
                 <app-families-list-item
                         :view="viewMode"

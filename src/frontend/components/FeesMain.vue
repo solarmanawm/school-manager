@@ -13,7 +13,7 @@
                 v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
-                {{ popupTitle }}
+                {{ $t(popupTitle) }}
             </template>
             <template v-slot:content>
                 <app-form
@@ -23,8 +23,8 @@
                 >
                     <app-form-group
                             class="w-full"
-                            label="Name"
                             target="name"
+                            :label="$t('common.name')"
                             :required="true"
                             :errors="form.errors.name.value"
                     >
@@ -38,8 +38,8 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Value"
                             target="value"
+                            :label="$t('fee.popup.content.value')"
                             :required="true"
                             :errors="form.errors.value.value"
                     >
@@ -53,8 +53,8 @@
                     </app-form-group>
                     <app-form-group
                             v-if="hasAnyFamilies"
+                            :label="$t('fee.popup.content.families')"
                             class="w-full"
-                            label="Families"
                             target="families"
                     >
                         <template #context>
@@ -62,7 +62,7 @@
                                     href="#"
                                     @click.prevent="manageFees"
                                     class="text-blue-500 hover:text-blue-700 underline decoration-dashed hover:no-underline"
-                            >{{ selectAllText }}</a>
+                            >{{ $t(selectAllText) }}</a>
                         </template>
                         <app-control
                                 v-model="form.fields.families.value"
@@ -75,8 +75,8 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Description"
                             target="description"
+                            :label="$t('common.description')"
                             :errors="form.errors.description.value"
                     >
                         <app-control
@@ -88,18 +88,18 @@
                         />
                     </app-form-group>
                 </app-form>
-                <p v-else class="text-center">Are you sure you want to remove this fee?</p>
+                <p v-else class="text-center">{{ $t('fee.popup.content.remove') }}</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
                             @click="popup.close()"
                             :variant="Variant.SECONDARY"
-                    >Cancel
+                    >{{ $t('button.cancel') }}
                     </app-button>
                     <app-button
                             @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
-                    >{{ popupSubmitButtonText }}
+                    >{{ $t(popupSubmitButtonText) }}
                     </app-button>
                 </div>
             </template>
@@ -135,15 +135,15 @@ enum SubmitActions {
 }
 
 enum PopupTitle {
-    ADD = 'Create a new fee',
-    EDIT = 'Edit the fee',
-    REMOVE = 'Remove the fee',
+    ADD = 'fee.popup.title.add',
+    EDIT = 'fee.popup.title.edit',
+    REMOVE = 'fee.popup.title.remove',
 }
 
 enum PopupSubmitButtonText {
-    ADD = 'Create',
-    EDIT = 'Save',
-    REMOVE = 'Remove',
+    ADD = 'button.create',
+    EDIT = 'button.edit',
+    REMOVE = 'button.remove',
 }
 
 interface Option {
@@ -167,7 +167,7 @@ const allFieldsSelected = ref(false)
 const errors = ref([])
 const onError = useError(errors)
 const selectedFeesLength = computed(() => form.fields.families.value.length)
-const selectAllText = computed(() => allFieldsSelected.value ? 'Unselect All' : 'Select All')
+const selectAllText = computed(() => allFieldsSelected.value ? 'fee.popup.content.unselectAll' : 'fee.popup.content.selectAll')
 const popupSubmitButtonText = computed(() => PopupSubmitButtonText[actionMode.value() as keyof typeof PopupSubmitButtonText])
 const popupTitle = computed(() => PopupTitle[actionMode.value() as keyof typeof PopupTitle])
 const families = computed(() => dataStore.families.map((item: FamilyInterface) => ({

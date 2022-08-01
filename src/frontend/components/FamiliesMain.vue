@@ -13,7 +13,7 @@
                 v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
-                {{ popupTitle }}
+                {{ $t(popupTitle) }}
             </template>
             <template v-slot:content>
                 <app-form
@@ -23,8 +23,8 @@
                 >
                     <app-form-group
                             class="w-full"
-                            label="Name"
                             target="Name"
+                            :label="$t('common.name')"
                             :required="true"
                             :errors="form.errors.name.value"
                     >
@@ -38,8 +38,8 @@
                     <app-form-group
                             v-if="hasAnyFees"
                             class="w-full"
-                            label="Fees"
                             target="fees"
+                            :label="$t('family.popup.content.fees')"
                     >
                         <template #context>
                             <a
@@ -59,8 +59,8 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Description"
                             target="description"
+                            :label="$t('common.description')"
                             :errors="form.errors.description.value"
                     >
                         <app-control
@@ -72,17 +72,17 @@
                         />
                     </app-form-group>
                 </app-form>
-                <p v-else class="text-center">Are you sure you want to remove this family?</p>
+                <p v-else class="text-center">{{ $t('family.popup.content.remove') }}</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
                             @click="popup.close()"
                             :variant="Variant.SECONDARY"
-                    >Cancel
+                    >{{ $t('button.cancel') }}
                     </app-button>
                     <app-button @click="form.submit(!actionMode.is(SubmitActions.REMOVE))">
-                        {{ popupSubmitButtonText }}
+                        {{ $t(popupSubmitButtonText) }}
                     </app-button>
                 </div>
             </template>
@@ -91,7 +91,7 @@
 
     <Teleport to="#app-popup">
         <app-popup v-model:visible="incomePopup.visible.value">
-            <template v-slot:title>{{ incomePopupTitle }}</template>
+            <template v-slot:title>{{ $t(incomePopupTitle) }}</template>
             <template v-slot:content>
                 <app-form
                         v-if="incomeActionMode.is(IncomeActions.ADD)"
@@ -100,8 +100,8 @@
                 >
                     <app-form-group
                             class="w-full"
-                            label="Amount"
                             target="amount"
+                            :label="$t('family.incomePopup.content.amount')"
                             :required="true"
                             :errors="incomeForm.errors.amount.value"
                     >
@@ -113,17 +113,17 @@
                         />
                     </app-form-group>
                 </app-form>
-                <p v-else class="text-center">Are you sure you want to reset this family's income?</p>
+                <p v-else class="text-center">{{ $t('family.incomePopup.content.reset') }}</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
                             @click="incomePopup.close()"
                             :variant="Variant.SECONDARY"
-                    >Cancel
+                    >{{ $t('button.cancel') }}
                     </app-button>
                     <app-button @click="incomeForm.submit(!incomeActionMode.is(IncomeActions.RESET))">
-                        {{ incomePopupSubmitButtonText }}
+                        {{ $t(incomePopupSubmitButtonText) }}
                     </app-button>
                 </div>
             </template>
@@ -164,25 +164,25 @@ enum IncomeActions {
 }
 
 enum PopupTitle {
-    ADD = 'Create a new family',
-    EDIT = 'Edit the family',
-    REMOVE = 'Remove the family',
+    ADD = 'family.popup.title.add',
+    EDIT = 'family.popup.title.edit',
+    REMOVE = 'family.popup.title.remove',
 }
 
 enum IncomePopupTitle {
-    ADD = 'Add an income',
-    RESET = 'Reset this income',
+    ADD = 'family.incomePopup.title.add',
+    RESET = 'family.incomePopup.title.reset',
 }
 
 enum PopupSubmitButtonText {
-    ADD = 'Create',
-    EDIT = 'Save',
-    REMOVE = 'Remove',
+    ADD = 'button.create',
+    EDIT = 'button.edit',
+    REMOVE = 'button.remove',
 }
 
 enum IncomePopupSubmitButtonText {
-    ADD = 'Add',
-    RESET = 'Reset',
+    ADD = 'button.add',
+    RESET = 'button.reset',
 }
 
 interface Option {

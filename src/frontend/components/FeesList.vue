@@ -24,7 +24,7 @@
         <app-grid-row>
             <app-grid-col
                     v-for="item in dataStore.fees"
-                    :class="viewMode === Views.CARD ? 'w-1/3' : 'w-full'"
+                    :class="viewMode === Views.CARD ? 'w-1/2' : 'w-full'"
                     class="flex"
             >
                 <app-fees-list-item

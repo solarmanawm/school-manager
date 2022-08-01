@@ -9,14 +9,14 @@
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="edit"
-            >Edit
+            >{{ $t('button.edit') }}
             </app-button>
             <app-button
                     class="flex-1 ml-1"
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="remove"
-            >Remove
+            >{{ $t('button.remove') }}
             </app-button>
         </div>
     </Teleport>

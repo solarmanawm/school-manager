@@ -3,7 +3,7 @@
         <label
                 v-if="label"
                 :for="target"
-                class="text-sm mb-2 flex items-center justify-between"
+                class="text-sm mb-2 flex items-center justify-between capitalize"
         >
             <span>{{ label }} <span v-if="required" class="text-red-500 font-bold">*</span></span>
             <slot name="context"></slot>

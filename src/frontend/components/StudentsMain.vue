@@ -14,7 +14,7 @@
                 v-model:visible="popup.visible.value"
         >
             <template v-slot:title>
-                {{ popupTitle }}
+                {{ $t(popupTitle) }}
             </template>
             <template v-slot:content>
                 <app-form
@@ -25,7 +25,7 @@
                     <app-form-group
                             v-if="hasFamilies"
                             class="w-full"
-                            label="Family"
+                            :label="$t('family.family')"
                             target="family"
                             :required="true"
                             :errors="form.errors.family.value"
@@ -41,8 +41,8 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Name"
                             target="Name"
+                            :label="$t('common.name')"
                             :required="true"
                             :errors="form.errors.name.value"
                     >
@@ -55,8 +55,8 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Date of birth"
                             target="dateOfBirth"
+                            :label="$t('common.dateOfBirth')"
                             :errors="form.errors.dateOfBirth.value"
                     >
                         <app-control
@@ -69,8 +69,8 @@
                     </app-form-group>
                     <app-form-group
                             class="w-full"
-                            label="Sex"
                             target="sex"
+                            :label="$t('common.sex')"
                     >
                         <app-control
                                 v-model="form.fields.sex.value"
@@ -79,24 +79,24 @@
                                 :type="Type.BUTTON_SET"
                                 :variant="Variant.LIGHT"
                                 :options="[
-                                        {title: 'Male', value: 'male'},
-                                        {title: 'Female', value: 'female'},
+                                        {title: $t('sex.male'), value: 'male'},
+                                        {title: $t('sex.female'), value: 'female'},
                                 ]"
                         />
                     </app-form-group>
                 </app-form>
-                <p v-else class="text-center">Are you sure you want to remove this student?</p>
+                <p v-else class="text-center">{{ $t('remove.family') }}</p>
             </template>
             <template v-slot:footer>
                 <div class="w-full flex items-center justify-between">
                     <app-button
                             @click="popup.close()"
                             :variant="Variant.SECONDARY"
-                    >Cancel
+                    >{{ $t('button.cancel') }}
                     </app-button>
                     <app-button
                             @click="form.submit(!actionMode.is(SubmitActions.REMOVE))"
-                    >{{ popupSubmitButtonText }}
+                    >{{ $t(popupSubmitButtonText) }}
                     </app-button>
                 </div>
             </template>
@@ -133,15 +133,15 @@ enum SubmitActions {
 }
 
 enum PopupTitle {
-    ADD = 'Create a new student',
-    EDIT = 'Edit the student',
-    REMOVE = 'Remove the student',
+    ADD = 'student.popup.title.add',
+    EDIT = 'student.popup.title.edit',
+    REMOVE = 'student.popup.title.remove',
 }
 
 enum PopupSubmitButtonText {
-    ADD = 'Create',
-    EDIT = 'Save',
-    REMOVE = 'Remove',
+    ADD = 'button.create',
+    EDIT = 'button.edit',
+    REMOVE = 'button.remove',
 }
 
 interface SubmitActionsInterface {

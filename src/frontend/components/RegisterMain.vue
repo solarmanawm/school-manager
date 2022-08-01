@@ -9,77 +9,76 @@
             <app-form @submit.prevent="submit()" ref="form">
                 <app-form-group
                         class="w-full"
-                        label="Username"
                         for="username"
+                        :label="$t('common.username')"
                         :required="true"
                         :errors="registerValidator.username.$errors"
                 >
                     <app-control
                             v-model="registerValidator.username.$model"
                             :error="registerValidator.username.$error"
+                            :placeholder="$t('common.username')"
                             class="w-full"
-                            placeholder="Username..."
                             id="username"
                     />
                 </app-form-group>
                 <app-form-group
                         class="w-full"
-                        label="Password"
                         for="password"
+                        :label="$t('common.password')"
                         :required="true"
                         :errors="registerValidator.password.$errors"
                 >
                     <app-control
                             v-model="registerValidator.password.$model"
                             :error="registerValidator.password.$error"
+                            :placeholder="$t('common.password')"
                             type="password"
-                            placeholder="Password..."
                             class="w-full"
                             id="password"
                     />
                 </app-form-group>
                 <app-form-group
                         class="w-full"
-                        label="Repeat password"
                         for="repeat-password"
+                        :label="$t('common.passwordRepeat')"
                         :required="true"
                         :errors="registerValidator.repeatPassword.$errors"
                 >
                     <app-control
                             v-model="registerValidator.repeatPassword.$model"
                             :error="registerValidator.repeatPassword.$error"
+                            :placeholder="$t('common.passwordRepeat')"
                             type="password"
-                            placeholder="Repeat password..."
                             class="w-full"
                             id="repeat-password"
                     />
                 </app-form-group>
                 <app-form-group
                         class="w-full"
-                        label="First name"
                         for="first-name"
+                        :label="$t('common.firstName')"
                         :errors="registerValidator.firstName.$errors"
                 >
                     <app-control
                             v-model="registerValidator.firstName.$model"
                             :error="registerValidator.firstName.$error"
+                            :placeholder="$t('common.firstName')"
                             class="w-full"
-                            placeholder="First name"
                             id="first-name"
                     />
                 </app-form-group>
                 <app-form-group
                         class="w-full"
-                        label="Last name"
                         for="last-name"
-                        :required="true"
+                        :label="$t('common.lastName')"
                         :errors="registerValidator.lastName.$errors"
                 >
                     <app-control
                             v-model="registerValidator.lastName.$model"
                             :error="registerValidator.lastName.$error"
+                            :placeholder="$t('common.lastName')"
                             class="w-full"
-                            placeholder="Last name"
                             id="last-name"
                     />
                 </app-form-group>
@@ -88,7 +87,7 @@
                             :loading="loading"
                             type="submit"
                             class="w-full"
-                    >Create a Free Account
+                    >{{ $t('register.create') }}
                     </app-button>
                 </app-form-group>
             </app-form>

@@ -16,21 +16,21 @@
                         :variant="Variant.PRIMARY"
                         :size="Size.SMALL"
                         @click="details"
-                >Details
+                >{{ $t('button.details') }}
                 </app-button>
                 <app-button
                         class="flex-1 mr-1"
                         :variant="Variant.LIGHT"
                         :size="Size.SMALL"
                         @click="edit"
-                >Edit
+                >{{ $t('button.edit') }}
                 </app-button>
                 <app-button
                         class="flex-1 ml-1"
                         :variant="Variant.LIGHT"
                         :size="Size.SMALL"
                         @click="remove"
-                >Remove
+                >{{ $t('button.remove') }}
                 </app-button>
             </p>
         </div>

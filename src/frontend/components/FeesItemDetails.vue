@@ -9,14 +9,14 @@
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="edit"
-            >Edit
+            >{{ $t('button.edit') }}
             </app-button>
             <app-button
                     class="flex-1 ml-1"
                     :variant="Variant.LIGHT"
                     :size="Size.SMALL"
                     @click="remove"
-            >Remove
+            >{{ $t('button.remove') }}
             </app-button>
             <app-button
                     v-if="!item.completed"
@@ -24,7 +24,7 @@
                     :variant="Variant.PRIMARY"
                     :size="Size.SMALL"
                     @click="complete"
-            ><i class="fa-solid fa-check mr-1"></i> Complete
+            ><i class="fa-solid fa-check mr-1"></i> {{ $t('button.complete') }}
             </app-button>
         </div>
     </Teleport>
@@ -36,7 +36,7 @@
         </div>
 
         <div class="flex flex-col items-end">
-            <p class="font-bold text-sm flex items-center">Status: <span class="ml-2 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center"><i :class="item.completed ? 'fa-solid fa-check' : 'fa-solid fa-chart-line'"></i></span></p>
+            <p class="font-bold text-sm flex items-center capitalize">{{ $t('fee.status') }}: <span class="ml-2 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center"><i :class="item.completed ? 'fa-solid fa-check' : 'fa-solid fa-chart-line'"></i></span></p>
         </div>
     </div>
 
@@ -83,7 +83,6 @@ import {useDataStore} from "../store/data"
 
 interface Emits {
     (event: 'edit', id: string): void;
-
     (event: 'remove', id: string): void;
 }
 

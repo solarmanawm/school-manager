@@ -3,7 +3,7 @@
             :type="type"
             :class="classList"
             :disabled="loading"
-            class="rounded font-bold flex items-center justify-center"
+            class="rounded font-bold flex items-center justify-center capitalize"
     >
         <svg v-if="loading" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink"
