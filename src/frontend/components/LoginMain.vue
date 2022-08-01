@@ -1,56 +1,52 @@
 <template>
-    <app-grid-container>
-        <app-grid-row>
-            <app-grid-col class="w-full">
-                <app-card class="sm:max-w-sm">
-                    <app-alert
-                            v-if="alert.message"
-                            :type="alert.type"
-                    >{{ alert.message }}
-                    </app-alert>
-                    <app-form @submit.prevent="submit()">
-                        <app-form-group
-                                class="w-full"
-                                for="username"
-                                :label="$t('common.username')"
-                                :required="true"
-                                :errors="loginValidator.username.$errors"
-                        >
-                            <app-control
-                                    v-model="loginValidator.username.$model"
-                                    :error="loginValidator.username.$error"
-                                    class="w-full"
-                                    id="username"
-                            />
-                        </app-form-group>
-                        <app-form-group
-                                class="w-full"
-                                for="password"
-                                :label="$t('common.password')"
-                                :required="true"
-                                :errors="loginValidator.password.$errors"
-                        >
-                            <app-control
-                                    v-model="loginValidator.password.$model"
-                                    :error="loginValidator.password.$error"
-                                    type="password"
-                                    class="w-full"
-                                    id="password"
-                            />
-                        </app-form-group>
-                        <app-form-group class="w-full">
-                            <app-button
-                                    :loading="loading"
-                                    type="submit"
-                                    class="w-full"
-                            >{{ $t('common.signIn') }}
-                            </app-button>
-                        </app-form-group>
-                    </app-form>
-                </app-card>
-            </app-grid-col>
-        </app-grid-row>
-    </app-grid-container>
+    <app-grid-col class="w-full flex items-center justify-center">
+        <app-card class="sm:max-w-sm">
+            <app-alert
+                    v-if="alert.message"
+                    :type="alert.type"
+            >{{ alert.message }}
+            </app-alert>
+            <app-form @submit.prevent="submit()">
+                <app-form-group
+                        class="w-full"
+                        for="username"
+                        :label="$t('common.username')"
+                        :required="true"
+                        :errors="loginValidator.username.$errors"
+                >
+                    <app-control
+                            v-model="loginValidator.username.$model"
+                            :error="loginValidator.username.$error"
+                            class="w-full"
+                            id="username"
+                    />
+                </app-form-group>
+                <app-form-group
+                        class="w-full"
+                        for="password"
+                        :label="$t('common.password')"
+                        :required="true"
+                        :errors="loginValidator.password.$errors"
+                >
+                    <app-control
+                            v-model="loginValidator.password.$model"
+                            :error="loginValidator.password.$error"
+                            type="password"
+                            class="w-full"
+                            id="password"
+                    />
+                </app-form-group>
+                <app-form-group class="w-full">
+                    <app-button
+                            :loading="loading"
+                            type="submit"
+                            class="w-full"
+                    >{{ $t('common.signIn') }}
+                    </app-button>
+                </app-form-group>
+            </app-form>
+        </app-card>
+    </app-grid-col>
 </template>
 
 <script setup lang="ts">
@@ -72,8 +68,6 @@ import AppAlert from './AppAlert.vue'
 import {useAuthStore} from '../store/auth'
 import routeNames from "../router/names";
 import service from "../service";
-import AppGridContainer from "./AppGridContainer.vue";
-import AppGridRow from "./AppGridRow.vue";
 import AppGridCol from "./AppGridCol.vue";
 
 const router = useRouter()
