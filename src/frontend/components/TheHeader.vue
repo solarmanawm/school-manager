@@ -7,7 +7,7 @@
 
                     <app-nav
                             v-if="mdAndLarger"
-                            @update="toggleMobileMenu"
+                            @update="closeMobileMenu"
                     />
                     <app-button
                             v-else
@@ -51,5 +51,10 @@ const mdAndLarger = breakpoints.greater('md')
 const showMobileMenu = ref(false)
 const toggleMobileMenu = () => {
     showMobileMenu.value = !showMobileMenu.value
+}
+const closeMobileMenu = () => {
+    if (showMobileMenu.value) {
+        showMobileMenu.value = false
+    }
 }
 </script>
