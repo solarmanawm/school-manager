@@ -4,10 +4,10 @@
             class="inset-0 fixed z-10 flex items-center justify-center"
     >
         <div class="inset-0 absolute bg-gray-800 opacity-90 z-0"></div>
-        <div ref="popupRef" class="w-full relative z-10 xs:max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+        <div ref="popupRef" class="w-full relative z-10 px-4 sm:px-0 sm:max-w-sm md:max-w-md lg:max-w-lg">
             <div
                     @click="close"
-                    class="h-10 w-10 rounded-full bg-white flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 shadow cursor-pointer hover:scale-110"
+                    class="h-10 w-10 rounded-full bg-white flex items-center justify-center absolute top-0 right-4 sm:right-0 -translate-y-1/3 translate-x-1/3 shadow cursor-pointer hover:scale-110"
             >
                 <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -62,11 +62,19 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 const popupRef = ref(null)
 const titleHasContent = computed(() => {
+    if (typeof slots.title !== 'function') {
+        return 0
+    }
+
     const title = slots.title!()
 
     return title ? title.length : 0
 })
 const footerHasContent = computed(() => {
+    if (typeof slots.footer !== 'function') {
+        return 0
+    }
+
     const footer = slots.footer!()
 
     return footer ? footer.length : 0
