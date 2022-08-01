@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory, Router} from 'vue-router'
+import {createRouter, createWebHashHistory, Router} from 'vue-router'
 // @ts-ignore
 import {nextTick} from "vue";
 import {useAuthStore} from '../store/auth';
@@ -16,7 +16,7 @@ export default () => {
      * @type {Router}
      */
     const router = createRouter({
-        history: createWebHistory(),
+        history: createWebHashHistory(),
         routes,
     });
 
