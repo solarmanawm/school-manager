@@ -4,6 +4,7 @@
             placeholder="Start Typing ..."
             textInput
             :format="format"
+            autoApply
     />
 </template>
 
