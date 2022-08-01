@@ -80,6 +80,9 @@ class Server implements ServerInterface {
         this.express.get('/', (req, res) => {
             res.set("Content-Security-Policy", "script-src 'self' *.googleapis.com").sendFile(`${config.path.public}/index.html`);
         });
+        this.express.get('*', (req, res) => {
+            res.redirect('/')
+        });
         const expressApp = this.express.listen(config.port, () => {
             global.console.log(`Listen the server on port #${config.port}...`);
         });
