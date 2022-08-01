@@ -51,7 +51,7 @@
                         v-if="hasDescription"
                         class="flex-1"
                 >
-                    <p class="font-bold text-sm mb-3">Description:</p>
+                    <p class="font-bold text-sm mb-3">{{ $t('common.description') }}:</p>
                     <p>{{ item.description }}</p>
                 </app-card>
             </app-grid-col>
@@ -64,7 +64,7 @@
                         v-if="families.length"
                         class="flex-1"
                 >
-                    <p class="font-bold text-sm mb-3">Families:</p>
+                    <p class="font-bold text-sm mb-3">{{ $t('nav.families') }}:</p>
                     <p>{{ families }}</p>
                 </app-card>
             </app-grid-col>
